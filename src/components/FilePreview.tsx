@@ -14,34 +14,37 @@ const FilePreview: React.FC<FilePreviewProps> = ({ file, onRemove }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div
-      className='relative rounded-lg border border-gray-300 shadow-md overflow-hidden m-3'
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <video
-        controls
-        width={200}
-        className='object-cover'
-        onLoad={() => {
-          if (file.preview) {
-            URL.revokeObjectURL(file.preview);
-          }
-        }}
+    <>
+      <li className='relative rounded-md  mb-3 ml-3'
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
-        <source src={file.preview || ''} type={file.type} />
-        Your browser does not support the video tag.
-      </video>
-
-      {isHovered && (
-        <button
-          className='absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full cursor-pointer'
-          onClick={onRemove}
+        <video
+          controls
+          className='w-full object-contain rounded-md'
+          onLoad={() => {
+            if (file.preview) {
+              URL.revokeObjectURL(file.preview);
+            }
+          }}
         >
-          X
-        </button>
-      )}
-    </div>
+          <source src={file.preview || ''} type={file.type} />
+          Your browser does not support the video tag.
+        </video>
+
+        {isHovered && (
+          <button
+            className='absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full cursor-pointer'
+            onClick={onRemove}
+          >
+            X
+          </button>
+        )}
+        <p className='mt-2 text-neutral-500 text-[12px] font-medium'>
+          {file.name}
+        </p>
+      </li>
+    </>
   );
 };
 

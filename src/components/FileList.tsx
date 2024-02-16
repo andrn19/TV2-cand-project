@@ -16,15 +16,15 @@ const FileList: React.FC<FileListProps> = ({ files, updateFiles }) => {
       };
 
     return (
-        <div className="rounded-lg bg-gray-700">
+        <div className="rounded-lg bg-gray-700 flex flex-col">
             <h2 className="font-bold">Uploaded Files:</h2>
-            <div className="flex flex-wrap gap-4">
+            <ul className='mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-10'>
                 {files.map(file => (
-                    <div key={file.name}>
+                    <div key={file.name} >
                         <FilePreview file={file} onRemove={() => handleRemoveFile(file)}/>
                     </div>
                 ))}
-            </div>
+            </ul>
         </div>
     );
 };
