@@ -1,0 +1,17 @@
+{
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:7203"
+  },
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/gateway/dummy-data",
+      "UpstreamHttpMethod": ["Get"],
+      "DownstreamPathTemplate": "/Dummy",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [{
+        "Host": "localhost",
+        "Port": 7201
+      }]
+    }
+  ]
+}
