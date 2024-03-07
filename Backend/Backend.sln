@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGw", "ApiGw\ApiGw.csproj", "{147896E7-B0B8-442C-88D4-7F248DCA468C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DummyDataService", "DummyDataService\DummyDataService.csproj", "{206D7D3F-511A-41F2-B343-561258C99B58}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{147896E7-B0B8-442C-88D4-7F248DCA468C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{147896E7-B0B8-442C-88D4-7F248DCA468C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{147896E7-B0B8-442C-88D4-7F248DCA468C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{206D7D3F-511A-41F2-B343-561258C99B58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{206D7D3F-511A-41F2-B343-561258C99B58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{206D7D3F-511A-41F2-B343-561258C99B58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{206D7D3F-511A-41F2-B343-561258C99B58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

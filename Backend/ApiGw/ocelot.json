@@ -1,16 +1,16 @@
 {
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:7203"
+    "BaseUrl": "http://localhost:80"
   },
   "Routes": [
     {
       "UpstreamPathTemplate": "/gateway/dummy-data",
       "UpstreamHttpMethod": ["Get"],
       "DownstreamPathTemplate": "/Dummy",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
-        "Host": "localhost",
-        "Port": 7201
+        "Host": "api.dummy",
+        "Port": 80
       }]
     }
   ]
