@@ -4,7 +4,17 @@
   },
   "Routes": [
     {
-      "UpstreamPathTemplate": "/gateway/dummy-data",
+      "UpstreamPathTemplate": "/gateway/dummy-data/{id}",
+      "UpstreamHttpMethod": ["Get"],
+      "DownstreamPathTemplate": "/Dummy/dummy-string/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{
+        "Host": "api.dummy",
+        "Port": 80
+      }]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/data",
       "UpstreamHttpMethod": ["Get"],
       "DownstreamPathTemplate": "/Dummy",
       "DownstreamScheme": "http",
