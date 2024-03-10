@@ -5,10 +5,12 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <RootNamespace>TV2.ApiGw</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="ocelot" Version="23.1.0" />
+        <PackageReference Include="Ocelot.Administration" Version="23.1.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     </ItemGroup>
 

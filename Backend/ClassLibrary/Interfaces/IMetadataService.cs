@@ -6,5 +6,5 @@ namespace ClassLibrary.Interfaces;
 public interface IDataService : IBaseService
 {
     public Uri? AddMetadata(Metadata metadata);
-    public Metadata? GetMetadata(Guid id);
+    public Metadata? GetMetadata(string id);
 }
