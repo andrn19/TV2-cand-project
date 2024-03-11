@@ -1,10 +1,10 @@
-using System;
-using ClassLibrary.Classes;
+using TV2.ClassLibrary.Classes;
 
-namespace ClassLibrary.Interfaces;
+namespace TV2.ClassLibrary.Interfaces;
 
-public interface IDataService : IBaseService
+public interface IMetadataService : IBaseService
 {
-    public Uri? AddMetadata(Metadata metadata);
+    public string? AddMetadata(Metadata metadata);
     public Metadata? GetMetadata(string id);
+    public bool RemoveMetadata(string id);
 }

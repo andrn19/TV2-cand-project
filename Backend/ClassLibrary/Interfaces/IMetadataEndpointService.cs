@@ -1,6 +1,11 @@
+using TV2.ClassLibrary.Classes;
+
 namespace TV2.ClassLibrary.Interfaces;
 
-public interface IMetadataEndpointService
+public interface IMetadataEndpointService : IBaseService
 {
-    public Gateway? GetMetadata(string id);
+    public bool CreateEndpoint(MetadataHost host);
+    public bool UpdateEndpoint(MetadataHost host);
+    public bool DeleteEndpoint(Guid id);
+    public IEnumerable<MetadataHostIdentifier> ListEndpoints();
 }
