@@ -1,6 +1,10 @@
+using TV2.DataService.DataProviders;
+using TV2.DataService.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddTransient<IDataProvider, DummyDataProvider>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

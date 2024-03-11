@@ -16,13 +16,13 @@ public class DataController : ControllerBase, IMetadataEndpointService, IMetadat
     }
 
     [HttpPut("CreateEndpoint")]
-    public bool CreateEndpoint(MetadataHost host)
+    public MetadataHostIdentifier CreateEndpoint(MetadataHost host)
     {
         throw new NotImplementedException();
     }
 
     [HttpPut("UpdateEndpoint")]
-    public bool UpdateEndpoint([FromBody] MetadataHost host)
+    public MetadataHostIdentifier UpdateEndpoint([FromBody] MetadataHost host)
     {
         throw new NotImplementedException();
     }
