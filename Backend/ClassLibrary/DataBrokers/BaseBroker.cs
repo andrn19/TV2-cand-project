@@ -1,4 +1,4 @@
-namespace TV2.DataService.DataBrokers;
+namespace TV2.ClassLibrary.DataBrokers;
 
 public class BaseBroker
 {
