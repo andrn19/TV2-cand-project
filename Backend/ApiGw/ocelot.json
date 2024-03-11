@@ -4,6 +4,56 @@
   },
   "Routes": [
     {
+      "UpstreamPathTemplate": "/gateway/create-endpoint",
+      "UpstreamHttpMethod": ["Put"],
+      "DownstreamPathTemplate": "/Data/CreateEndpoint",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{
+        "Host": "api.data",
+        "Port": 80
+      }]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/update-endpoint/{id}",
+      "UpstreamHttpMethod": ["Put"],
+      "DownstreamPathTemplate": "/Data/UpdateEndpoint/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{
+        "Host": "api.data",
+        "Port": 80
+      }]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/delete-endpoint/{id}",
+      "UpstreamHttpMethod": ["Delete"],
+      "DownstreamPathTemplate": "/Data/DeleteEndpoint/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{
+        "Host": "api.data",
+        "Port": 80
+      }]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/list-endpoints",
+      "UpstreamHttpMethod": ["Get"],
+      "DownstreamPathTemplate": "/Data/ListEndpoints",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{
+        "Host": "api.data",
+        "Port": 80
+      }]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/resolve-endpoint{id}",
+      "UpstreamHttpMethod": ["Post"],
+      "DownstreamPathTemplate": "/Data/ResolveEndpoint/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{
+        "Host": "api.data",
+        "Port": 80
+      }]
+    },
+    {
       "UpstreamPathTemplate": "/gateway/dummy-string/{id}",
       "UpstreamHttpMethod": ["Get"],
       "DownstreamPathTemplate": "/Dummy/dummy-string/{id}",
