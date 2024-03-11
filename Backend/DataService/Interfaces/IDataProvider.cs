@@ -4,9 +4,9 @@ using ClassLibrary.Classes;
 
 public interface IDataProvider
 {
-    MetadataHostIdentifier Create(MetadataHost host);
-    MetadataHostIdentifier Update(MetadataHost host);
+    bool Create(MetadataHost host);
+    bool Update(Guid id, MetadataHost host);
     bool Delete(Guid id);
-    IEnumerable<MetadataHostIdentifier> List();
+    IEnumerable<KeyValuePair<Guid, string>> List();
     MetadataHost Resolve(Guid id);
 }

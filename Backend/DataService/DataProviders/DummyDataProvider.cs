@@ -5,28 +5,45 @@ namespace TV2.DataService.DataProviders;
 
 public class DummyDataProvider : IDataProvider
 {
-    public MetadataHostIdentifier Create(MetadataHost host)
+    public Dictionary<Guid, MetadataHost> hosts;
+    public bool Create(MetadataHost host)
     {
-        throw new NotImplementedException();
+        return hosts.TryAdd(Guid.NewGuid(), host);
     }
 
-    public MetadataHostIdentifier Update(MetadataHost host)
+    public bool Update(Guid id, MetadataHost host)
     {
-        throw new NotImplementedException();
+        try
+        {
+            hosts[id] = host;
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
     }
 
-    public bool Delete(MetadataHost host)
+    public bool Delete(Guid id)
     {
-        throw new NotImplementedException();
+        return hosts.Remove(id);
     }
 
-    public IEnumerable<MetadataHostIdentifier> List()
+    public IEnumerable<KeyValuePair<Guid, string>> List()
     {
-        throw new NotImplementedException();
+        return hosts.Select(pair => new KeyValuePair<Guid, string>(pair.Key, pair.Value.Name)).ToList();
     }
 
     public MetadataHost Resolve(Guid id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            return hosts[id];
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }
