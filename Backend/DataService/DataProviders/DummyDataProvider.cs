@@ -25,7 +25,7 @@ public class DummyDataProvider : IDataProvider
         throw new NotImplementedException();
     }
 
-    public MetadataHostIdentifier Resolve(Guid id)
+    public MetadataHost Resolve(Guid id)
     {
         throw new NotImplementedException();
     }

@@ -1,6 +1,7 @@
 using TV2.ClassLibrary.Classes;
 using TV2.ClassLibrary.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using TV2.DataService.Interfaces;
 
 namespace TV2.DataService.Controllers;
 
@@ -9,6 +10,14 @@ namespace TV2.DataService.Controllers;
 [Route("[controller]")]
 public class DataController : ControllerBase, IMetadataEndpointService, IMetadataEndpointResolver
 {
+    private readonly ILogger<DataController> _logger;
+    private readonly IDataProvider _dataProvider;
+    public DataController(ILogger<DataController> logger, IDataProvider dataProvider)
+    {
+        _logger = logger;
+        _dataProvider = dataProvider;
+    }
+
     [HttpGet]
     public bool Get()
     {
@@ -18,31 +27,31 @@ public class DataController : ControllerBase, IMetadataEndpointService, IMetadat
     [HttpPut("CreateEndpoint")]
     public MetadataHostIdentifier CreateEndpoint(MetadataHost host)
     {
-        throw new NotImplementedException();
+        return _dataProvider.Create(host);
     }
 
     [HttpPut("UpdateEndpoint")]
     public MetadataHostIdentifier UpdateEndpoint([FromBody] MetadataHost host)
     {
-        throw new NotImplementedException();
+        return _dataProvider.Update(host);
     }
 
     [HttpDelete("DeleteEndpoint/{id}")]
     public bool DeleteEndpoint(Guid id)
     {
-        throw new NotImplementedException();
+        return _dataProvider.Delete(id);
     }
 
     [HttpGet("ListEndpoints")]
     public IEnumerable<MetadataHostIdentifier> ListEndpoints()
     {
         
-        throw new NotImplementedException();
+        return _dataProvider.List();
     }
     
     [HttpPost("ResolveEndpoint")]
-    public Task<Uri> Resolve([FromBody] MetadataHostIdentifier identifier)
+    public MetadataHost Resolve([FromBody] Guid id)
     {
-        throw new NotImplementedException();
+        return _dataProvider.Resolve(id);
     }
 }

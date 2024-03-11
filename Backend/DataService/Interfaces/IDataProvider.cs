@@ -6,7 +6,7 @@ public interface IDataProvider
 {
     MetadataHostIdentifier Create(MetadataHost host);
     MetadataHostIdentifier Update(MetadataHost host);
-    bool Delete(MetadataHost host);
+    bool Delete(Guid id);
     IEnumerable<MetadataHostIdentifier> List();
-    MetadataHostIdentifier Resolve(Guid id);
+    MetadataHost Resolve(Guid id);
 }
