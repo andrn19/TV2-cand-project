@@ -4,5 +4,5 @@ namespace TV2.ClassLibrary.Interfaces;
 
 public interface IMetadataEndpointResolver : IBaseService
 {
-    Task<Uri> Resolve(MetadataHostIdentifier identifier);
+    MetadataHost Resolve(Guid id);
 }

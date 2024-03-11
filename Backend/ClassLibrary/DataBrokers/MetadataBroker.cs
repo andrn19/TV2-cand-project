@@ -5,12 +5,6 @@ namespace TV2.ClassLibrary.DataBrokers;
 
 public class MetadataBroker : BaseBroker, IMetadataService
 {
-    private ApiEndpoint BaseUri { get; set; }
-    public MetadataBroker(ApiEndpoint baseUri)
-    {
-        this.BaseUri = baseUri;
-    }
-
     public bool Get()
     {
         throw new NotImplementedException();
