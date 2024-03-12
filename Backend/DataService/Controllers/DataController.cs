@@ -16,7 +16,6 @@ public class DataController : ControllerBase, IMetadataEndpointService, IMetadat
     {
         _logger = logger;
         _dataProvider = dataProvider;
-        CreateEndpoint(new MetadataHost("Host url", "Host port", "Host name"))
     }
 
     [HttpGet]
@@ -46,12 +45,11 @@ public class DataController : ControllerBase, IMetadataEndpointService, IMetadat
     [HttpGet("ListEndpoints")]
     public IEnumerable<KeyValuePair<Guid, string>> ListEndpoints()
     {
-        
         return _dataProvider.List();
     }
     
-    [HttpPost("ResolveEndpoint")]
-    public MetadataHost Resolve([FromBody] Guid id)
+    [HttpPost("ResolveEndpoint/{id}")]
+    public MetadataHost Resolve(Guid id)
     {
         return _dataProvider.Resolve(id);
     }
