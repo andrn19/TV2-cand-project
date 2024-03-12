@@ -20,7 +20,7 @@ public class EndpointBroker : BaseBroker, IMetadataEndpointService
         throw new NotImplementedException();
     }
 
-    public bool UpdateEndpoint(MetadataHost endpoint)
+    public bool UpdateEndpoint(Guid id, MetadataHost endpoint)
     {
         throw new NotImplementedException();
     }
@@ -30,7 +30,7 @@ public class EndpointBroker : BaseBroker, IMetadataEndpointService
         throw new NotImplementedException();
     }
 
-    public IEnumerable<MetadataHostIdentifier> ListEndpoints()
+    public IEnumerable<KeyValuePair<Guid, string>> ListEndpoints()
     {
         throw new NotImplementedException();
     }
