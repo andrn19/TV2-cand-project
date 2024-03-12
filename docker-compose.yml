@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  
+  api.dummy:
+    container_name: api-dummy
+    hostname: api.dummy
+    build:
+      context: ./Backend
+      dockerfile: DummyDataService/Dockerfile
+    ports:
+      - "51001:80"
+    environment:
+      "PUBLIC_PORT": "51001"
+    networks:
+      - data-service
+
+  api.data:
+    container_name: api-data
+    hostname: api.data
+    build:
+      context: ./Backend
+      dockerfile: DataService/Dockerfile
+    ports:
+      - "51002:80"
+    environment:
+      "PUBLIC_PORT": "51002"
+    networks:
+      - data-service
+
+  api.gateway:
+    container_name: api-gateway
+    build:
+      context: ./Backend
+      dockerfile: ApiGw/Dockerfile
+    ports:
+      - "52001:80"
+      - "52002:443"
+      - "52003:3000"
+    networks:
+      - frontend
+      - data-service
+    depends_on:
+      - api.dummy
+
+networks:
+  frontend:
+  data-service:
