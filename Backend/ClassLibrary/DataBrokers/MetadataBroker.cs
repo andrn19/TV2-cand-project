@@ -10,7 +10,7 @@ public class MetadataBroker : BaseBroker, IMetadataService
         throw new NotImplementedException();
     }
 
-    public string? AddMetadata(Metadata metadata)
+    public bool AddMetadata(Metadata metadata)
     {
         throw new NotImplementedException();
     }
