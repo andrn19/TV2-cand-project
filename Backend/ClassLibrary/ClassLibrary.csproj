@@ -4,7 +4,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>TV2.ClassLibrary</RootNamespace>
+        <RootNamespace>TV2.Backend.ClassLibrary</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

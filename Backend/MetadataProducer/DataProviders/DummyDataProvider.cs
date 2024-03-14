@@ -1,7 +1,8 @@
-using TV2.ClassLibrary.Classes;
-using TV2.DataService.Interfaces;
+namespace TV2.Backend.Services.MetadataProducer.DataProviders;
 
-namespace TV2.DataService.DataProviders;
+using ClassLibrary.Classes;
+using Interfaces;
+
 
 public class DummyDataProvider : IDataProvider
 {

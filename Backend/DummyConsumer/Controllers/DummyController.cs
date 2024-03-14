@@ -1,8 +1,8 @@
-using TV2.ClassLibrary.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using TV2.ClassLibrary.Classes;
+using TV2.Backend.ClassLibrary.Interfaces;
+using TV2.Backend.ClassLibrary.Classes;
 
-namespace DummyDataService.Controllers;
+namespace DummyConsumer.Controllers;
 
 [ApiController]
 [Route("[controller]")]

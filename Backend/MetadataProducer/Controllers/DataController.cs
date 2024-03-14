@@ -1,10 +1,9 @@
-using TV2.ClassLibrary.Classes;
-using TV2.ClassLibrary.Interfaces;
+namespace TV2.Backend.Services.MetadataProducer.Controllers;
+
 using Microsoft.AspNetCore.Mvc;
-using TV2.DataService.Interfaces;
-
-namespace TV2.DataService.Controllers;
-
+using ClassLibrary.Classes;
+using TV2.Backend.ClassLibrary.Interfaces;
+using Interfaces;
 
 [ApiController]
 [Route("[controller]")]

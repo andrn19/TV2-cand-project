@@ -5,19 +5,21 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <RootNamespace>TV2.ApiGw</RootNamespace>
+        <RootNamespace>TV2.Backend.Services.MetadataProducer</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="ocelot" Version="23.1.0" />
-        <PackageReference Include="Ocelot.Administration" Version="23.1.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3"/>
     </ItemGroup>
 
     <ItemGroup>
       <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj" />
     </ItemGroup>
 
 </Project>

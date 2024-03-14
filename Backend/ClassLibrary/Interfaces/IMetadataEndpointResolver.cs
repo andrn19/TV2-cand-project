@@ -1,6 +1,6 @@
-using TV2.ClassLibrary.Classes;
+using TV2.Backend.ClassLibrary.Classes;
 
-namespace TV2.ClassLibrary.Interfaces;
+namespace TV2.Backend.ClassLibrary.Interfaces;
 
 public interface IMetadataEndpointResolver : IBaseService
 {

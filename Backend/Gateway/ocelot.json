@@ -9,7 +9,7 @@
       "DownstreamPathTemplate": "/Data/CreateEndpoint",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
-        "Host": "producer.metadata",
+        "Host": "api.data",
         "Port": 80
       }]
     },
@@ -19,7 +19,7 @@
       "DownstreamPathTemplate": "/Data/UpdateEndpoint/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
-        "Host": "producer.metadata",
+        "Host": "api.data",
         "Port": 80
       }]
     },
@@ -29,7 +29,7 @@
       "DownstreamPathTemplate": "/Data/DeleteEndpoint/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
-        "Host": "producer.metadata",
+        "Host": "api.data",
         "Port": 80
       }]
     },
@@ -39,7 +39,7 @@
       "DownstreamPathTemplate": "/Data/ListEndpoints",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
-        "Host": "producer.metadata",
+        "Host": "api.data",
         "Port": 80
       }]
     },
@@ -49,7 +49,17 @@
       "DownstreamPathTemplate": "/Data/ResolveEndpoint/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
-        "Host": "producer.metadata",
+        "Host": "api.data",
+        "Port": 80
+      }]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/resolve-test?endpoint={endpoint}",
+      "UpstreamHttpMethod": ["Get"],
+      "DownstreamPathTemplate": "/Dummy/dummy-string/a24a3e72-9a14-4c10-93cf-550ad86ddb49",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{
+        "Host": "api.dummy",
         "Port": 80
       }]
     },
@@ -59,7 +69,7 @@
       "DownstreamPathTemplate": "/Dummy/dummy-string/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
-        "Host": "consumer.dummy",
+        "Host": "api.dummy",
         "Port": 80
       }]
     },
@@ -69,7 +79,7 @@
       "DownstreamPathTemplate": "/Dummy/dummy-data/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
-        "Host": "consumer.dummy",
+        "Host": "api.dummy",
         "Port": 80
       }]
     },
@@ -79,7 +89,7 @@
       "DownstreamPathTemplate": "/Dummy",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
-        "Host": "consumer.dummy",
+        "Host": "api.dummy",
         "Port": 80
       }]
     }
