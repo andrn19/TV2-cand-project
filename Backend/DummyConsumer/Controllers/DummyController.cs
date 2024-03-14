@@ -23,7 +23,7 @@ public class DummyController : ControllerBase, IMetadataService
     }
     
     [HttpGet]
-    public string? AddMetadata(Metadata metadata)
+    public bool AddMetadata(Metadata metadata)
     {
         throw new NotImplementedException();
     }
