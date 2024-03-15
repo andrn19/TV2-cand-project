@@ -1,5 +1,8 @@
+
 namespace TV2.Backend.Services.MetadataProducer.DataProviders;
 
+
+using System.Text.Json;
 using ClassLibrary.Classes;
 using Interfaces;
 using RabbitMQ.Client;
@@ -29,12 +32,12 @@ public class MessageService : IMessageService
 
     public bool Enqueue(Metadata message)
     {
-        var body = Encoding.UTF8.GetBytes(message.Description);
+        var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(message));
         _channel.BasicPublish(exchange: "",
             routingKey: "Metadata",
             basicProperties: null,
             body: body);
-        Console.WriteLine(" [x] Published {0} to RabbitMQ", message.Description);
+        Console.WriteLine(" [x] Published {0} to RabbitMQ", JsonSerializer.Serialize(message));
         return true;
     }
 }
