@@ -1,3 +1,15 @@
+curl -X 'POST' \
+  'https://localhost:7294/Data/AddMetadata' \
+  -H 'accept: text/plain' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "title": "string",
+  "description": "string"
+}'
+
+
+
 curl -X 'GET' \
   'https://localhost:7294/Data' \
   -H 'accept: text/plain'
