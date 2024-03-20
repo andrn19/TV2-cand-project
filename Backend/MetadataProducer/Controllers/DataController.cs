@@ -7,15 +7,15 @@ using Interfaces;
 
 [ApiController]
 [Route("[controller]")]
-public class DataController : ControllerBase, IMetadataEndpointService, IMetadataEndpointResolver, IMetadataService
+public class DataController : ControllerBase, IMetadataEndpointService, IMetadataService
 {
     private readonly ILogger<DataController> _logger;
-    private readonly IDataProvider _dataProvider;
+    private readonly IConsumerRegistry _consumerRegistry;
     private readonly IMessageService _messageService;
-    public DataController(ILogger<DataController> logger, IDataProvider dataProvider, IMessageService messageService)
+    public DataController(ILogger<DataController> logger, IConsumerRegistry consumerRegistry, IMessageService messageService)
     {
         _logger = logger;
-        _dataProvider = dataProvider;
+        _consumerRegistry = consumerRegistry;
         _messageService = messageService;
     }
 
@@ -25,39 +25,33 @@ public class DataController : ControllerBase, IMetadataEndpointService, IMetadat
         return true;
     }
 
-    [HttpPost("AddMetadata")]
-    public bool AddMetadata([FromBody] Metadata metadata)
+    [HttpPost("AddMetadata/{endpoint}")]
+    public bool AddMetadata(Guid endpoint, [FromBody] Metadata metadata)
     {
-        return _messageService.Enqueue(metadata);
+        return _messageService.Enqueue(_consumerRegistry.Resolve(endpoint).Name,metadata);
     }
 
     [HttpPut("CreateEndpoint")]
-    public bool CreateEndpoint(MetadataHost host)
+    public bool CreateEndpoint([FromBody] string name)
     {
-        return _dataProvider.Create(host);
+        return _consumerRegistry.Create(name);
     }
 
-    [HttpPut("UpdateEndpoint/{id}")]
-    public bool UpdateEndpoint(Guid id, [FromBody] MetadataHost host)
+    [HttpPut("UpdateEndpoint")]
+    public bool UpdateEndpoint([FromBody] MetadataHost host)
     {
-        return _dataProvider.Update(id, host);
+        return _consumerRegistry.Update(host);
     }
 
-    [HttpDelete("DeleteEndpoint/{id}")]
-    public bool DeleteEndpoint(Guid id)
+    [HttpDelete("DeleteEndpoint")]
+    public bool DeleteEndpoint([FromBody] MetadataHost host)
     {
-        return _dataProvider.Delete(id);
+        return _consumerRegistry.Delete(host);
     }
 
     [HttpGet("ListEndpoints")]
-    public IEnumerable<KeyValuePair<Guid, string>> ListEndpoints()
+    public IEnumerable<MetadataHost> ListEndpoints()
     {
-        return _dataProvider.List();
-    }
-    
-    [HttpPost("ResolveEndpoint/{id}")]
-    public MetadataHost Resolve(Guid id)
-    {
-        return _dataProvider.Resolve(id);
+        return _consumerRegistry.List();
     }
 }

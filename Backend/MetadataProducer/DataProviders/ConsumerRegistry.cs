@@ -3,25 +3,36 @@ namespace TV2.Backend.Services.MetadataProducer.DataProviders;
 using ClassLibrary.Classes;
 using Interfaces;
 
-public class DummyConsumerRegistry : IConsumerRegistry
+public class ConsumerRegistry : IConsumerRegistry
 {
-    Dictionary<Guid, MetadataHost> _hosts;
+    List<MetadataHost> _hosts;
     
-    public DummyConsumerRegistry() : this(new Dictionary<Guid, MetadataHost>()){}
-    public DummyConsumerRegistry(Dictionary<Guid, MetadataHost> hosts)
+    public ConsumerRegistry() : this(new List<MetadataHost>()){}
+
+    private ConsumerRegistry(List<MetadataHost> hosts)
     {
         _hosts = hosts;
     }
-    public bool Create(MetadataHost host)
-    {
-        return _hosts.TryAdd(Guid.NewGuid(), host);
-    }
-
-    public bool Update(Guid id, MetadataHost host)
+    public bool Create(string name)
     {
         try
         {
-            _hosts[id] = host;
+            _hosts.Add(new MetadataHost(Guid.NewGuid(), name));
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public bool Update(MetadataHost host)
+    {
+        try
+        {
+            MetadataHost hostToUpdate = _hosts.FirstOrDefault(oldHost => oldHost.Id == host.Id);
+            if (hostToUpdate == null) return false;
+            hostToUpdate.Name = host.Name;
             return true;
         }
         catch (Exception e)
@@ -30,26 +41,18 @@ public class DummyConsumerRegistry : IConsumerRegistry
         }
     }
 
-    public bool Delete(Guid id)
+    public bool Delete(MetadataHost host)
     {
-        return _hosts.Remove(id);
+        return _hosts.Remove(_hosts.FirstOrDefault(hostToBeRemoved => (hostToBeRemoved.Id == host.Id) &&(hostToBeRemoved.Name == host.Name)));
     }
 
-    public IEnumerable<KeyValuePair<Guid, string>> List()
+    public IEnumerable<MetadataHost> List()
     {
-        return _hosts.Select(pair => new KeyValuePair<Guid, string>(pair.Key, pair.Value.Name)).ToList();
+        return _hosts;
     }
 
     public MetadataHost Resolve(Guid id)
     {
-        try
-        {
-            return _hosts[id];
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        return _hosts.FirstOrDefault(host => host.Id == id);
     }
 }

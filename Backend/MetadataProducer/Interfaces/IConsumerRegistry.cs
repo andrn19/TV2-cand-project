@@ -2,11 +2,11 @@ namespace TV2.Backend.Services.MetadataProducer.Interfaces;
 
 using ClassLibrary.Classes;
 
-public interface IDataProvider
+public interface IConsumerRegistry
 {
-    bool Create(MetadataHost host);
-    bool Update(Guid id, MetadataHost host);
-    bool Delete(Guid id);
-    IEnumerable<KeyValuePair<Guid, string>> List();
+    bool Create(string name);
+    bool Update(MetadataHost host);
+    bool Delete(MetadataHost host);
+    IEnumerable<MetadataHost> List();
     MetadataHost Resolve(Guid id);
 }

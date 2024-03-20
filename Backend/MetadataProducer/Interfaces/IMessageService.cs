@@ -4,5 +4,5 @@ using ClassLibrary.Classes;
 
 public interface IMessageService
 {
-    bool Enqueue(Metadata message);
+    bool Enqueue(string route, Metadata message);
 }

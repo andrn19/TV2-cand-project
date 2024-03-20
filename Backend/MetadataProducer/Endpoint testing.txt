@@ -1,58 +1,41 @@
-curl -X 'POST' \
-  'https://localhost:7294/Data/AddMetadata' \
+curl -X 'PUT' \
+  'http://localhost:51002/Data/CreateEndpoint' \
   -H 'accept: text/plain' \
   -H 'Content-Type: application/json' \
-  -d '{
-  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "title": "string",
-  "description": "string"
-}'
-
-
-
+  -d '"Hadoop"'
+  
 curl -X 'GET' \
-  'https://localhost:7294/Data' \
+  'http://localhost:51002/Data/ListEndpoints' \
   -H 'accept: text/plain'
 
-
-
-curl -X 'PUT' \
-  'https://localhost:7294/Data/CreateEndpoint' \
+curl -X 'POST' \
+  'http://localhost:51002/Data/AddMetadata/id' \
   -H 'accept: text/plain' \
   -H 'Content-Type: application/json' \
   -d '{
-  "name": "string",
-  "url": "string",
-  "port": "string"
+  "id": "",
+  "title": "Lars",
+  "description": "Guitarsen"
 }'
 
-
-
 curl -X 'PUT' \
-  'https://localhost:7294/Data/UpdateEndpoint/a24a3e72-9a14-4c10-93cf-550ad86ddb49' \
+  'http://localhost:51002/Data/UpdateEndpoint' \
   -H 'accept: text/plain' \
   -H 'Content-Type: application/json' \
   -d '{
-  "name": "string",
-  "url": "string",
-  "port": "string"
+  "id": "",
+  "name": "Metadata"
 }'
-
-
 
 curl -X 'DELETE' \
-  'http://localhost:7294/Data/DeleteEndpoint/a24a3e72-9a14-4c10-93cf-550ad86ddb49' \
-  -H 'accept: text/plain'
-  
-
+  'http://localhost:51002/Data/DeleteEndpoint' \
+  -H 'accept: text/plain' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id": "",
+  "name": "Hadoop 2"
+}'
 
 curl -X 'GET' \
-  'http://localhost:7294/Data/ListEndpoints' \
+  'http://localhost:51002/Data/ListEndpoints' \
   -H 'accept: text/plain'
-  
-
-
-curl -X 'POST' \
-  'http://localhost:7294/Data/ResolveEndpoint/a24a3e72-9a14-4c10-93cf-550ad86ddb49' \
-  -H 'accept: text/plain' \
-  -H 'Content-Type: application/json'

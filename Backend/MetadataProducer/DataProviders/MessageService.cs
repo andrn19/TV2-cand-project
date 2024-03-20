@@ -30,11 +30,11 @@ public class MessageService : IMessageService
             arguments: null);
     }
 
-    public bool Enqueue(Metadata message)
+    public bool Enqueue(string route, Metadata message)
     {
         var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(message));
         _channel.BasicPublish(exchange: "",
-            routingKey: "Metadata",
+            routingKey: route,
             basicProperties: null,
             body: body);
         Console.WriteLine(" [x] Published {0} to RabbitMQ", JsonSerializer.Serialize(message));
