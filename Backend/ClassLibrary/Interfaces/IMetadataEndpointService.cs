@@ -4,8 +4,8 @@ namespace TV2.Backend.ClassLibrary.Interfaces;
 
 public interface IMetadataEndpointService : IBaseService
 {
-    bool CreateEndpoint(MetadataHost host);
-    bool UpdateEndpoint(Guid id, MetadataHost host);
-    bool DeleteEndpoint(Guid id);
-    IEnumerable<KeyValuePair<Guid, string>> ListEndpoints();
+    bool CreateEndpoint(string name);
+    bool UpdateEndpoint(MetadataHost host);
+    bool DeleteEndpoint(MetadataHost host);
+    IEnumerable<MetadataHost> ListEndpoints();
 }

@@ -3,12 +3,12 @@ namespace TV2.Backend.Services.MetadataProducer.DataProviders;
 using ClassLibrary.Classes;
 using Interfaces;
 
-public class DummyDataProvider : IDataProvider
+public class DummyConsumerRegistry : IConsumerRegistry
 {
     Dictionary<Guid, MetadataHost> _hosts;
     
-    public DummyDataProvider() : this(new Dictionary<Guid, MetadataHost>()){}
-    public DummyDataProvider(Dictionary<Guid, MetadataHost> hosts)
+    public DummyConsumerRegistry() : this(new Dictionary<Guid, MetadataHost>()){}
+    public DummyConsumerRegistry(Dictionary<Guid, MetadataHost> hosts)
     {
         _hosts = hosts;
     }
