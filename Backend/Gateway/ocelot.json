@@ -14,9 +14,9 @@
       }]
     },
     {
-      "UpstreamPathTemplate": "/gateway/update-endpoint/{id}",
+      "UpstreamPathTemplate": "/gateway/update-endpoint",
       "UpstreamHttpMethod": ["Put"],
-      "DownstreamPathTemplate": "/Data/UpdateEndpoint/{id}",
+      "DownstreamPathTemplate": "/Data/UpdateEndpoint",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
         "Host": "api.data",
@@ -24,9 +24,9 @@
       }]
     },
     {
-      "UpstreamPathTemplate": "/gateway/delete-endpoint/{id}",
+      "UpstreamPathTemplate": "/gateway/delete-endpoint",
       "UpstreamHttpMethod": ["Delete"],
-      "DownstreamPathTemplate": "/Data/DeleteEndpoint/{id}",
+      "DownstreamPathTemplate": "/Data/DeleteEndpoint",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
         "Host": "api.data",
@@ -44,52 +44,12 @@
       }]
     },
     {
-      "UpstreamPathTemplate": "/gateway/resolve-endpoint/{id}",
+      "UpstreamPathTemplate": "/gateway/add-metadata/{endpoint}",
       "UpstreamHttpMethod": ["Post"],
-      "DownstreamPathTemplate": "/Data/ResolveEndpoint/{id}",
+      "DownstreamPathTemplate": "/Data/AddMetadata/{endpoint}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
         "Host": "api.data",
-        "Port": 80
-      }]
-    },
-    {
-      "UpstreamPathTemplate": "/gateway/resolve-test?endpoint={endpoint}",
-      "UpstreamHttpMethod": ["Get"],
-      "DownstreamPathTemplate": "/Dummy/dummy-string/a24a3e72-9a14-4c10-93cf-550ad86ddb49",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [{
-        "Host": "api.dummy",
-        "Port": 80
-      }]
-    },
-    {
-      "UpstreamPathTemplate": "/gateway/dummy-string/{id}",
-      "UpstreamHttpMethod": ["Get"],
-      "DownstreamPathTemplate": "/Dummy/dummy-string/{id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [{
-        "Host": "api.dummy",
-        "Port": 80
-      }]
-    },
-    {
-      "UpstreamPathTemplate": "/gateway/dummy-data/{id}",
-      "UpstreamHttpMethod": ["Get"],
-      "DownstreamPathTemplate": "/Dummy/dummy-data/{id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [{
-        "Host": "api.dummy",
-        "Port": 80
-      }]
-    },
-    {
-      "UpstreamPathTemplate": "/gateway/data",
-      "UpstreamHttpMethod": ["Get"],
-      "DownstreamPathTemplate": "/Dummy",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [{
-        "Host": "api.dummy",
         "Port": 80
       }]
     }
