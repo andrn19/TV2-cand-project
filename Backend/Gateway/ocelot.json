@@ -9,7 +9,7 @@
       "DownstreamPathTemplate": "/Data/CreateEndpoint",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
-        "Host": "api.data",
+        "Host": "producer.metadata",
         "Port": 80
       }]
     },
@@ -19,7 +19,7 @@
       "DownstreamPathTemplate": "/Data/UpdateEndpoint",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
-        "Host": "api.data",
+        "Host": "producer.metadata",
         "Port": 80
       }]
     },
@@ -29,7 +29,7 @@
       "DownstreamPathTemplate": "/Data/DeleteEndpoint",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
-        "Host": "api.data",
+        "Host": "producer.metadata",
         "Port": 80
       }]
     },
@@ -39,7 +39,7 @@
       "DownstreamPathTemplate": "/Data/ListEndpoints",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
-        "Host": "api.data",
+        "Host": "producer.metadata",
         "Port": 80
       }]
     },
@@ -49,7 +49,7 @@
       "DownstreamPathTemplate": "/Data/AddMetadata/{endpoint}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
-        "Host": "api.data",
+        "Host": "producer.metadata",
         "Port": 80
       }]
     }

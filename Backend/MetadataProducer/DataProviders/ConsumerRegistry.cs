@@ -2,57 +2,133 @@ namespace TV2.Backend.Services.MetadataProducer.DataProviders;
 
 using ClassLibrary.Classes;
 using Interfaces;
+using MySql.Data.MySqlClient;
 
 public class ConsumerRegistry : IConsumerRegistry
 {
-    List<MetadataHost> _hosts;
+    private string cs = @"server=producer.metadata.database;userid=root;password=;database=db";
+    public void setConnectionString(string connectionString) => cs = connectionString;
+    private readonly ILogger<ConsumerRegistry>? _logger;
     
-    public ConsumerRegistry() : this(new List<MetadataHost>()){}
-
-    private ConsumerRegistry(List<MetadataHost> hosts)
+    public ConsumerRegistry(ILogger<ConsumerRegistry>? logger = null)
     {
-        _hosts = hosts;
+        _logger = logger;
     }
-    public bool Create(string name)
+
+    private bool Open(MySqlConnection con)
     {
         try
         {
-            _hosts.Add(new MetadataHost(Guid.NewGuid(), name));
+            con.Open();
+            return true;
         }
-        catch (Exception e)
+        catch (Exception err)
         {
+            _logger?.LogError(err, "Failed to connect to DB");
             return false;
         }
-        return true;
+    }
+    
+    public bool Create(string name)
+    {
+        using var con = new MySqlConnection(cs);
+        if (!Open(con))
+            return false;
+
+        var host = new MetadataHost(Guid.NewGuid(), name); 
+        
+        var sql = @"INSERT INTO Host(ID, Name) VALUES(@id, @name)";
+        using var cmd = new MySqlCommand(sql, con);
+        
+        cmd.Parameters.AddWithValue("@id", host.Id);
+        cmd.Parameters.AddWithValue("@name", host.Name);
+        cmd.Prepare();
+
+        var result = cmd.ExecuteNonQuery();
+        return result > 0;
     }
 
     public bool Update(MetadataHost host)
     {
-        try
-        {
-            MetadataHost hostToUpdate = _hosts.FirstOrDefault(oldHost => oldHost.Id == host.Id);
-            if (hostToUpdate == null) return false;
-            hostToUpdate.Name = host.Name;
-            return true;
-        }
-        catch (Exception e)
-        {
+        using var con = new MySqlConnection(cs);
+        if (!Open(con))
             return false;
-        }
+        
+        var sql = "UPDATE Host SET Host.Name = @name WHERE Host.ID = @id";
+        using var cmd = new MySqlCommand(sql, con);
+        
+        cmd.Parameters.AddWithValue("@id", host.Id);
+        cmd.Parameters.AddWithValue("@name", host.Name);
+        cmd.Prepare();
+
+        var result = cmd.ExecuteNonQuery();
+        return result > 0;
     }
 
     public bool Delete(MetadataHost host)
     {
-        return _hosts.Remove(_hosts.FirstOrDefault(hostToBeRemoved => (hostToBeRemoved.Id == host.Id) &&(hostToBeRemoved.Name == host.Name)));
+        using var con = new MySqlConnection(cs);
+        if (!Open(con))
+            return false;
+        
+        var sql = "DELETE FROM Host WHERE Host.ID = @id";
+        using var cmd = new MySqlCommand(sql, con);
+        
+        cmd.Parameters.AddWithValue("@id", host.Id);
+        cmd.Prepare();
+        
+        var result = cmd.ExecuteNonQuery();
+        return result > 0;
     }
 
     public IEnumerable<MetadataHost> List()
     {
-        return _hosts;
+        using var con = new MySqlConnection(cs);
+        if (!Open(con))
+            return new List<MetadataHost>();
+        
+        var sql = "SELECT * FROM Host";
+        using var cmd = new MySqlCommand(sql, con);
+        
+        cmd.Prepare();
+        
+        using MySqlDataReader rdr = cmd.ExecuteReader();
+        
+        var hosts = new List<MetadataHost>();
+        while (rdr.Read())
+        {
+            var host = new MetadataHost(
+                rdr.GetGuid(0),
+                rdr.GetString(1)
+            );
+            hosts.Add(host);
+        }
+        return hosts;
     }
 
-    public MetadataHost Resolve(Guid id)
+    public MetadataHost? Resolve(Guid id)
     {
-        return _hosts.FirstOrDefault(host => host.Id == id);
+        using var con = new MySqlConnection(cs);
+        if (!Open(con))
+            return null;
+        
+        var sql = "SELECT * FROM Host WHERE Host.ID = @id";
+        using var cmd = new MySqlCommand(sql, con);
+        
+        cmd.Parameters.AddWithValue("@id", id);
+        cmd.Prepare();
+
+        using MySqlDataReader rdr = cmd.ExecuteReader();
+
+        if (rdr.Read())
+        {
+            var host = new MetadataHost(
+                rdr.GetGuid(0),
+                rdr.GetString(1)
+            );
+            return host;
+        }
+
+        return null;
     }
 }

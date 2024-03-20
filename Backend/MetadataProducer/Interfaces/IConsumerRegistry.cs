@@ -8,5 +8,5 @@ public interface IConsumerRegistry
     bool Update(MetadataHost host);
     bool Delete(MetadataHost host);
     IEnumerable<MetadataHost> List();
-    MetadataHost Resolve(Guid id);
+    MetadataHost? Resolve(Guid id);
 }
