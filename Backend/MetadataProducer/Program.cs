@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 //builder.Services.AddTransient<IDataProvider, DummyDataProvider>();
-builder.Services.AddSingleton<IConsumerRegistry, ConsumerRegistry>();
+builder.Services.AddTransient<IConsumerRegistry, ConsumerRegistry>();
 builder.Services.AddSingleton<IMessageService, MessageService>();
 
 builder.Services.AddControllers();
