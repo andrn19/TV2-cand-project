@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Web;
-
-namespace VideoAnalyser.Client.Utils
+namespace TV2.Backend.Services.VideoAnalyser.Client.Utils
 {
+    using System.Web;
+    
     public static class HttpClientUtils
     {
         public static HttpClient CreateHttpClient()

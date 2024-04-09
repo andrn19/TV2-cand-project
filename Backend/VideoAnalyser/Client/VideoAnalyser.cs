@@ -1,18 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text.Json;
-using System.Threading.Tasks;
-using VideoAnalyser.Client.Auth;
-using VideoAnalyser.Client.Model;
-using VideoAnalyser.Client.Utils;
-using static VideoAnalyser.Consts;
-
-namespace VideoAnalyser.Client
+namespace TV2.Backend.Services.VideoAnalyser.Client
 {
+    using System.Net.Http.Headers;
+    using System.Text.Json;
+    using Auth;
+    using Model;
+    using Utils;
+    using static Consts;
+    
     public class Client
     {
         private readonly HttpClient _httpClient;
@@ -53,7 +47,6 @@ namespace VideoAnalyser.Client
             {
                 return _account;
             }
-            Console.WriteLine($"Getting account {accountName}.");
             try
             {
                 // Set request uri

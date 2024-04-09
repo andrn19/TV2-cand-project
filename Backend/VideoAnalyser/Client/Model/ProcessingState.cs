@@ -1,4 +1,4 @@
-namespace VideoAnalyser.Client.Model;
+namespace TV2.Backend.Services.VideoAnalyser.Client.Model;
 
 public enum ProcessingState
 {

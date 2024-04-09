@@ -1,16 +1,11 @@
-using System;
-using System.Net.Http;
-using Azure.Identity;
-using Azure.Core;
-using System.Net.Http.Headers;
-using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web;
-using VideoAnalyser.Client.Utils;
-
-namespace VideoAnalyser.Client.Auth
+namespace TV2.Backend.Services.VideoAnalyser.Client.Auth
 {
+    using Azure.Identity;
+    using Azure.Core;
+    using System.Net.Http.Headers;
+    using System.Text.Json;
+    using Utils;
+    
     public static class AccountTokenProvider
     {
         

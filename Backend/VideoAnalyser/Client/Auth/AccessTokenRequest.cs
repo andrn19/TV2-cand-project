@@ -1,6 +1,7 @@
-using System.Text.Json.Serialization;
-
-namespace VideoAnalyser.Client.Auth {
+namespace TV2.Backend.Services.VideoAnalyser.Client.Auth
+{
+    using System.Text.Json.Serialization;
+    
     public class AccessTokenRequest
     {
         [JsonPropertyName("permissionType")]

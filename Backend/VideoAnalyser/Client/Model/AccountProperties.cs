@@ -1,6 +1,6 @@
-using System.Text.Json.Serialization;
+namespace TV2.Backend.Services.VideoAnalyser.Client.Model;
 
-namespace VideoAnalyser.Client.Model;
+using System.Text.Json.Serialization;
 
 public class AccountProperties
 {
