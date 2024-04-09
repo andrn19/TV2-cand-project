@@ -14,7 +14,7 @@ namespace TV2.Backend.Services.VideoAnalyser.Client
         private string _accountAccessToken;
         private Account _account;
 
-        private readonly TimeSpan _pollingInteval = TimeSpan.FromSeconds(10);
+        private readonly TimeSpan _pollingInterval = TimeSpan.FromSeconds(10);
 
         public Client()
         {
@@ -170,7 +170,7 @@ namespace TV2.Backend.Services.VideoAnalyser.Client
 
                 // Job hasn't finished
                 Console.WriteLine($"The video index state is {processingState}");
-                await Task.Delay(_pollingInteval);
+                await Task.Delay(_pollingInterval);
             }
         }
 
