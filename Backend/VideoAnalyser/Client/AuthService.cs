@@ -20,6 +20,10 @@ public class AuthService : IAuthService
         _logger = logger;
     }
 
+    /// <summary>
+    /// Get Information about the Account
+    /// </summary>
+    /// <returns>An ARM access token.</returns>
     public async Task<string> AuthenticateAsync()
     {
         try
@@ -38,7 +42,8 @@ public class AuthService : IAuthService
     /// <summary>
     /// Get Information about the Account
     /// </summary>
-    /// <param name="accountName"></param>
+    /// <param name="accountName">The name of the account.</param>
+    /// <param name="armAccessToken">An ARM access token.</param>
     /// <returns></returns>
     public async Task<Account> GetAccountAsync(string accountName, string armAccessToken)
     {
