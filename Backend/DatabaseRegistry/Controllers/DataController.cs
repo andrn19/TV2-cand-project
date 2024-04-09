@@ -7,7 +7,7 @@ using Interfaces;
 
 [ApiController]
 [Route("[controller]")]
-public class DataController : ControllerBase, IMetadataEndpointService, IMetadataService
+public class DataController : ControllerBase, IDatabaseRegistryService, IMetadataService
 {
     private readonly ILogger<DataController> _logger;
     private readonly IConsumerRegistry _consumerRegistry;
