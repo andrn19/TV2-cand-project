@@ -1,5 +1,5 @@
 
-namespace TV2.Backend.Services.MetadataProducer.DataProviders;
+namespace TV2.Backend.Services.DatabaseRegistry.DataProviders;
 
 
 using System.Text.Json;

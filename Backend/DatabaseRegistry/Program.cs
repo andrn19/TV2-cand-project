@@ -1,5 +1,5 @@
-using TV2.Backend.Services.MetadataProducer.DataProviders;
-using TV2.Backend.Services.MetadataProducer.Interfaces;
+using TV2.Backend.Services.DatabaseRegistry.DataProviders;
+using TV2.Backend.Services.DatabaseRegistry.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

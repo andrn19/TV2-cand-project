@@ -1,4 +1,4 @@
-namespace TV2.Backend.Services.MetadataProducer.Interfaces;
+namespace TV2.Backend.Services.DatabaseRegistry.Interfaces;
 using ClassLibrary.Classes;
 
 

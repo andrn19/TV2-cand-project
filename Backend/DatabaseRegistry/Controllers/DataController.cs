@@ -1,4 +1,4 @@
-namespace TV2.Backend.Services.MetadataProducer.Controllers;
+namespace TV2.Backend.Services.DatabaseRegistry.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
 using ClassLibrary.Classes;
