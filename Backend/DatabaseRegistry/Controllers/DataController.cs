@@ -2,7 +2,7 @@ namespace TV2.Backend.Services.DatabaseRegistry.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
 using ClassLibrary.Classes;
-using TV2.Backend.ClassLibrary.Interfaces;
+using ClassLibrary.Interfaces;
 using Interfaces;
 
 [ApiController]
