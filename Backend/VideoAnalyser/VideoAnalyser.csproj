@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <RootNamespace>TV2.Backend.Services.VideoAnalyser</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

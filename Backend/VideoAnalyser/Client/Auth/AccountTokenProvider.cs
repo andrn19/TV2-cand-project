@@ -11,11 +11,9 @@ using VideoAnalyser.Client.Utils;
 
 namespace VideoAnalyser.Client.Auth
 {
-
     public static class AccountTokenProvider
     {
-
-
+        
         public static async Task<string> GetArmAccessTokenAsync(CancellationToken ct = default)
         {
             var tokenRequestContext = new TokenRequestContext(new[] { $"{Consts.AzureResourceManager}/.default" });
@@ -34,7 +32,6 @@ namespace VideoAnalyser.Client.Auth
             try
             {
                 var jsonRequestBody = JsonSerializer.Serialize(accessTokenRequest);
-                Console.WriteLine($"Getting Account access token: {jsonRequestBody}");
                 var httpContent = new StringContent(jsonRequestBody, System.Text.Encoding.UTF8, "application/json");
 
                 // Set request uri
@@ -45,7 +42,6 @@ namespace VideoAnalyser.Client.Auth
                 var result = await client.PostAsync(requestUri, httpContent, ct);
                 result.EnsureSuccessStatusCode();
                 var jsonResponseBody = await result.Content.ReadAsStringAsync(ct);
-                Console.WriteLine($"Got Account access token: {scope} , {permission}");
                 return JsonSerializer.Deserialize<GenerateAccessTokenResponse>(jsonResponseBody)?.AccessToken!;
             }
             catch (Exception ex)
