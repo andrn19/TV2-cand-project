@@ -29,7 +29,6 @@ public class AuthService : IAuthService
         try
         {
             var armAccessToken = await AccountTokenProvider.GetArmAccessTokenAsync();
-            //var accountAccessToken = await AccountTokenProvider.GetAccountAccessTokenAsync(_armAccessToken);
             return armAccessToken;
         }
         catch (Exception ex)
@@ -44,7 +43,6 @@ public class AuthService : IAuthService
     {
         try
         {
-            //_armAccessToken = await AccountTokenProvider.GetArmAccessTokenAsync();
             var accountAccessToken = await AccountTokenProvider.GetAccountAccessTokenAsync(armAccessToken);
             return accountAccessToken;
         }

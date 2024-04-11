@@ -28,7 +28,7 @@ app.MapControllers();
 app.Run();
 */
 
-
+/*
 using System.Text.Json;
 
 namespace TV2.Backend.Services.VideoAnalyser
@@ -59,7 +59,7 @@ namespace TV2.Backend.Services.VideoAnalyser
             
             // Create Video Indexer Clients
             var authService = new AuthService();
-            var analyserService = new VideoAnalyserService();
+            var analyserService = new AnalyserService();
             // Get Access Tokens
             var armToken = await authService.AuthenticateArmAsync();
             var token = await authService.AuthenticateAsync(armToken);
@@ -69,12 +69,12 @@ namespace TV2.Backend.Services.VideoAnalyser
             var account = await authService.GetAccountAsync(Consts.ViAccountName, armToken);
             Console.WriteLine($"Account ID {account.Properties.Id} was successfully retrieved");
             
-            /*
+            
             // Sample 2 :  Upload a video , do not wait for the index operation to complete. 
             Console.WriteLine("Sample 2 - Index a Video from URL");
             var videoId = await analyserService.UploadUrlAsync(VideoUrl, "video-1", account, token, ExcludedAI, false);
             Console.WriteLine($"Video ID {videoId} was successfully uploaded");
-            */
+            
 
             var videoId = "89b32d3c1d";
             // Sample 3 : Wait for the video index to finish ( Polling method)
@@ -82,7 +82,15 @@ namespace TV2.Backend.Services.VideoAnalyser
             var videoGetIndexResult = await analyserService.WaitForIndexAsync(videoId, account, token);
             //Console.WriteLine($"The video index has completed. Here is the full JSON of the index for video ID {videoId}: \n{videoGetIndexResult}");
             var index = JsonSerializer.Deserialize<Index>(videoGetIndexResult);
-            Console.WriteLine(index.Videos[0].Metadata.Keywords[0].Text);
+            foreach (var topic in index.Videos[0].Metadata.Topics)
+            {
+                Console.WriteLine(topic.Name);
+            }
+            foreach (var keyword in index.Videos[0].Metadata.Keywords)
+            {
+                Console.WriteLine(keyword.Text);
+            }
+            Console.WriteLine(JsonSerializer.Serialize(index.Videos[0].Metadata));
 
             
             // Sample 4: Search for the video and get insights
@@ -90,7 +98,7 @@ namespace TV2.Backend.Services.VideoAnalyser
             var searchResult = await analyserService.GetVideoAsync(videoId, account, token);
             Console.WriteLine($"Here are the search results: \n{searchResult}");
 
-            /*
+            
             // TODO: Doesn't work, responds with "401 Unauthorized"
             // Sample 5: Widgets API's
             Console.WriteLine("Sample 5- Widgets API");
@@ -100,8 +108,8 @@ namespace TV2.Backend.Services.VideoAnalyser
             
             var playerWidgetLink = await analyserService.GetPlayerWidgetUrlAsync(videoId, account, armToken);
             Console.WriteLine($"Got the player widget URL: \n{playerWidgetLink}");
-            */
         }
 
     }
 }
+*/

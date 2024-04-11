@@ -6,14 +6,14 @@ using Utils;
 using Interfaces;
 using static Consts;
 
-public class VideoAnalyserService : IVideoAnalyserService
+public class AnalyserService : IAnalyserService
 {
     private readonly HttpClient _httpClient;
-    private readonly ILogger<VideoAnalyserService>? _logger;
+    private readonly ILogger<AnalyserService>? _logger;
     private readonly TimeSpan _pollingInterval = TimeSpan.FromSeconds(10);
     private string schema = "faces,topics,labels,keywords,namedLocations,namedPeople,shots,transcript";
 
-    public VideoAnalyserService(ILogger<VideoAnalyserService>? logger = null)
+    public AnalyserService(ILogger<AnalyserService>? logger = null)
     {
         System.Net.ServicePointManager.SecurityProtocol |= System.Net.SecurityProtocolType.Tls12 | System.Net.SecurityProtocolType.Tls13;
         _httpClient = HttpClientUtils.CreateHttpClient();
@@ -69,7 +69,7 @@ public class VideoAnalyserService : IVideoAnalyserService
     }
 
     
-    public async Task<string> WaitForIndexAsync(string videoId, Account account, string accountAccessToken)
+    public async Task<Index> WaitForIndexAsync(string videoId, Account account, string accountAccessToken)
     {
         while (true)
         {
@@ -90,7 +90,7 @@ public class VideoAnalyserService : IVideoAnalyserService
             // If job is finished
             if (processingState == ProcessingState.Processed.ToString())
             {
-                return videoGetIndexResult;
+                return JsonSerializer.Deserialize<Index>(videoGetIndexResult);
             }
             if (processingState == ProcessingState.Failed.ToString())
             {

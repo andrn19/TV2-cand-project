@@ -5,9 +5,15 @@ namespace TV2.Backend.Services.VideoAnalyser.Interfaces;
 public interface IAuthService
 {
     /// <summary>
-    /// Get Information about the Account
+    /// Generate ARM Access token
     /// </summary>
     /// <returns>An ARM access token.</returns>
+    Task<string> AuthenticateArmAsync();
+    
+    /// <summary>
+    /// Generate access token
+    /// </summary>
+    /// <returns>An access token.</returns>
     Task<string> AuthenticateAsync(string armAccessToken);
     
     
