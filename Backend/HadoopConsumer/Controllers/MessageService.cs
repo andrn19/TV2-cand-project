@@ -1,3 +1,5 @@
+using TV2.Backend.ClassLibrary.Models.Metadata;
+
 namespace TV2.Backend.Services.HadoopConsumer.Controllers;
 
 using Microsoft.Extensions.Options;
@@ -5,7 +7,6 @@ using System.Text;
 using System.Text.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using ClassLibrary.Classes;
 using ClassLibrary.Models;
 
 public class MessageService : IHostedService

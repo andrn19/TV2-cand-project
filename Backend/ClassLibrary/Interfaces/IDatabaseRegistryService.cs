@@ -1,6 +1,6 @@
-using TV2.Backend.ClassLibrary.Classes;
-
 namespace TV2.Backend.ClassLibrary.Interfaces;
+
+using Models;
 
 public interface IDatabaseRegistryService : IBaseService
 {

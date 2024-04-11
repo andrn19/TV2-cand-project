@@ -1,6 +1,6 @@
-using System.Text.Json.Serialization;
+namespace TV2.Backend.ClassLibrary.Models.Metadata;
 
-namespace TV2.Backend.ClassLibrary.Classes;
+using System.Text.Json.Serialization;
 
 public class Metadata
 {

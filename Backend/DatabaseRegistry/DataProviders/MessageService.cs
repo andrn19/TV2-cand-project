@@ -1,9 +1,7 @@
-
 namespace TV2.Backend.Services.DatabaseRegistry.DataProviders;
 
-
 using System.Text.Json;
-using ClassLibrary.Classes;
+using ClassLibrary.Models.Metadata;
 using Interfaces;
 using RabbitMQ.Client;
 using System.Text;

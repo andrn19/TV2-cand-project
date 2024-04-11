@@ -1,7 +1,7 @@
-using TV2.Backend.ClassLibrary.Classes;
-using TV2.Backend.ClassLibrary.Interfaces;
-
 namespace TV2.Backend.ClassLibrary.DataBrokers;
+
+using Models;
+using Interfaces;
 
 public class EndpointBroker : BaseBroker, IDatabaseRegistryService
 {

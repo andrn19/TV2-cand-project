@@ -1,7 +1,9 @@
+
 namespace TV2.Backend.Services.DatabaseRegistry.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
-using ClassLibrary.Classes;
+using ClassLibrary.Models;
+using ClassLibrary.Models.Metadata;
 using ClassLibrary.Interfaces;
 using Interfaces;
 
