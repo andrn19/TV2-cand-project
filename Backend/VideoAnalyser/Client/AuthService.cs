@@ -10,72 +10,89 @@ using static Consts;
 
 public class AuthService : IAuthService
 {
-    private readonly ILogger<AuthService>? _logger;
+    private readonly ILogger<AuthService> _logger;
     private readonly HttpClient _httpClient;
+    //private string _armAccessToken;
     
     public AuthService(ILogger<AuthService>? logger = null)
     {
         System.Net.ServicePointManager.SecurityProtocol |= System.Net.SecurityProtocolType.Tls12 | System.Net.SecurityProtocolType.Tls13;
         _httpClient = HttpClientUtils.CreateHttpClient();
-        _logger = logger;
+        
+        using ILoggerFactory factory = LoggerFactory.Create(builder => builder.AddConsole());
+        _logger = factory.CreateLogger<AuthService>();;
     }
 
-    /// <summary>
-    /// Get Information about the Account
-    /// </summary>
-    /// <returns>An ARM access token.</returns>
-    public async Task<string> AuthenticateAsync()
+    
+    public async Task<string> AuthenticateArmAsync()
     {
         try
         {
             var armAccessToken = await AccountTokenProvider.GetArmAccessTokenAsync();
+            //var accountAccessToken = await AccountTokenProvider.GetAccountAccessTokenAsync(_armAccessToken);
+            return armAccessToken;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("Exception while authenticating ARM:\n{Exception}", ex.Message);
+            throw;
+        }
+    }
+    
+    
+    public async Task<string> AuthenticateAsync(string armAccessToken)
+    {
+        try
+        {
+            //_armAccessToken = await AccountTokenProvider.GetArmAccessTokenAsync();
             var accountAccessToken = await AccountTokenProvider.GetAccountAccessTokenAsync(armAccessToken);
             return accountAccessToken;
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            _logger.LogError("Exception when authenticating access:\n{Exception}", ex.Message);
             throw;
         }
     }
 
-    /// <summary>
-    /// Get Information about the Account
-    /// </summary>
-    /// <param name="accountName">The name of the account.</param>
-    /// <param name="armAccessToken">An ARM access token.</param>
-    /// <returns></returns>
-    public async Task<Account> GetAccountAsync(string accountName, string armAccessToken)
+    
+    public async Task<Account?> GetAccountAsync(string accountName, string armAccessToken)
     {
         try
         {
             // Set request uri
             var requestUri = $"{AzureResourceManager}/subscriptions/{SubscriptionId}/resourcegroups/{ResourceGroup}/providers/Microsoft.VideoIndexer/accounts/{accountName}?api-version={ApiVersion}";
-            var client = HttpClientUtils.CreateHttpClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", armAccessToken);
-
-            var result = await client.GetAsync(requestUri);
+            //var client = HttpClientUtils.CreateHttpClient();
+            //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _armAccessToken);
+            //var result = await client.GetAsync(requestUri);
+            
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", armAccessToken);
+            var result = await _httpClient.GetAsync(requestUri);
 
             result.VerifyStatus(System.Net.HttpStatusCode.OK);
             var jsonResponseBody = await result.Content.ReadAsStringAsync();
             var account = JsonSerializer.Deserialize<Account>(jsonResponseBody);
-            VerifyValidAccount(account, accountName);
-            //Console.WriteLine($"[Account Details] Id:{account.Properties.Id}, Location: {account.Location}");
+            if (account != null)
+            {
+                VerifyValidAccount(account, accountName);
+            }
             return account;
+            //Console.WriteLine($"[Account Details] Id:{account.Properties.Id}, Location: {account.Location}");
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.ToString());
+            _logger.LogError("Exception while getting Account:\n{Exception}", ex.Message);
             throw;
         }
+        
     }
     
-    private static void VerifyValidAccount(Account account,string accountName)
+    private static void VerifyValidAccount(Account account, string accountName)
     {
         if (string.IsNullOrWhiteSpace(account.Location) || account.Properties == null || string.IsNullOrWhiteSpace(account.Properties.Id))
         {
-            Console.WriteLine($"{nameof(accountName)} {accountName} not found. Check {nameof(SubscriptionId)}, {nameof(ResourceGroup)}, {nameof(accountName)} ar valid.");
-            throw new Exception($"Account {accountName} not found.");
+            var ex = $"{nameof(accountName)} {accountName} not found. Check {nameof(SubscriptionId)}, {nameof(ResourceGroup)}, {nameof(accountName)} ar valid.";
+            throw new Exception(ex);
         }
     }
 }
