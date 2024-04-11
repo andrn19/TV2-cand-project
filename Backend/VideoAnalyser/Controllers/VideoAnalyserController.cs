@@ -1,3 +1,5 @@
+using TV2.Backend.Services.VideoAnalyser.Interfaces;
+
 namespace TV2.Backend.Services.VideoAnalyser.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
@@ -7,9 +9,14 @@ using Microsoft.AspNetCore.Mvc;
 public class VideoAnalyserController : ControllerBase
 {
     private readonly ILogger<VideoAnalyserController> _logger;
-    public VideoAnalyserController(ILogger<VideoAnalyserController> logger)
+    private readonly IAuthService _authService;
+    private readonly IVideoAnalyserService _videoAnalyserService;
+    
+    public VideoAnalyserController(ILogger<VideoAnalyserController> logger, IAuthService authService, IVideoAnalyserService videoAnalyserService)
     {
         _logger = logger;
+        _authService = authService;
+        _videoAnalyserService = videoAnalyserService;
     }
     
     [HttpGet]
