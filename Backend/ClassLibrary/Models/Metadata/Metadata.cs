@@ -1,6 +1,7 @@
+using System.Text.Json.Serialization;
+
 namespace TV2.Backend.ClassLibrary.Models.Metadata;
 
-using System.Text.Json.Serialization;
 
 public class Metadata
 {
@@ -23,7 +24,7 @@ public class Metadata
     public List<NamedLocation>? NamedLocations { get; set; }
     
     [JsonPropertyName("shots")]
-    public List<Keyframe>? Keyframes { get; set; }
+    public List<Shot>? Shots { get; set; }
     
     [JsonPropertyName("transcript")]
     public List<Transcript>? Transcripts { get; set; }

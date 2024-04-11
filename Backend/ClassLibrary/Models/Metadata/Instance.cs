@@ -8,8 +8,8 @@ public class Instance
     public Guid? ThumbnailId { get; set; }
     
     [JsonPropertyName("start")]
-    public string Start { get; set; }
+    public string? Start { get; set; }
     
     [JsonPropertyName("end")]
-    public string End { get; set; }
+    public string? End { get; set; }
 }
