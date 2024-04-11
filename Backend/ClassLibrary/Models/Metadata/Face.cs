@@ -11,7 +11,7 @@ public class Face
     public string? Name { get; set; }
     
     [JsonPropertyName("confidence")]
-    public int Confidence { get; set; }
+    public double Confidence { get; set; }
     
     [JsonPropertyName("thumbnailId")]
     public Guid? Thumbnail { get; set; }
