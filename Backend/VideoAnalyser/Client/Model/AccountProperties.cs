@@ -5,5 +5,5 @@ using System.Text.Json.Serialization;
 public class AccountProperties
 {
     [JsonPropertyName("accountId")]
-    public string Id { get; set; }
+    public string? Id { get; set; }
 }
