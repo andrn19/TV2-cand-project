@@ -8,33 +8,57 @@ services:
       context: ./Backend
       dockerfile: Gateway/Dockerfile
     ports:
-      - "52001:80"
+      - "52001:8080"
     networks:
       - frontend
       - data-service
-  
-  consumer.dummy:
-    container_name: consumer-dummy
+    restart: on-failure
+
+  consumer.hadoop:
+    container_name: consumer-hadoop
     build:
       context: ./Backend
-      dockerfile: DummyConsumer/Dockerfile
-    ports:
-      - "51001:80"
+      dockerfile: HadoopConsumer/Dockerfile
     networks:
       - data-service
+    depends_on:
+      - rabbitmq
+    restart: on-failure
 
-  producer.data:
+  producer.metadata:
     container_name: producer-data
     build:
       context: ./Backend
-      dockerfile: MetadataProducer/Dockerfile
+      dockerfile: DatabaseRegistry/Dockerfile
     ports:
-      - "51002:80"
+      - "51001:8080"
+    networks:
+      - data-service
+    depends_on: 
+      - rabbitmq
+    restart: on-failure
+
+  service.analyser:
+    container_name: service-analyser
+    build:
+      context: ./Backend
+      dockerfile: VideoAnalyser/Dockerfile
+    ports:
+      - "51011:8080"
+    networks:
+      - data-service
+    restart: on-failure
+
+  producer.metadata.database:
+    build:
+      context: ./Backend/DatabaseRegistry/Database
+    command: --default-authentication-plugin=mysql_native_password
     networks:
       - data-service
 
-  rabbitmq: # login guest:guest
+  rabbitmq: # login guest:guest 
     image: rabbitmq:3-management
+    hostname: rabbitmq
     labels:
       NAME: "rabbitmq"
     ports:
@@ -46,6 +70,7 @@ services:
     - "15672:15672"
     networks:
       - data-service
+    
 
 networks:
   frontend:
