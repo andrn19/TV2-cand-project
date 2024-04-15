@@ -1,22 +1,23 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
+EXPOSE 7294
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["MetadataProducer/MetadataProducer.csproj", "MetadataProducer/"]
-RUN dotnet restore "MetadataProducer/MetadataProducer.csproj"
+COPY ["DatabaseRegistry/DatabaseRegistry.csproj", "DatabaseRegistry/"]
+RUN dotnet restore "DatabaseRegistry/DatabaseRegistry.csproj"
 COPY . .
-WORKDIR "/src/MetadataProducer"
-RUN dotnet build "MetadataProducer.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/DatabaseRegistry"
+RUN dotnet build "DatabaseRegistry.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "MetadataProducer.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "DatabaseRegistry.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "MetadataProducer.dll"]
+ENTRYPOINT ["dotnet", "DatabaseRegistry.dll"]

@@ -28,7 +28,7 @@ public class VideoAnalyserController : ControllerBase, IVideoAnalyserService
         return true;
     }
 
-    [HttpPost("AddMetadata")]
+    [HttpPost("UploadFootage")]
     public async Task<string> UploadFootage([FromQuery] string footageUrl, [FromQuery] string footageName)
     {
         var armToken = await _authService.AuthenticateArmAsync();
@@ -38,7 +38,7 @@ public class VideoAnalyserController : ControllerBase, IVideoAnalyserService
         return videoId;
     }
 
-    [HttpPost("GetMetadata/{footageId}")]
+    [HttpGet("GetMetadata/{footageId}")]
     public async Task<Metadata> GetMetadata(string footageId)
     {
         var armToken = await _authService.AuthenticateArmAsync();

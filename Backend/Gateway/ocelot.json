@@ -1,6 +1,6 @@
 {
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:80"
+    "BaseUrl": "http://localhost:8080"
   },
   "Routes": [
     {
@@ -10,7 +10,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
         "Host": "producer.metadata",
-        "Port": 80
+        "Port": 8080
       }]
     },
     {
@@ -20,7 +20,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
         "Host": "producer.metadata",
-        "Port": 80
+        "Port": 8080
       }]
     },
     {
@@ -30,7 +30,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
         "Host": "producer.metadata",
-        "Port": 80
+        "Port": 8080
       }]
     },
     {
@@ -40,7 +40,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
         "Host": "producer.metadata",
-        "Port": 80
+        "Port": 8080
       }]
     },
     {
@@ -50,7 +50,27 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
         "Host": "producer.metadata",
-        "Port": 80
+        "Port": 8080
+      }]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/upload-footage",
+      "UpstreamHttpMethod": ["Post"],
+      "DownstreamPathTemplate": "/VideoAnalyser/UploadFootage",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{
+        "Host": "service.analyser",
+        "Port": 8080
+      }]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/get-metadata/{footageId}",
+      "UpstreamHttpMethod": ["Get"],
+      "DownstreamPathTemplate": "/VideoAnalyser/GetMetadata/{footageId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{
+        "Host": "service.analyser",
+        "Port": 8080
       }]
     }
   ]
