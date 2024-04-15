@@ -1,8 +1,7 @@
-using System.Net;
-using TV2.ClassLibrary.Classes;
-using TV2.ClassLibrary.Interfaces;
+using TV2.Backend.ClassLibrary.Classes;
+using TV2.Backend.ClassLibrary.Interfaces;
 
-namespace TV2.ClassLibrary.DataBrokers;
+namespace TV2.Backend.ClassLibrary.DataBrokers;
 
 public class EndpointBroker : BaseBroker, IMetadataEndpointService
 {
@@ -15,22 +14,23 @@ public class EndpointBroker : BaseBroker, IMetadataEndpointService
         return false;
     }
 
-    public bool CreateEndpoint(MetadataHost endpoint)
+
+    public bool CreateEndpoint(string name)
     {
         throw new NotImplementedException();
     }
 
-    public bool UpdateEndpoint(Guid id, MetadataHost endpoint)
+    public bool UpdateEndpoint(MetadataHost host)
     {
         throw new NotImplementedException();
     }
 
-    public bool DeleteEndpoint(Guid id)
+    public bool DeleteEndpoint(MetadataHost host)
     {
         throw new NotImplementedException();
     }
 
-    public IEnumerable<KeyValuePair<Guid, string>> ListEndpoints()
+    public IEnumerable<MetadataHost> ListEndpoints()
     {
         throw new NotImplementedException();
     }

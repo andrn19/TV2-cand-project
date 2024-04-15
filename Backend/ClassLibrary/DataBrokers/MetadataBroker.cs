@@ -1,7 +1,7 @@
-using TV2.ClassLibrary.Classes;
-using TV2.ClassLibrary.Interfaces;
+using TV2.Backend.ClassLibrary.Classes;
+using TV2.Backend.ClassLibrary.Interfaces;
 
-namespace TV2.ClassLibrary.DataBrokers;
+namespace TV2.Backend.ClassLibrary.DataBrokers;
 
 public class MetadataBroker : BaseBroker, IMetadataService
 {
@@ -10,7 +10,7 @@ public class MetadataBroker : BaseBroker, IMetadataService
         throw new NotImplementedException();
     }
 
-    public string? AddMetadata(Metadata metadata)
+    public bool AddMetadata(Guid id, Metadata metadata)
     {
         throw new NotImplementedException();
     }

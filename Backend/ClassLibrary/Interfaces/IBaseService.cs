@@ -1,4 +1,4 @@
-namespace TV2.ClassLibrary.Interfaces;
+namespace TV2.Backend.ClassLibrary.Interfaces;
 
 public interface IBaseService
 {

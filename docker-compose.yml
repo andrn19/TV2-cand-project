@@ -1,7 +1,6 @@
 version: '3.8'
 
 services:
-  
   react.app:
     container_name: react-app
     hostname: react.app
@@ -14,47 +13,50 @@ services:
     networks:
       - frontend
 
-
-  api.dummy:
-    container_name: api-dummy
-    hostname: api.dummy
-    build:
-      context: ./Backend
-      dockerfile: DummyDataService/Dockerfile
-    ports:
-      - "51001:80"
-    environment:
-      "PUBLIC_PORT": "51001"
-    networks:
-      - data-service
-
-  api.data:
-    container_name: api-data
-    hostname: api.data
-    build:
-      context: ./Backend
-      dockerfile: DataService/Dockerfile
-    ports:
-      - "51002:80"
-    environment:
-      "PUBLIC_PORT": "51002"
-    networks:
-      - data-service
-
   api.gateway:
     container_name: api-gateway
     build:
       context: ./Backend
-      dockerfile: ApiGw/Dockerfile
+      dockerfile: Gateway/Dockerfile
     ports:
       - "52001:80"
-      - "52002:443"
-      - "52003:3000"
     networks:
       - frontend
       - data-service
-    depends_on:
-      - api.dummy
+  
+  consumer.dummy:
+    container_name: consumer-dummy
+    build:
+      context: ./Backend
+      dockerfile: DummyConsumer/Dockerfile
+    ports:
+      - "51001:80"
+    networks:
+      - data-service
+
+  producer.data:
+    container_name: producer-data
+    build:
+      context: ./Backend
+      dockerfile: MetadataProducer/Dockerfile
+    ports:
+      - "51002:80"
+    networks:
+      - data-service
+
+  rabbitmq: # login guest:guest
+    image: rabbitmq:3-management
+    labels:
+      NAME: "rabbitmq"
+    ports:
+    - "4369:4369"
+    - "5671:5671"
+    - "5672:5672"
+    - "25672:25672"
+    - "15671:15671"
+    - "15672:15672"
+    networks:
+      - data-service
 
 networks:
   frontend:

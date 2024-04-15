@@ -1,0 +1,57 @@
+{
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:80"
+  },
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/gateway/create-endpoint",
+      "UpstreamHttpMethod": ["Put"],
+      "DownstreamPathTemplate": "/Data/CreateEndpoint",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{
+        "Host": "producer.metadata",
+        "Port": 80
+      }]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/update-endpoint",
+      "UpstreamHttpMethod": ["Put"],
+      "DownstreamPathTemplate": "/Data/UpdateEndpoint",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{
+        "Host": "producer.metadata",
+        "Port": 80
+      }]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/delete-endpoint",
+      "UpstreamHttpMethod": ["Delete"],
+      "DownstreamPathTemplate": "/Data/DeleteEndpoint",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{
+        "Host": "producer.metadata",
+        "Port": 80
+      }]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/list-endpoints",
+      "UpstreamHttpMethod": ["Get"],
+      "DownstreamPathTemplate": "/Data/ListEndpoints",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{
+        "Host": "producer.metadata",
+        "Port": 80
+      }]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/add-metadata/{endpoint}",
+      "UpstreamHttpMethod": ["Post"],
+      "DownstreamPathTemplate": "/Data/AddMetadata/{endpoint}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{
+        "Host": "producer.metadata",
+        "Port": 80
+      }]
+    }
+  ]
+}

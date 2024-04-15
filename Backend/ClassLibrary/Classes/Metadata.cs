@@ -1,7 +1,4 @@
-
-using System.Net;
-
-namespace TV2.ClassLibrary.Classes;
+namespace TV2.Backend.ClassLibrary.Classes;
 
 public class Metadata
 {
