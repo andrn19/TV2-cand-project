@@ -78,7 +78,7 @@ jobs:
           
 
       - name: Build and push Gateway 
-        id: build-and-push-hadoop
+        id: build-and-push-gateway
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
           context: ./Backend/Gateway/
