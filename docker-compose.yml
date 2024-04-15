@@ -2,6 +2,19 @@ version: '3.8'
 
 services:
   
+  react.app:
+    container_name: react-app
+    hostname: react.app
+    build:
+      context: ./Frontend
+    ports:
+      - "53001:5173"
+    environment:
+      "PUBLIC_PORT": "53001"
+    networks:
+      - frontend
+
+
   api.dummy:
     container_name: api-dummy
     hostname: api.dummy
