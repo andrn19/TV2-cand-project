@@ -6,8 +6,8 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["HadoopConsumer/HadoopConsumer.csproj", "HadoopConsumer/"]
-RUN dotnet restore "HadoopConsumer/HadoopConsumer.csproj"
+COPY ["HadoopConsumer.csproj", "/"]
+RUN dotnet restore "HadoopConsumer.csproj"
 COPY . .
 WORKDIR "/src/HadoopConsumer"
 RUN dotnet build "HadoopConsumer.csproj" -c $BUILD_CONFIGURATION -o /app/build

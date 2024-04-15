@@ -17,8 +17,7 @@ services:
   api.gateway:
     container_name: api-gateway
     build:
-      context: ./Backend
-      dockerfile: Gateway/Dockerfile
+      context: ./Backend/Gateway
     ports:
       - "52001:8080"
     networks:
@@ -29,8 +28,7 @@ services:
   consumer.hadoop:
     container_name: consumer-hadoop
     build:
-      context: ./Backend
-      dockerfile: HadoopConsumer/Dockerfile
+      context: ./Backend/HadoopConsumer
     networks:
       - data-service
     depends_on:
@@ -40,8 +38,7 @@ services:
   producer.metadata:
     container_name: producer-data
     build:
-      context: ./Backend
-      dockerfile: DatabaseRegistry/Dockerfile
+      context: ./Backend/DatabaseRegistry
     ports:
       - "51001:8080"
     networks:
@@ -53,8 +50,7 @@ services:
   service.analyser:
     container_name: service-analyser
     build:
-      context: ./Backend
-      dockerfile: VideoAnalyser/Dockerfile
+      context: ./Backend/VideoAnalyser
     ports:
       - "51011:8080"
     networks:
