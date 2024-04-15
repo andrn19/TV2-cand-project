@@ -7,8 +7,8 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["DatabaseRegistry.csproj", "/"]
-RUN dotnet restore "DatabaseRegistry.csproj"
+COPY ["DatabaseRegistry.csproj", "DatabaseRegistry/"]
+RUN dotnet restore "DatabaseRegistry/DatabaseRegistry.csproj"
 COPY . .
 WORKDIR "/src/DatabaseRegistry"
 RUN dotnet build "DatabaseRegistry.csproj" -c $BUILD_CONFIGURATION -o /app/build
