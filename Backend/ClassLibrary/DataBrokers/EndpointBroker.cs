@@ -1,9 +1,9 @@
-using TV2.Backend.ClassLibrary.Classes;
-using TV2.Backend.ClassLibrary.Interfaces;
-
 namespace TV2.Backend.ClassLibrary.DataBrokers;
 
-public class EndpointBroker : BaseBroker, IMetadataEndpointService
+using Models;
+using Interfaces;
+
+public class EndpointBroker : BaseBroker, IDatabaseRegistryService
 {
     private const string baseUri = "test";
 

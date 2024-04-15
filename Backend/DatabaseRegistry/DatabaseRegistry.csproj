@@ -1,11 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <RootNamespace>TV2.Backend.Services.MetadataProducer</RootNamespace>
+        <RootNamespace>TV2.Backend.Services.DatabaseRegistry</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
