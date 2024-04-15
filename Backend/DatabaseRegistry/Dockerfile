@@ -8,6 +8,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["DatabaseRegistry/DatabaseRegistry.csproj", "DatabaseRegistry/"]
+COPY ["ClassLibrary/ClassLibrary.csproj", "ClassLibrary/"]
 RUN dotnet restore "DatabaseRegistry/DatabaseRegistry.csproj"
 COPY . .
 WORKDIR "/src/DatabaseRegistry"

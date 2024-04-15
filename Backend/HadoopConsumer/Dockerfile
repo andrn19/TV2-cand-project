@@ -7,6 +7,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["HadoopConsumer/HadoopConsumer.csproj", "HadoopConsumer/"]
+COPY ["ClassLibrary/ClassLibrary.csproj", "ClassLibrary/"]
 RUN dotnet restore "HadoopConsumer/HadoopConsumer.csproj"
 COPY . .
 WORKDIR "/src/HadoopConsumer"
