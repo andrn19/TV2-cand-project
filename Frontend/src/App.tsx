@@ -1,47 +1,37 @@
-import { useState } from 'react'
-import { FileWithPath } from 'react-dropzone';
+import { signal } from '@preact/signals-react';
+import { useSignals } from '@preact/signals-react/runtime';
+import { SchemaInfo } from './interfaces'
 
 //components
-import FileDropzone from './components/FileDropzone'
-import FileList from './components/FileList';
-import FeatureChecklist from './components/FeatureCheckList';
-
+import FileUploadComponent from './components/file_upload_components/FileUploadComponent';
+import SchemaCreator from './components/schema_components/SchemaCreator';
+import SchemaSeletor from './components/schema_components/SchemaSeletor';
+import AnalyseVideoButton from './components/file_upload_components/AnalyseVideoButton';
+import DatabaseConnectorTab from './components/database_connector_components/DatabaseConnectorTab';
 
 import './App.css'
 
+const schemas = signal<SchemaInfo[]>([])
+
+
 function App() {
-  const [uploadedFiles, setUploadedFiles] = useState<FileWithPath[]>([]);
 
-  const handleFilesDrop = (acceptedFiles: FileWithPath[]) => {
+  useSignals();
 
-    const filesCopy = [...uploadedFiles]
-    console.log(filesCopy)
-    const newFiles = acceptedFiles.filter(file => {
-      return !filesCopy.find(prevFile => prevFile.name === file.name);
-    });
 
-    console.log(newFiles)
-
-    setUploadedFiles(previousFiles => [
-      ...previousFiles,
-      ...newFiles.map(file =>
-        Object.assign(file, { preview: URL.createObjectURL(file) })
-      )
-    ]);
+  const addNewSchema = (newSchema: SchemaInfo) => {
+    schemas.value = [...schemas.value, newSchema];
   };
-
-  const updateFiles = (updatedFileList: FileWithPath[]) => {
-    setUploadedFiles(updatedFileList)
-  }
-
 
 
   return (
     <div>
-      <h1 className='text-2xl font-bold mt-4 mb-7'>React Drag-and-Drop Zone</h1>
-      <FileDropzone onFilesDrop={handleFilesDrop} />
-      <FileList files={uploadedFiles} updateFiles={updateFiles} />
-      <FeatureChecklist />
+      <DatabaseConnectorTab />
+      <h1 className='text-2xl font-bold mt-4 mb-7'>File Drop Zone</h1>
+      <FileUploadComponent />
+      <SchemaSeletor schemas={schemas.value} />
+      <AnalyseVideoButton />
+      <SchemaCreator addNewSchema={addNewSchema} />
     </div>
   );
 }
