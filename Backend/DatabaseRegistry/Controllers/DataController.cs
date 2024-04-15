@@ -1,13 +1,15 @@
-namespace TV2.Backend.Services.MetadataProducer.Controllers;
+
+namespace TV2.Backend.Services.DatabaseRegistry.Controllers;
 
 using Microsoft.AspNetCore.Mvc;
-using ClassLibrary.Classes;
-using TV2.Backend.ClassLibrary.Interfaces;
+using ClassLibrary.Models;
+using ClassLibrary.Models.Metadata;
+using ClassLibrary.Interfaces;
 using Interfaces;
 
 [ApiController]
 [Route("[controller]")]
-public class DataController : ControllerBase, IMetadataEndpointService, IMetadataService
+public class DataController : ControllerBase, IDatabaseRegistryService, IMetadataService
 {
     private readonly ILogger<DataController> _logger;
     private readonly IConsumerRegistry _consumerRegistry;

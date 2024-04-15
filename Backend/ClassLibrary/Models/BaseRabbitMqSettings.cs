@@ -1,4 +1,5 @@
 namespace TV2.Backend.ClassLibrary.Models;
+
 using RabbitMQ.Client;
 
 

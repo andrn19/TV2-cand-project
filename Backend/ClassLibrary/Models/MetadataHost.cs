@@ -1,4 +1,4 @@
-namespace TV2.Backend.ClassLibrary.Classes;
+namespace TV2.Backend.ClassLibrary.Models;
 
 public class MetadataHost
 {

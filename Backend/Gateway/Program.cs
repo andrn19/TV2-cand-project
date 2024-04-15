@@ -12,6 +12,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var  corsPolicy = "_corsPolicy";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: corsPolicy,
+        policy  =>
+        {
+            policy.WithOrigins("https://www.google.com");
+        });
+});
+
+
 // https://code-maze.com/aspnetcore-api-gateway-with-ocelot/
 builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
 builder.Services.AddOcelot(builder.Configuration).AddAdministration("/administration", "secret");
@@ -31,7 +42,7 @@ if (app.Environment.IsDevelopment())
 // }
 //app.UseHttpsRedirection();
 
-
+app.UseCors(corsPolicy);
 
 app.UseOcelot().Wait();
 

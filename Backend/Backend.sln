@@ -4,7 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway", "Gateway\Gateway.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassLibrary", "ClassLibrary\ClassLibrary.csproj", "{7DDD0D38-63FC-45E9-A3CB-B1967A2CB2E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetadataProducer", "MetadataProducer\MetadataProducer.csproj", "{6FBE0477-85B0-4F81-9788-71B34C6BB82D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseRegistry", "DatabaseRegistry\DatabaseRegistry.csproj", "{6FBE0477-85B0-4F81-9788-71B34C6BB82D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{60C22D79-1134-4F16-8DAD-6CCF9DDA8618}"
 EndProject
