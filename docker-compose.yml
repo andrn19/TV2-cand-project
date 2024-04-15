@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+
   react.app:
     container_name: react-app
     hostname: react.app
