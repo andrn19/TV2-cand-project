@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FileWithPath } from 'react-dropzone';
+import { FaRegEdit } from "react-icons/fa";
 
 interface CustomFileWithPath extends FileWithPath {
   preview?: string;
@@ -8,9 +9,10 @@ interface CustomFileWithPath extends FileWithPath {
 interface FilePreviewProps {
   file: CustomFileWithPath;
   onRemove: () => void;
+  onEdit: () => void;
 }
 
-const FilePreview: React.FC<FilePreviewProps> = ({ file, onRemove }) => {
+const FilePreview: React.FC<FilePreviewProps> = ({ file, onRemove, onEdit }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -21,7 +23,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({ file, onRemove }) => {
       >
         <video
           controls
-          className='w-full object-contain rounded-md'
+          className='object-contain rounded-md'
           onLoad={() => {
             if (file.preview) {
               URL.revokeObjectURL(file.preview);
@@ -33,12 +35,20 @@ const FilePreview: React.FC<FilePreviewProps> = ({ file, onRemove }) => {
         </video>
 
         {isHovered && (
-          <button
-            className='absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full cursor-pointer'
-            onClick={onRemove}
-          >
-            X
-          </button>
+          <>
+            <button
+              className='preview-delete-btn'
+              onClick={onRemove}
+            >
+              X
+            </button>
+            <button
+              className='preview-edit-btn'
+              onClick={onEdit}
+            >
+              <FaRegEdit className='icon-style' />
+            </button>
+          </>
         )}
         <p className='mt-2 text-neutral-500 text-[12px] font-medium'>
           {file.name}
