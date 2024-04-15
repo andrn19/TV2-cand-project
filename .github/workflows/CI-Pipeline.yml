@@ -57,7 +57,8 @@ jobs:
         id: build-and-push-registry
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
-          context: ./Backend/DatabaseRegistry/
+          context: ./Backend/
+          file: DatabaseRegistry/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -69,7 +70,8 @@ jobs:
         id: build-and-push-hadoop
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
-          context: ./Backend/HadoopConsumer/
+          context: ./Backend/
+          file: HadoopConsumer/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -81,7 +83,8 @@ jobs:
         id: build-and-push-gateway
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
-          context: ./Backend/Gateway/
+          context: ./Backend/
+          file: Gateway/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -93,7 +96,8 @@ jobs:
         id: build-and-push-analyser
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
-          context: ./Backend/VideoAnalyser/
+          context: ./Backend/
+          file: VideoAnalyser/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
