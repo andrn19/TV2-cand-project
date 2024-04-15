@@ -4,7 +4,7 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Gateway.csproj", "Gateway/"]
+COPY ["Gateway/Gateway.csproj", "Gateway/"]
 RUN dotnet restore "Gateway/Gateway.csproj"
 COPY . .
 WORKDIR "/src/Gateway"
