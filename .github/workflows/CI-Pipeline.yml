@@ -217,4 +217,4 @@ jobs:
         run: sed -i "s+{REGISTRY_PASSWORD}+GA-${{ secrets.GITHUB_TOKEN }}+g" Deployment/Azure.yaml
 
       - name: Deploy Container Instances
-        run: az container create --resource-group ${{ secrets.RESOURCE_GROUP }} --file .github/deployment.yaml
+        run: az container create --resource-group ${{ secrets.RESOURCE_GROUP }} --file Deployment/Azure.yaml
