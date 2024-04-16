@@ -53,7 +53,7 @@ jobs:
         uses: 'azure/aci-deploy@v1'
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
-          dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
+          dns-name-label: database-registry-store
           image: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/database-registry-store:${{ github.SHA }}
           registry-login-server: ${{ env.REGISTRY }}
           registry-username: ${{ github.actor }}
@@ -104,7 +104,7 @@ jobs:
         uses: 'azure/aci-deploy@v1'
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
-          dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
+          dns-name-label: database-registry
           image: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/database-registry:${{ github.SHA }}
           registry-login-server: ${{ env.REGISTRY }}
           registry-username: ${{ github.actor }}
@@ -155,7 +155,7 @@ jobs:
         uses: 'azure/aci-deploy@v1'
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
-          dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
+          dns-name-label: metadata-hadoop-store
           image: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/metadata-hadoop-store:${{ github.SHA }}
           registry-login-server: ${{ env.REGISTRY }}
           registry-username: ${{ github.actor }}
@@ -206,7 +206,7 @@ jobs:
         uses: 'azure/aci-deploy@v1'
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
-          dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
+          dns-name-label: gateway
           image: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/gateway:${{ github.SHA }}
           registry-login-server: ${{ env.REGISTRY }}
           registry-username: ${{ github.actor }}
@@ -257,7 +257,7 @@ jobs:
         uses: 'azure/aci-deploy@v1'
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
-          dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
+          dns-name-label: video-analyser
           image: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/video-analyser:${{ github.SHA }}
           registry-login-server: ${{ env.REGISTRY }}
           registry-username: ${{ github.actor }}
