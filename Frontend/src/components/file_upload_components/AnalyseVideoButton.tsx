@@ -1,6 +1,6 @@
 const AnalyseVideoButton = () => {
   return (
-    <button>AnalyseVideoButton</button>
+    <button>Analyse Video</button>
   )
 }
 

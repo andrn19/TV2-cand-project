@@ -1,18 +1,32 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { DataInterface } from '../../interfaces';
 
 interface DatabaseConnectorProps {
-    databaseConnectors: DataInterface[]
+    databaseConnectors: DataInterface[];
+    removeConnector: (connectorId: string) => void;
 }
 
-const DatabaseConnector: React.FC<DatabaseConnectorProps> = ({databaseConnectors}) => {
+const DatabaseConnector: React.FC<DatabaseConnectorProps> = ({ databaseConnectors, removeConnector }) => {
 
-    const [selectedConnector, setSelectedConnector] = useState('');
+    const [selectedConnector, setSelectedConnector] = useState<DataInterface>();
 
     const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedConnector(event.target.value);
+        const valueObject = JSON.parse(event.target.value)
+        setSelectedConnector(valueObject);
     };
 
+    const handleRemoveClick = () => {
+        if (selectedConnector) {
+            removeConnector(selectedConnector.key);
+            setSelectedConnector(undefined);
+        }
+    };
+
+    const handleConnectClick = () => {
+        if (selectedConnector) {
+
+        }
+    };
 
     return (
         <div className="my-4">
@@ -23,9 +37,17 @@ const DatabaseConnector: React.FC<DatabaseConnectorProps> = ({databaseConnectors
                     Choose a database
                 </option>
                 {databaseConnectors.map((connector) => (
-                    <option key={connector.key} value={connector.value}>{connector.value}</option>
+                    <option key={connector.key} value={JSON.stringify(connector)}>{connector.value}</option>
                 ))}
             </select>
+            <div className="mt-4">
+                <button onClick={handleConnectClick} >
+                    Connect
+                </button>
+                <button onClick={handleRemoveClick} className='bg-red-500 hover:bg-red-600' >
+                    Remove
+                </button>
+            </div>
         </div>
     );
 }

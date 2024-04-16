@@ -9,8 +9,6 @@ const acceptedVideoTypes = ['video/mp4', 'video/avi', 'video/mov'];
 
 const FileDropzone: React.FC<DropzoneProps> = ({ onFilesDrop }) => {
 
-
-
   const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
 
     const videoFiles = acceptedFiles.filter(file => acceptedVideoTypes.includes(file.type));
