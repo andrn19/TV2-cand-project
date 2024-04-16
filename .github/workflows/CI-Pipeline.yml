@@ -12,7 +12,7 @@ env:
   
 
 jobs:
-  build-and-deploy-registry-store:
+  build-database-registry-store:
 
     runs-on: ubuntu-latest
     env:
@@ -34,11 +34,6 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-  
-      - name: Log into Azure CLI
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Build and push ${{ env.SERVICE_NAME }}
         id: build-and-push-registry-store
@@ -50,20 +45,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Deploy to Azure Container Instances
-        uses: azure/aci-deploy@v1
-        with:
-          resource-group: ${{ secrets.RESOURCE_GROUP }}
-          dns-name-label: ${{ env.SERVICE_NAME }}
-          image: ${{ env.REGISTRY }}/${{ env.REGISTRY_NAME }}/${{ env.SERVICE_NAME }}:${{ github.SHA }}
-          registry-login-server: ${{ env.REGISTRY }}
-          registry-username: ${{ github.actor }}
-          registry-password: ${{ secrets.GITHUB_TOKEN }}
-          name: ${{ env.SERVICE_CONTAINER_GROUP }}
-          location: 'north europe'
 
-
-  build-and-deploy-registry:
+  build-database-registry:
 
     runs-on: ubuntu-latest
     env:
@@ -86,11 +69,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Log into Azure CLI
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
       - name: Build and push ${{ env.SERVICE_NAME }} 
         id: build-and-push-registry
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
@@ -102,20 +80,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: 'Deploy to Azure Container Instances'
-        uses: 'azure/aci-deploy@v1'
-        with:
-          resource-group: ${{ secrets.RESOURCE_GROUP }}
-          dns-name-label: ${{ env.SERVICE_NAME }}
-          image: ${{ env.REGISTRY }}/${{ env.REGISTRY_NAME }}/${{ env.SERVICE_NAME }}:${{ github.SHA }}
-          registry-login-server: ${{ env.REGISTRY }}
-          registry-username: ${{ github.actor }}
-          registry-password: ${{ secrets.GITHUB_TOKEN }}
-          name: ${{ env.SERVICE_CONTAINER_GROUP }}
-          location: 'north europe'
 
-
-  build-and-deploy-metadata-store:
+  build-metadata-hadoop-store:
 
     runs-on: ubuntu-latest
     env:
@@ -138,11 +104,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Log into Azure CLI
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
       - name: Build and push ${{ env.SERVICE_NAME }} 
         id: build-and-push-hadoop
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
@@ -154,20 +115,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Deploy to Azure Container Instances
-        uses: azure/aci-deploy@v1
-        with:
-          resource-group: ${{ secrets.RESOURCE_GROUP }}
-          dns-name-label: ${{ env.SERVICE_NAME }}
-          image: ${{ env.REGISTRY }}/${{ env.REGISTRY_NAME }}/${{ env.SERVICE_NAME }}:${{ github.SHA }}
-          registry-login-server: ${{ env.REGISTRY }}
-          registry-username: ${{ github.actor }}
-          registry-password: ${{ secrets.GITHUB_TOKEN }}
-          name: ${{ env.SERVICE_CONTAINER_GROUP }}
-          location: 'north europe'
 
-
-  build-and-deploy-gateway:
+  build-gateway:
 
     runs-on: ubuntu-latest
     env:
@@ -190,10 +139,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           
-      - name: Log into Azure CLI
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Build and push ${{ env.SERVICE_NAME }} 
         id: build-and-push-gateway
@@ -205,21 +150,9 @@ jobs:
           tags: ${{ env.REGISTRY }}/${{ env.REGISTRY_NAME }}/${{ env.SERVICE_NAME }}:${{ github.SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          
-      - name: Deploy to Azure Container Instances
-        uses: azure/aci-deploy@v1
-        with:
-          resource-group: ${{ secrets.RESOURCE_GROUP }}
-          dns-name-label: ${{ env.SERVICE_NAME }}
-          image: ${{ env.REGISTRY }}/${{ env.REGISTRY_NAME }}/${{ env.SERVICE_NAME }}:${{ github.SHA }}
-          registry-login-server: ${{ env.REGISTRY }}
-          registry-username: ${{ github.actor }}
-          registry-password: ${{ secrets.GITHUB_TOKEN }}
-          name: ${{ env.SERVICE_CONTAINER_GROUP }}
-          location: 'north europe'
 
 
-  build-and-deploy-video-analyser:
+  build-video-analyser:
 
     runs-on: ubuntu-latest
     env:
@@ -242,11 +175,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Log into Azure CLI
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-          
       - name: Build and push ${{ env.SERVICE_NAME }}
         id: build-and-push-analyser
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
@@ -258,14 +186,31 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Deploy to Azure Container Instances
-        uses: azure/aci-deploy@v1
+
+  deploy-services:
+    runs-on: ubuntu-latest
+    env:
+      SERVICE_NAME: video-analyser
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log into Azure CLI
+        uses: azure/login@v1
         with:
-          resource-group: ${{ secrets.RESOURCE_GROUP }}
-          dns-name-label: ${{ env.SERVICE_NAME }}
-          image: ${{ env.REGISTRY }}/${{ env.REGISTRY_NAME }}/${{ env.SERVICE_NAME }}:${{ github.SHA }}
-          registry-login-server: ${{ env.REGISTRY }}
-          registry-username: ${{ github.actor }}
-          registry-password: ${{ secrets.GITHUB_TOKEN }}
-          name: ${{ env.SERVICE_CONTAINER_GROUP }}
-          location: 'north europe'
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          
+      - name: Change deployment file image tags
+        run: |
+          sed -i "s+{IMG_TAG}+GA-${{ github.sha }}+g" .github/deployment.yaml \
+          sed -i "s+{REGISTRY_NAME}+GA-${{ env.REGISTRY_NAME }}+g" .github/deployment.yaml \
+          sed -i "s+{REGISTRY_USERNAME}+GA-${{ github.actor }}+g" .github/deployment.yaml \
+          sed -i "s+{REGISTRY_PASSWORD}+GA-${{ secrets.GITHUB_TOKEN }}+g" .github/deployment.yaml
+
+      - name: Deploy Kubernetes
+        run: |
+          az container create --resource-group ${{ secrets.RESOURCE_GROUP }} --file .github/deployment.yaml
