@@ -3,9 +3,9 @@ location: northeurope
 name: video-analyser-service
 properties:
   imageRegistryCredentials:
-    - server: ghcr.io
-      username: imageRegistryUsername
-      password: imageRegistryPassword
+    - server: {REGISTRY_NAME}
+      username: {REGISTRY_USERNAME}
+      password: {REGISTRY_PASSWORD}
   containers:
   - name: database-registry-store
     properties:
