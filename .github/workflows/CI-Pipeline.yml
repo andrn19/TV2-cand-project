@@ -206,10 +206,10 @@ jobs:
           
       - name: Change deployment file image tags
         run: |
-          sed -i "s+{IMG_TAG}+GA-${{ github.sha }}+g" .github/deployment.yaml \
-          sed -i "s+{REGISTRY_NAME}+GA-${{ env.REGISTRY_NAME }}+g" .github/deployment.yaml \
-          sed -i "s+{REGISTRY_USERNAME}+GA-${{ github.actor }}+g" .github/deployment.yaml \
-          sed -i "s+{REGISTRY_PASSWORD}+GA-${{ secrets.GITHUB_TOKEN }}+g" .github/deployment.yaml
+          sed -i "s+{IMG_TAG}+GA-${{ github.sha }}+g" deployment.yaml \
+          sed -i "s+{REGISTRY_NAME}+GA-${{ env.REGISTRY_NAME }}+g" deployment.yaml \
+          sed -i "s+{REGISTRY_USERNAME}+GA-${{ github.actor }}+g" deployment.yaml \
+          sed -i "s+{REGISTRY_PASSWORD}+GA-${{ secrets.GITHUB_TOKEN }}+g" deployment.yaml
 
       - name: Deploy Kubernetes
         run: |
