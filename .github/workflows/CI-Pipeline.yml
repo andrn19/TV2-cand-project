@@ -40,8 +40,7 @@ jobs:
         with:
           context: ./Backend/DatabaseRegistry/Database/
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ghcr.io/andrn19/tv2-cand-project/database-registry-store:${{ github.SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
   
@@ -76,8 +75,7 @@ jobs:
           context: ./Backend/
           file: ./Backend/DatabaseRegistry/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ghcr.io/andrn19/tv2-cand-project/database-registry:${{ github.SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -113,8 +111,7 @@ jobs:
           context: ./Backend/
           file: ./Backend/HadoopConsumer/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ghcr.io/andrn19/tv2-cand-project/metadata-hadoop-store:${{ github.SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -150,8 +147,7 @@ jobs:
           context: ./Backend/
           file: ./Backend/Gateway/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ghcr.io/andrn19/tv2-cand-project/gateway:${{ github.SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -187,7 +183,6 @@ jobs:
           context: ./Backend/
           file: ./Backend/VideoAnalyser/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ghcr.io/andrn19/tv2-cand-project/video-analyser:${{ github.SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
