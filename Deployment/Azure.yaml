@@ -12,14 +12,14 @@ properties:
       image: ghcr.io/andrn19/tv2-cand-project/database-registry-store:{IMG_TAG}
       resources:
         requests:
-          cpu: 1
+          cpu: 0.5
           memoryInGb: 1.5
   - name: database-registry
     properties:
       image: ghcr.io/andrn19/tv2-cand-project/database-registry:{IMG_TAG}
       resources:
         requests:
-          cpu: 1
+          cpu: 0.5
           memoryInGb: 1.5
   - name: metadata-hadoop-store
     properties:
@@ -33,7 +33,7 @@ properties:
       image: ghcr.io/andrn19/tv2-cand-project/gateway:{IMG_TAG}
       resources:
         requests:
-          cpu: 1
+          cpu: 0.5
           memoryInGb: 1.5
       ports:
       - port: 80
@@ -43,7 +43,7 @@ properties:
       image: ghcr.io/andrn19/tv2-cand-project/video-analyser:{IMG_TAG}
       resources:
         requests:
-          cpu: 1
+          cpu: 0.5
           memoryInGb: 1.5
   osType: Linux
   ipAddress:
