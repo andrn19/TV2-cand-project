@@ -7,8 +7,9 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  REGISTRY_NAME: ${{ github.repository }}
+  REGISTRY_NAME: andrn19/tv2-cand-project
   SERVICE_CONTAINER_GROUP: video-analyser-service
+  
 
 jobs:
   build-and-deploy-registry-store:
