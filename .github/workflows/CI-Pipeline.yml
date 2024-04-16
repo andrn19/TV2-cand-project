@@ -32,18 +32,34 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+  
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-
+          
       - name: Build and push Database Registry Store
         id: build-and-push-registry-store
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
           context: ./Backend/DatabaseRegistry/Database/
           push: true
-          tags: ghcr.io/andrn19/tv2-cand-project/database-registry-store:${{ github.SHA }}
+          tags: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/database-registry-store:${{ github.SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-  
+
+      - name: 'Deploy to Azure Container Instances'
+        uses: 'azure/aci-deploy@v1'
+        with:
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
+          dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
+          image: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/database-registry-store:${{ github.SHA }}
+          registry-login-server: ${{ env.REGISTRY }}
+          registry-username: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          name: database-registry-store
+          location: 'north europe'
 
   build-and-deploy-registry:
 
@@ -68,6 +84,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: Build and push Database Registry 
         id: build-and-push-registry
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
@@ -75,10 +96,21 @@ jobs:
           context: ./Backend/
           file: ./Backend/DatabaseRegistry/Dockerfile
           push: true
-          tags: ghcr.io/andrn19/tv2-cand-project/database-registry:${{ github.SHA }}
+          tags: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/database-registry:${{ github.SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      - name: 'Deploy to Azure Container Instances'
+        uses: 'azure/aci-deploy@v1'
+        with:
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
+          dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
+          image: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/database-registry:${{ github.SHA }}
+          registry-login-server: ${{ env.REGISTRY }}
+          registry-username: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          name: database-registry
+          location: 'north europe'
 
   build-and-deploy-metadata-store:
 
@@ -103,6 +135,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Build and push Hadoop Database 
         id: build-and-push-hadoop
@@ -111,10 +147,21 @@ jobs:
           context: ./Backend/
           file: ./Backend/HadoopConsumer/Dockerfile
           push: true
-          tags: ghcr.io/andrn19/tv2-cand-project/metadata-hadoop-store:${{ github.SHA }}
+          tags: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/metadata-hadoop-store:${{ github.SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      - name: 'Deploy to Azure Container Instances'
+        uses: 'azure/aci-deploy@v1'
+        with:
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
+          dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
+          image: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/metadata-hadoop-store:${{ github.SHA }}
+          registry-login-server: ${{ env.REGISTRY }}
+          registry-username: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          name: metadata-hadoop-store
+          location: 'north europe'
 
   build-and-deploy-gateway:
 
@@ -139,6 +186,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Build and push Gateway 
         id: build-and-push-gateway
@@ -147,10 +198,21 @@ jobs:
           context: ./Backend/
           file: ./Backend/Gateway/Dockerfile
           push: true
-          tags: ghcr.io/andrn19/tv2-cand-project/gateway:${{ github.SHA }}
+          tags: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/gateway:${{ github.SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
+          
+      - name: 'Deploy to Azure Container Instances'
+        uses: 'azure/aci-deploy@v1'
+        with:
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
+          dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
+          image: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/gateway:${{ github.SHA }}
+          registry-login-server: ${{ env.REGISTRY }}
+          registry-username: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          name: gateway
+          location: 'north europe'
 
   build-and-deploy-video-analyser:
 
@@ -175,6 +237,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
           
       - name: Build and push Video Analyser
         id: build-and-push-analyser
@@ -183,6 +249,18 @@ jobs:
           context: ./Backend/
           file: ./Backend/VideoAnalyser/Dockerfile
           push: true
-          tags: ghcr.io/andrn19/tv2-cand-project/video-analyser:${{ github.SHA }}
+          tags: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/video-analyser:${{ github.SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: 'Deploy to Azure Container Instances'
+        uses: 'azure/aci-deploy@v1'
+        with:
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
+          dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
+          image: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/video-analyser:${{ github.SHA }}
+          registry-login-server: ${{ env.REGISTRY }}
+          registry-username: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          name: video-analyser
+          location: 'north europe'
