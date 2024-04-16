@@ -2,6 +2,10 @@ apiVersion: 2019-12-01
 location: northeurope
 name: video-analyser-service
 properties:
+  imageRegistryCredentials:
+    - server: ghcr.io
+      username: imageRegistryUsername
+      password: imageRegistryPassword
   containers:
   - name: database-registry-store
     properties:
