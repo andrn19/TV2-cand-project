@@ -25,10 +25,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
     
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3.0.0
-
 
       - name: Log into registry ${{ env.REGISTRY }}
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
@@ -37,13 +35,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
   
-      - name: 'Login via Azure CLI'
+      - name: Log into Azure CLI
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-          
-      - name: Build and push Database Registry Store
+      - name: Build and push ${{ env.SERVICE_NAME }}
         id: build-and-push-registry-store
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
@@ -53,8 +50,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: 'Deploy to Azure Container Instances'
-        uses: 'azure/aci-deploy@v1'
+      - name: Deploy to Azure Container Instances
+        uses: azure/aci-deploy@v1
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
           dns-name-label: ${{ env.SERVICE_NAME }}
@@ -65,10 +62,10 @@ jobs:
           name: ${{ env.SERVICE_CONTAINER_GROUP }}
           location: 'north europe'
 
+
   build-and-deploy-registry:
 
     runs-on: ubuntu-latest
-    needs: [build-and-deploy-registry-store]
     env:
       SERVICE_NAME: database-registry
     permissions:
@@ -79,10 +76,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
     
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3.0.0
-
 
       - name: Log into registry ${{ env.REGISTRY }}
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
@@ -91,12 +86,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 'Login via Azure CLI'
+      - name: Log into Azure CLI
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Build and push Database Registry 
+      - name: Build and push ${{ env.SERVICE_NAME }} 
         id: build-and-push-registry
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
@@ -119,10 +114,10 @@ jobs:
           name: ${{ env.SERVICE_CONTAINER_GROUP }}
           location: 'north europe'
 
+
   build-and-deploy-metadata-store:
 
     runs-on: ubuntu-latest
-    needs: [build-and-deploy-registry-store]
     env:
       SERVICE_NAME: metadata-hadoop-store
     permissions:
@@ -133,10 +128,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
     
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3.0.0
-
 
       - name: Log into registry ${{ env.REGISTRY }}
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
@@ -145,12 +138,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 'Login via Azure CLI'
+      - name: Log into Azure CLI
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Build and push Hadoop Database 
+      - name: Build and push ${{ env.SERVICE_NAME }} 
         id: build-and-push-hadoop
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
@@ -161,8 +154,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: 'Deploy to Azure Container Instances'
-        uses: 'azure/aci-deploy@v1'
+      - name: Deploy to Azure Container Instances
+        uses: azure/aci-deploy@v1
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
           dns-name-label: ${{ env.SERVICE_NAME }}
@@ -173,10 +166,10 @@ jobs:
           name: ${{ env.SERVICE_CONTAINER_GROUP }}
           location: 'north europe'
 
+
   build-and-deploy-gateway:
 
     runs-on: ubuntu-latest
-    needs: [build-and-deploy-registry-store]
     env:
       SERVICE_NAME: gateway
     permissions:
@@ -186,11 +179,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-    
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3.0.0
-
 
       - name: Log into registry ${{ env.REGISTRY }}
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
@@ -199,12 +190,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           
-      - name: 'Login via Azure CLI'
+      - name: Log into Azure CLI
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Build and push Gateway 
+      - name: Build and push ${{ env.SERVICE_NAME }} 
         id: build-and-push-gateway
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
@@ -215,8 +206,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           
-      - name: 'Deploy to Azure Container Instances'
-        uses: 'azure/aci-deploy@v1'
+      - name: Deploy to Azure Container Instances
+        uses: azure/aci-deploy@v1
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
           dns-name-label: ${{ env.SERVICE_NAME }}
@@ -227,10 +218,10 @@ jobs:
           name: ${{ env.SERVICE_CONTAINER_GROUP }}
           location: 'north europe'
 
+
   build-and-deploy-video-analyser:
 
     runs-on: ubuntu-latest
-    needs: [build-and-deploy-registry-store]
     env:
       SERVICE_NAME: video-analyser
     permissions:
@@ -241,10 +232,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
     
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3.0.0
-
 
       - name: Log into registry ${{ env.REGISTRY }}
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
@@ -253,12 +242,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 'Login via Azure CLI'
+      - name: Log into Azure CLI
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           
-      - name: Build and push Video Analyser
+      - name: Build and push ${{ env.SERVICE_NAME }}
         id: build-and-push-analyser
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
@@ -269,8 +258,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: 'Deploy to Azure Container Instances'
-        uses: 'azure/aci-deploy@v1'
+      - name: Deploy to Azure Container Instances
+        uses: azure/aci-deploy@v1
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
           dns-name-label: ${{ env.SERVICE_NAME }}
