@@ -7,7 +7,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  REGISTRY_NAME: ${{ github.repository }}
   SERVICE_CONTAINER_GROUP: video-analyser-service
 
 jobs:
@@ -48,7 +48,7 @@ jobs:
         with:
           context: ./Backend/DatabaseRegistry/Database/
           push: true
-          tags: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/${{ env.SERVICE_NAME }}:${{ github.SHA }}
+          tags: ${{ env.REGISTRY }}/${{ env.REGISTRY_NAME }}/${{ env.SERVICE_NAME }}:${{ github.SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -57,7 +57,7 @@ jobs:
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
           dns-name-label: ${{ env.SERVICE_NAME }}
-          image: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/${{ env.SERVICE_NAME }}:${{ github.SHA }}
+          image: ${{ env.REGISTRY }}/${{ env.REGISTRY_NAME }}/${{ env.SERVICE_NAME }}:${{ github.SHA }}
           registry-login-server: ${{ env.REGISTRY }}
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
@@ -101,7 +101,7 @@ jobs:
           context: ./Backend/
           file: ./Backend/DatabaseRegistry/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/${{ env.SERVICE_NAME }}:${{ github.SHA }}
+          tags: ${{ env.REGISTRY }}/${{ env.REGISTRY_NAME }}/${{ env.SERVICE_NAME }}:${{ github.SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -110,7 +110,7 @@ jobs:
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
           dns-name-label: ${{ env.SERVICE_NAME }}
-          image: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/${{ env.SERVICE_NAME }}:${{ github.SHA }}
+          image: ${{ env.REGISTRY }}/${{ env.REGISTRY_NAME }}/${{ env.SERVICE_NAME }}:${{ github.SHA }}
           registry-login-server: ${{ env.REGISTRY }}
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
@@ -154,7 +154,7 @@ jobs:
           context: ./Backend/
           file: ./Backend/HadoopConsumer/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/${{ env.SERVICE_NAME }}:${{ github.SHA }}
+          tags: ${{ env.REGISTRY }}/${{ env.REGISTRY_NAME }}/${{ env.SERVICE_NAME }}:${{ github.SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -163,7 +163,7 @@ jobs:
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
           dns-name-label: ${{ env.SERVICE_NAME }}
-          image: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/${{ env.SERVICE_NAME }}:${{ github.SHA }}
+          image: ${{ env.REGISTRY }}/${{ env.REGISTRY_NAME }}/${{ env.SERVICE_NAME }}:${{ github.SHA }}
           registry-login-server: ${{ env.REGISTRY }}
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
@@ -207,7 +207,7 @@ jobs:
           context: ./Backend/
           file: ./Backend/Gateway/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/${{ env.SERVICE_NAME }}:${{ github.SHA }}
+          tags: ${{ env.REGISTRY }}/${{ env.REGISTRY_NAME }}/${{ env.SERVICE_NAME }}:${{ github.SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           
@@ -216,7 +216,7 @@ jobs:
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
           dns-name-label: ${{ env.SERVICE_NAME }}
-          image: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/${{ env.SERVICE_NAME }}:${{ github.SHA }}
+          image: ${{ env.REGISTRY }}/${{ env.REGISTRY_NAME }}/${{ env.SERVICE_NAME }}:${{ github.SHA }}
           registry-login-server: ${{ env.REGISTRY }}
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
@@ -260,7 +260,7 @@ jobs:
           context: ./Backend/
           file: ./Backend/VideoAnalyser/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/${{ env.SERVICE_NAME }}:${{ github.SHA }}
+          tags: ${{ env.REGISTRY }}/${{ env.REGISTRY_NAME }}/${{ env.SERVICE_NAME }}:${{ github.SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -269,7 +269,7 @@ jobs:
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
           dns-name-label: ${{ env.SERVICE_NAME }}
-          image: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/${{ env.SERVICE_NAME }}:${{ github.SHA }}
+          image: ${{ env.REGISTRY }}/${{ env.REGISTRY_NAME }}/${{ env.SERVICE_NAME }}:${{ github.SHA }}
           registry-login-server: ${{ env.REGISTRY }}
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
