@@ -8,16 +8,19 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  SERVICE_CONTAINER_GROUP: video-analyser-service
 
 jobs:
   build-and-deploy-registry-store:
 
     runs-on: ubuntu-latest
+    env:
+      SERVICE_NAME: database-registry-store
     permissions:
       contents: read
       packages: write
     
-    steps:
+    steps:  
       - name: Checkout repository
         uses: actions/checkout@v3
     
@@ -45,7 +48,7 @@ jobs:
         with:
           context: ./Backend/DatabaseRegistry/Database/
           push: true
-          tags: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/database-registry-store:${{ github.SHA }}
+          tags: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/${{ env.SERVICE_NAME }}:${{ github.SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -53,17 +56,19 @@ jobs:
         uses: 'azure/aci-deploy@v1'
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
-          dns-name-label: database-registry-store
-          image: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/database-registry-store:${{ github.SHA }}
+          dns-name-label: ${{ env.SERVICE_NAME }}
+          image: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/${{ env.SERVICE_NAME }}:${{ github.SHA }}
           registry-login-server: ${{ env.REGISTRY }}
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
-          name: database-registry-store
+          name: ${{ env.SERVICE_CONTAINER_GROUP }}
           location: 'north europe'
 
   build-and-deploy-registry:
 
     runs-on: ubuntu-latest
+    env:
+      SERVICE_NAME: database-registry
     permissions:
       contents: read
       packages: write
@@ -96,7 +101,7 @@ jobs:
           context: ./Backend/
           file: ./Backend/DatabaseRegistry/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/database-registry:${{ github.SHA }}
+          tags: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/${{ env.SERVICE_NAME }}:${{ github.SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -104,17 +109,19 @@ jobs:
         uses: 'azure/aci-deploy@v1'
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
-          dns-name-label: database-registry
-          image: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/database-registry:${{ github.SHA }}
+          dns-name-label: ${{ env.SERVICE_NAME }}
+          image: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/${{ env.SERVICE_NAME }}:${{ github.SHA }}
           registry-login-server: ${{ env.REGISTRY }}
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
-          name: database-registry
+          name: ${{ env.SERVICE_CONTAINER_GROUP }}
           location: 'north europe'
 
   build-and-deploy-metadata-store:
 
     runs-on: ubuntu-latest
+    env:
+      SERVICE_NAME: metadata-hadoop-store
     permissions:
       contents: read
       packages: write
@@ -147,7 +154,7 @@ jobs:
           context: ./Backend/
           file: ./Backend/HadoopConsumer/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/metadata-hadoop-store:${{ github.SHA }}
+          tags: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/${{ env.SERVICE_NAME }}:${{ github.SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -155,17 +162,19 @@ jobs:
         uses: 'azure/aci-deploy@v1'
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
-          dns-name-label: metadata-hadoop-store
-          image: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/metadata-hadoop-store:${{ github.SHA }}
+          dns-name-label: ${{ env.SERVICE_NAME }}
+          image: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/${{ env.SERVICE_NAME }}:${{ github.SHA }}
           registry-login-server: ${{ env.REGISTRY }}
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
-          name: metadata-hadoop-store
+          name: ${{ env.SERVICE_CONTAINER_GROUP }}
           location: 'north europe'
 
   build-and-deploy-gateway:
 
     runs-on: ubuntu-latest
+    env:
+      SERVICE_NAME: gateway
     permissions:
       contents: read
       packages: write
@@ -198,7 +207,7 @@ jobs:
           context: ./Backend/
           file: ./Backend/Gateway/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/gateway:${{ github.SHA }}
+          tags: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/${{ env.SERVICE_NAME }}:${{ github.SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           
@@ -206,17 +215,19 @@ jobs:
         uses: 'azure/aci-deploy@v1'
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
-          dns-name-label: gateway
-          image: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/gateway:${{ github.SHA }}
+          dns-name-label: ${{ env.SERVICE_NAME }}
+          image: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/${{ env.SERVICE_NAME }}:${{ github.SHA }}
           registry-login-server: ${{ env.REGISTRY }}
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
-          name: gateway
+          name: ${{ env.SERVICE_CONTAINER_GROUP }}
           location: 'north europe'
 
   build-and-deploy-video-analyser:
 
     runs-on: ubuntu-latest
+    env:
+      SERVICE_NAME: video-analyser
     permissions:
       contents: read
       packages: write
@@ -249,7 +260,7 @@ jobs:
           context: ./Backend/
           file: ./Backend/VideoAnalyser/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/video-analyser:${{ github.SHA }}
+          tags: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/${{ env.SERVICE_NAME }}:${{ github.SHA }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -257,10 +268,10 @@ jobs:
         uses: 'azure/aci-deploy@v1'
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
-          dns-name-label: video-analyser
-          image: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/video-analyser:${{ github.SHA }}
+          dns-name-label: ${{ env.SERVICE_NAME }}
+          image: ${{ env.REGISTRY }}/andrn19/tv2-cand-project/${{ env.SERVICE_NAME }}:${{ github.SHA }}
           registry-login-server: ${{ env.REGISTRY }}
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
-          name: video-analyser
+          name: ${{ env.SERVICE_CONTAINER_GROUP }}
           location: 'north europe'
