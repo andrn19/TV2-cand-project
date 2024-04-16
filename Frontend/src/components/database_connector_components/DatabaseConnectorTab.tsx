@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
-import { signal } from '@preact/signals-react';
-import { useSignals } from '@preact/signals-react/runtime';
-import { DataInterface } from '../../interfaces';
+import { DataInterface, EndpointFormData } from '../../interfaces';
 
 import DatabaseConnector from './DatabaseConnector'
 import DatabaseEndpointCreator from './DatabaseEndpointCreator'
@@ -9,7 +7,7 @@ import DatabaseEndpointCreator from './DatabaseEndpointCreator'
 const ENDPOINT_LIST_API_URL = 'http://localhost:52001/gateway/list-endpoints';
 
 const DatabaseConnectorTab = () => {
-  const [databaseConnectors, setDatabaseConnectors] = useState<DataInterface[]>([]);
+  const [databaseConnectors, setDatabaseConnectors] = useState<DataInterface[]>([{key:'hhhh', value: 'wwerwe'}]);
 
 
   const fetchEndpointList = () => {
@@ -28,11 +26,26 @@ const DatabaseConnectorTab = () => {
     fetchEndpointList()
   }, [])
 
+  const isDupInConnectors = (newConnector: EndpointFormData) => {
+    const existingConnector = databaseConnectors.find(connector => connector.key === newConnector.name);
+
+    if (existingConnector) {
+      return true
+    }
+    return false
+  }
+
+  const removeConnector = (connectorKey: string) => {
+    const updatedConnectors = databaseConnectors.filter(connector => connector.key !== connectorKey);
+
+    setDatabaseConnectors(updatedConnectors);
+  };
+
 
   return (
     <div className="flex justify-around">
-      <DatabaseConnector databaseConnectors={databaseConnectors} />
-      <DatabaseEndpointCreator fetchEndpointList={fetchEndpointList}/>
+      <DatabaseConnector databaseConnectors={databaseConnectors} removeConnector={removeConnector} />
+      <DatabaseEndpointCreator fetchEndpointList={fetchEndpointList} isDupInConnectors={isDupInConnectors} />
     </div>
   )
 }

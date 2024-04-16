@@ -21,3 +21,9 @@ export interface DataInterface {
     key: string,
     value: string
 }
+
+export interface EndpointFormData {
+    name: string,
+    url: string,
+    port: number
+}
