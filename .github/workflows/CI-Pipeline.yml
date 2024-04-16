@@ -208,13 +208,13 @@ jobs:
         run: sed -i "s+{IMG_TAG}+GA-${{ github.sha }}+g" Deployment/Azure.yaml
 
       - name: Change deployment file registry name
-        run: sed -i "s+{REGISTRY_NAME}+GA-${{ env.REGISTRY_NAME }}+g" Deployment/Azure.yaml
+        run: sed -i "s+{REGISTRY_NAME}+${{ env.REGISTRY }}+g" Deployment/Azure.yaml
 
       - name: Change deployment file username
-        run: sed -i "s+{REGISTRY_USERNAME}+GA-${{ github.actor }}+g" Deployment/Azure.yaml
+        run: sed -i "s+{REGISTRY_USERNAME}+${{ github.actor }}+g" Deployment/Azure.yaml
 
       - name: Change deployment file password
-        run: sed -i "s+{REGISTRY_PASSWORD}+GA-${{ secrets.GITHUB_TOKEN }}+g" Deployment/Azure.yaml
+        run: sed -i "s+{REGISTRY_PASSWORD}+${{ secrets.GITHUB_TOKEN }}+g" Deployment/Azure.yaml
 
       - name: Deploy Container Instances
         run: az container create --resource-group ${{ secrets.RESOURCE_GROUP }} --file Deployment/Azure.yaml
