@@ -205,7 +205,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           
       - name: Change deployment file image tags
-        run: sed -i "s+{IMG_TAG}+GA-${{ github.sha }}+g" Deployment/Azure.yaml
+        run: sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Azure.yaml
 
       - name: Change deployment file registry name
         run: sed -i "s+{REGISTRY_NAME}+${{ env.REGISTRY }}+g" Deployment/Azure.yaml
