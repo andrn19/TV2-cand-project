@@ -1,4 +1,4 @@
-apiVersion: 2019-12-01
+apiVersion: 2021-07-01
 location: northeurope
 name: video-analyser-service
 properties:
@@ -26,7 +26,7 @@ properties:
       image: ghcr.io/andrn19/tv2-cand-project/metadata-hadoop-store:{IMG_TAG}
       resources:
         requests:
-          cpu: 1
+          cpu: 0.5
           memoryInGb: 1.5
   - name: gateway
     properties:
