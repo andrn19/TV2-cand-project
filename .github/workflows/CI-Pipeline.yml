@@ -322,3 +322,64 @@ jobs:
 
       - name: Deploy Container Instances
         run: az container create --resource-group ${{ secrets.RESOURCE_GROUP }} --file Deployment/FrontendDeploy.yaml
+
+
+  deploy-vnet-subnets:
+    runs-on: ubuntu-latest
+    needs: [deploy-backend-services,deploy-frontend]
+
+    env:
+      NETWORK_NAME: Video-Analyser-VNet
+      SUBNET1_NAME: Frontend-subnet
+      SUBNET2_NAME: Backend-subnet
+
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log into Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      - name: Deploy virtual network
+        run: az network vnet create --resource-group ${{ secrets.RESOURCE_GROUP }} --location eastus2 --name ${{ env.NETWORK_NAME }} --address-prefix 10.0.0.0/16
+
+      - name: Deploy subnet1
+        run: az network vnet subnet create --resource-group ${{ secrets.RESOURCE_GROUP }} --vnet-name ${{ env.NETWORK_NAME }} --name ${{ env.SUBNET1_NAME }} --address-prefix 10.0.0.0/24
+
+      - name: Deploy subnet1
+        run: az network vnet subnet create --resource-group ${{ secrets.RESOURCE_GROUP }} --vnet-name ${{ env.NETWORK_NAME }} --name ${{ env.SUBNET2_NAME }} --address-prefix 10.0.1.0/24
+
+
+  update-vnet-subnets:
+    runs-on: ubuntu-latest
+    needs: [deploy-vnet-subnets]
+
+    env:
+      NETWORK_NAME: Video-Analyser-VNet
+      SUBNET1_NAME: Frontend-subnet
+      SUBNET2_NAME: Backend-subnet
+
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log into Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      - name: Update subnet1
+        run: az network vnet subnet update --resource-group ${{ secrets.RESOURCE_GROUP }} --name ${{ env.SUBNET1_NAME }} --vnet-name ${{ env.NETWORK_NAME }} --delegations Microsoft.ContainerInstance/containerGroups
+
+      - name: Update subnet2
+        run: az network vnet subnet update --resource-group ${{ secrets.RESOURCE_GROUP }} --name ${{ env.SUBNET2_NAME }} --vnet-name ${{ env.NETWORK_NAME }} --delegations Microsoft.ContainerInstance/containerGroups
