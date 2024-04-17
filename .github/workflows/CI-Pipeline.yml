@@ -186,7 +186,8 @@ jobs:
           cache-to: type=gha,mode=max
 
 
-build-frontend:
+  build-frontend:
+  
     runs-on: ubuntu-latest
     env:
       SERVICE_NAME: frontend
