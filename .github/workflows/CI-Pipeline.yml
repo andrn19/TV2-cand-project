@@ -243,7 +243,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       
       - name: Deploy virtual network
-        run: az network vnet create --resource-group ${{ secrets.RESOURCE_GROUP }} --location eastus2 --name ${{ env.NETWORK_NAME }} --address-prefix 10.0.0.0/16
+        run: az network vnet create --resource-group ${{ secrets.RESOURCE_GROUP }} --location northeurope --name ${{ env.NETWORK_NAME }} --address-prefix 10.0.0.0/16
 
       - name: Deploy subnet1
         run: az network vnet subnet create --resource-group ${{ secrets.RESOURCE_GROUP }} --vnet-name ${{ env.NETWORK_NAME }} --name ${{ env.SUBNET1_NAME }} --address-prefix 10.0.0.0/24
