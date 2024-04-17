@@ -220,113 +220,9 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  # deploy-services:
-  #   runs-on: ubuntu-latest
-  #   needs: [build-database-registry-store,build-database-registry,build-metadata-hadoop-store,build-gateway,build-video-analyser,build-frontend]
-
-  #   permissions:
-  #     contents: read
-  #     packages: write
-    
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v3
-
-  #     - name: Log into Azure CLI
-  #       uses: azure/login@v1
-  #       with:
-  #         creds: ${{ secrets.AZURE_CREDENTIALS }}
-          
-  #     - name: Change deployment file image tags
-  #       run: sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Azure.yaml
-
-  #     - name: Change deployment file registry name
-  #       run: sed -i "s+{REGISTRY_NAME}+${{ env.REGISTRY }}+g" Deployment/Azure.yaml
-
-  #     - name: Change deployment file username
-  #       run: sed -i "s+{REGISTRY_USERNAME}+${{ github.actor }}+g" Deployment/Azure.yaml
-
-  #     - name: Change deployment file password
-  #       run: sed -i "s+{REGISTRY_PASSWORD}+${{ secrets.GITHUB_TOKEN }}+g" Deployment/Azure.yaml
-
-  #     - name: Deploy Container Instances
-  #       run: az container create --resource-group ${{ secrets.RESOURCE_GROUP }} --file Deployment/Azure.yaml
-
-  deploy-backend-services:
-    runs-on: ubuntu-latest
-    needs: [build-database-registry-store,build-database-registry,build-metadata-hadoop-store,build-gateway,build-video-analyser,build-frontend]
-
-    permissions:
-      contents: read
-      packages: write
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Log into Azure CLI
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-          
-      - name: Change deployment file image tags
-        run: sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/BackendDeploy.yaml
-
-      - name: Change deployment file registry name
-        run: sed -i "s+{REGISTRY_NAME}+${{ env.REGISTRY }}+g" Deployment/BackendDeploy.yaml
-
-      - name: Change deployment file username
-        run: sed -i "s+{REGISTRY_USERNAME}+${{ github.actor }}+g" Deployment/BackendDeploy.yaml
-
-      - name: Change deployment file password
-        run: sed -i "s+{REGISTRY_PASSWORD}+${{ secrets.GITHUB_TOKEN }}+g" Deployment/BackendDeploy.yaml
-
-      - name: Change deployment file virtual network id
-        run: sed -i "s+{VIRTUAL_NETWORK_ID}+${{ secrets.VIRTUAL_NETWORK_ID }}+g" Deployment/BackendDeploy.yaml
-
-      - name: Deploy Container Instances
-        run: az container create --resource-group ${{ secrets.RESOURCE_GROUP }} --file Deployment/BackendDeploy.yaml
-
-
-  deploy-frontend:
-    runs-on: ubuntu-latest
-    needs: [build-database-registry-store,build-database-registry,build-metadata-hadoop-store,build-gateway,build-video-analyser,build-frontend]
-
-    permissions:
-      contents: read
-      packages: write
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Log into Azure CLI
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-          
-      - name: Change deployment file image tags
-        run: sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/FrontendDeploy.yaml
-
-      - name: Change deployment file registry name
-        run: sed -i "s+{REGISTRY_NAME}+${{ env.REGISTRY }}+g" Deployment/FrontendDeploy.yaml
-
-      - name: Change deployment file username
-        run: sed -i "s+{REGISTRY_USERNAME}+${{ github.actor }}+g" Deployment/FrontendDeploy.yaml
-
-      - name: Change deployment file password
-        run: sed -i "s+{REGISTRY_PASSWORD}+${{ secrets.GITHUB_TOKEN }}+g" Deployment/FrontendDeploy.yaml
-
-      - name: Change deployment file virtual network id
-        run: sed -i "s+{VIRTUAL_NETWORK_ID}+${{ secrets.VIRTUAL_NETWORK_ID }}+g" Deployment/FrontendDeploy.yaml
-
-      - name: Deploy Container Instances
-        run: az container create --resource-group ${{ secrets.RESOURCE_GROUP }} --file Deployment/FrontendDeploy.yaml
-
 
   deploy-vnet-subnets:
     runs-on: ubuntu-latest
-    needs: [deploy-backend-services,deploy-frontend]
 
     env:
       NETWORK_NAME: Video-Analyser-VNet
@@ -383,3 +279,106 @@ jobs:
 
       - name: Update subnet2
         run: az network vnet subnet update --resource-group ${{ secrets.RESOURCE_GROUP }} --name ${{ env.SUBNET2_NAME }} --vnet-name ${{ env.NETWORK_NAME }} --delegations Microsoft.ContainerInstance/containerGroups
+
+  # deploy-services:
+  #   runs-on: ubuntu-latest
+  #   needs: [build-database-registry-store,build-database-registry,build-metadata-hadoop-store,build-gateway,build-video-analyser,build-frontend]
+
+  #   permissions:
+  #     contents: read
+  #     packages: write
+    
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
+
+  #     - name: Log into Azure CLI
+  #       uses: azure/login@v1
+  #       with:
+  #         creds: ${{ secrets.AZURE_CREDENTIALS }}
+          
+  #     - name: Change deployment file image tags
+  #       run: sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Azure.yaml
+
+  #     - name: Change deployment file registry name
+  #       run: sed -i "s+{REGISTRY_NAME}+${{ env.REGISTRY }}+g" Deployment/Azure.yaml
+
+  #     - name: Change deployment file username
+  #       run: sed -i "s+{REGISTRY_USERNAME}+${{ github.actor }}+g" Deployment/Azure.yaml
+
+  #     - name: Change deployment file password
+  #       run: sed -i "s+{REGISTRY_PASSWORD}+${{ secrets.GITHUB_TOKEN }}+g" Deployment/Azure.yaml
+
+  #     - name: Deploy Container Instances
+  #       run: az container create --resource-group ${{ secrets.RESOURCE_GROUP }} --file Deployment/Azure.yaml
+
+  deploy-backend-services:
+    runs-on: ubuntu-latest
+    needs: [build-database-registry-store,build-database-registry,build-metadata-hadoop-store,build-gateway,build-video-analyser,build-frontend,update-vnet-subnets]
+
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log into Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          
+      - name: Change deployment file image tags
+        run: sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/BackendDeploy.yaml
+
+      - name: Change deployment file registry name
+        run: sed -i "s+{REGISTRY_NAME}+${{ env.REGISTRY }}+g" Deployment/BackendDeploy.yaml
+
+      - name: Change deployment file username
+        run: sed -i "s+{REGISTRY_USERNAME}+${{ github.actor }}+g" Deployment/BackendDeploy.yaml
+
+      - name: Change deployment file password
+        run: sed -i "s+{REGISTRY_PASSWORD}+${{ secrets.GITHUB_TOKEN }}+g" Deployment/BackendDeploy.yaml
+
+      - name: Change deployment file virtual network id
+        run: sed -i "s+{VIRTUAL_NETWORK_ID}+${{ secrets.VIRTUAL_NETWORK_ID }}+g" Deployment/BackendDeploy.yaml
+
+      - name: Deploy Container Instances
+        run: az container create --resource-group ${{ secrets.RESOURCE_GROUP }} --file Deployment/BackendDeploy.yaml
+
+
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    needs: [build-database-registry-store,build-database-registry,build-metadata-hadoop-store,build-gateway,build-video-analyser,build-frontend,update-vnet-subnets]
+
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log into Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          
+      - name: Change deployment file image tags
+        run: sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/FrontendDeploy.yaml
+
+      - name: Change deployment file registry name
+        run: sed -i "s+{REGISTRY_NAME}+${{ env.REGISTRY }}+g" Deployment/FrontendDeploy.yaml
+
+      - name: Change deployment file username
+        run: sed -i "s+{REGISTRY_USERNAME}+${{ github.actor }}+g" Deployment/FrontendDeploy.yaml
+
+      - name: Change deployment file password
+        run: sed -i "s+{REGISTRY_PASSWORD}+${{ secrets.GITHUB_TOKEN }}+g" Deployment/FrontendDeploy.yaml
+
+      - name: Change deployment file virtual network id
+        run: sed -i "s+{VIRTUAL_NETWORK_ID}+${{ secrets.VIRTUAL_NETWORK_ID }}+g" Deployment/FrontendDeploy.yaml
+
+      - name: Deploy Container Instances
+        run: az container create --resource-group ${{ secrets.RESOURCE_GROUP }} --file Deployment/FrontendDeploy.yaml
