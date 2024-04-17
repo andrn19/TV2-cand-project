@@ -24,6 +24,6 @@ properties:
       port: 5173
   subnetIds:
     - id: {VIRTUAL_NETWORK_ID}
-      name: Video-Analyser-VNet
+      name: default
 tags: {exampleTag: tutorial}
 type: Microsoft.ContainerInstance/containerGroups
