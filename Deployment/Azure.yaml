@@ -62,5 +62,7 @@ properties:
       port: 80
     - protocol: tcp
       port: 8080
+    - protocol: tcp
+      port: 5173
 tags: {exampleTag: tutorial}
 type: Microsoft.ContainerInstance/containerGroups
