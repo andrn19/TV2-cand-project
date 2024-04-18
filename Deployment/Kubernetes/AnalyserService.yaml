@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: video-analyser
+spec:
+  ports:
+    -
+      name: http
+      port: 51011
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: video-analyser
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: video-analyser
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: video-analyser
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: video-analyser
+    spec:
+      containers:
+        - 
+          image: ghcr.io/andrn19/tv2-cand-project/video-analyser:{IMG_TAG}
+          imagePullPolicy: Always
+          name: video-analyser
+          ports:
+            -
+              containerPort: 8080
+          resources:
+            limits:
+              cpu: 200m
+              memory: 200Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          readinessProbe:
+            httpGet:
+              path: /VideoAnalyser/Get
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 3
+      imagePullSecrets:
+        - name: regcred
