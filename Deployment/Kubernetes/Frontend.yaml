@@ -17,7 +17,7 @@ metadata:
 spec:
   ports:
     - name: http
-      port: 53001
+      port: 5173
       protocol: TCP
       targetPort: 5173
   selector:
