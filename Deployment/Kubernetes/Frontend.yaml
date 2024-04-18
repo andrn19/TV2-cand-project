@@ -10,7 +10,7 @@ spec:
       paths:
       - backend:
           service:
-            name: aks-helloworld
+            name: frontend
             port:
               number: 5173
         path: /
