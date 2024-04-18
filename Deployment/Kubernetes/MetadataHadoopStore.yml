@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: hadoop-consumer
+  name: metadata-hadoop-store
 spec:
   ports:
     -
@@ -10,18 +10,18 @@ spec:
       protocol: TCP
       targetPort: 80
   selector:
-    app: hadoop-consumer-pod
+    app: metadata-hadoop-store-pod
   type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hadoop-consumer-deployment
+  name: metadata-hadoop-store-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hadoop-consumer-pod
+      app: metadata-hadoop-store-pod
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -30,13 +30,13 @@ spec:
   template:
     metadata:
       labels:
-        app: hadoop-consumer-pod
+        app: metadata-hadoop-store-pod
     spec:
       containers:
         - 
           image: ghcr.io/andrn19/tv2-cand-project/metadata-hadoop-store:{IMG_TAG}
           imagePullPolicy: Always
-          name: hadoop-consumer
+          name: metadata-hadoop-store
           ports:
             -
               containerPort: 80
