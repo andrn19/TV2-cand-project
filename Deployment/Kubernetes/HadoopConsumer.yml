@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hadoop-consumer
+spec:
+  ports:
+    -
+      name: http
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: hadoop-consumer-pod
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hadoop-consumer-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hadoop-consumer-pod
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: hadoop-consumer-pod
+    spec:
+      containers:
+        - 
+          image: ghcr.io/andrn19/tv2-cand-project/metadata-hadoop-store:{IMG_TAG}
+          imagePullPolicy: Always
+          name: hadoop-consumer
+          ports:
+            -
+              containerPort: 80
+          resources:
+            limits:
+              cpu: 200m
+              memory: 200Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+      imagePullSecrets:
+        -
+          name: regcred
