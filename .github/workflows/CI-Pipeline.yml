@@ -9,6 +9,7 @@ env:
   REGISTRY: ghcr.io
   REGISTRY_NAME: andrn19/tv2-cand-project
   SERVICE_CONTAINER_GROUP: video-analyser-service
+  AKS_CLUSTER: tv2-video-analyser-cluster
   
 
 jobs:
@@ -221,13 +222,9 @@ jobs:
           cache-to: type=gha,mode=max
 
 
-  deploy-vnet-subnets:
+  deploy-kubernetes:
     runs-on: ubuntu-latest
-
-    env:
-      NETWORK_NAME: Video-Analyser-VNet
-      SUBNET1_NAME: Frontend-subnet
-      SUBNET2_NAME: Backend-subnet
+    needs: [build-database-registry-store,build-database-registry,build-metadata-hadoop-store,build-gateway,build-video-analyser,build-frontend]
 
     permissions:
       contents: read
@@ -241,144 +238,14 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      
-      - name: Deploy virtual network
-        run: az network vnet create --resource-group ${{ secrets.RESOURCE_GROUP }} --location northeurope --name ${{ env.NETWORK_NAME }} --address-prefix 10.0.0.0/16
 
-      - name: Deploy subnet1
-        run: az network vnet subnet create --resource-group ${{ secrets.RESOURCE_GROUP }} --vnet-name ${{ env.NETWORK_NAME }} --name ${{ env.SUBNET1_NAME }} --address-prefix 10.0.0.0/24
-
-      - name: Deploy subnet1
-        run: az network vnet subnet create --resource-group ${{ secrets.RESOURCE_GROUP }} --vnet-name ${{ env.NETWORK_NAME }} --name ${{ env.SUBNET2_NAME }} --address-prefix 10.0.1.0/24
-
-
-  update-vnet-subnets:
-    runs-on: ubuntu-latest
-    needs: [deploy-vnet-subnets]
-
-    env:
-      NETWORK_NAME: Video-Analyser-VNet
-      SUBNET1_NAME: Frontend-subnet
-      SUBNET2_NAME: Backend-subnet
-
-    permissions:
-      contents: read
-      packages: write
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Log into Azure CLI
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-      
-      - name: Update subnet1
-        run: az network vnet subnet update --resource-group ${{ secrets.RESOURCE_GROUP }} --name ${{ env.SUBNET1_NAME }} --vnet-name ${{ env.NETWORK_NAME }} --delegations Microsoft.ContainerInstance/containerGroups
-
-      - name: Update subnet2
-        run: az network vnet subnet update --resource-group ${{ secrets.RESOURCE_GROUP }} --name ${{ env.SUBNET2_NAME }} --vnet-name ${{ env.NETWORK_NAME }} --delegations Microsoft.ContainerInstance/containerGroups
-
-  # deploy-services:
-  #   runs-on: ubuntu-latest
-  #   needs: [build-database-registry-store,build-database-registry,build-metadata-hadoop-store,build-gateway,build-video-analyser,build-frontend]
-
-  #   permissions:
-  #     contents: read
-  #     packages: write
-    
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v3
-
-  #     - name: Log into Azure CLI
-  #       uses: azure/login@v1
-  #       with:
-  #         creds: ${{ secrets.AZURE_CREDENTIALS }}
-          
-  #     - name: Change deployment file image tags
-  #       run: sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Azure.yaml
-
-  #     - name: Change deployment file registry name
-  #       run: sed -i "s+{REGISTRY_NAME}+${{ env.REGISTRY }}+g" Deployment/Azure.yaml
-
-  #     - name: Change deployment file username
-  #       run: sed -i "s+{REGISTRY_USERNAME}+${{ github.actor }}+g" Deployment/Azure.yaml
-
-  #     - name: Change deployment file password
-  #       run: sed -i "s+{REGISTRY_PASSWORD}+${{ secrets.GITHUB_TOKEN }}+g" Deployment/Azure.yaml
-
-  #     - name: Deploy Container Instances
-  #       run: az container create --resource-group ${{ secrets.RESOURCE_GROUP }} --file Deployment/Azure.yaml
-
-  deploy-backend-services:
-    runs-on: ubuntu-latest
-    needs: [build-database-registry-store,build-database-registry,build-metadata-hadoop-store,build-gateway,build-video-analyser,build-frontend,update-vnet-subnets]
-
-    permissions:
-      contents: read
-      packages: write
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Log into Azure CLI
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Get AKS Credentials
+        run: |
+          az aks install-cli
+          az aks get-credentials --resource-group ${{ secrets.RESOURCE_GROUP }} --name ${{ env.AKS_CLUSTER }}
           
       - name: Change deployment file image tags
-        run: sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/BackendDeploy.yaml
-
-      - name: Change deployment file registry name
-        run: sed -i "s+{REGISTRY_NAME}+${{ env.REGISTRY }}+g" Deployment/BackendDeploy.yaml
-
-      - name: Change deployment file username
-        run: sed -i "s+{REGISTRY_USERNAME}+${{ github.actor }}+g" Deployment/BackendDeploy.yaml
-
-      - name: Change deployment file password
-        run: sed -i "s+{REGISTRY_PASSWORD}+${{ secrets.GITHUB_TOKEN }}+g" Deployment/BackendDeploy.yaml
-
-      - name: Change deployment file virtual network id
-        run: sed -i "s+{VIRTUAL_NETWORK_ID}+${{ secrets.VIRTUAL_NETWORK_ID }}+g" Deployment/BackendDeploy.yaml
+        run: sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/DatabaseRegistry.yaml
 
       - name: Deploy Container Instances
-        run: az container create --resource-group ${{ secrets.RESOURCE_GROUP }} --file Deployment/BackendDeploy.yaml
-
-
-  deploy-frontend:
-    runs-on: ubuntu-latest
-    needs: [build-database-registry-store,build-database-registry,build-metadata-hadoop-store,build-gateway,build-video-analyser,build-frontend,update-vnet-subnets]
-
-    permissions:
-      contents: read
-      packages: write
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Log into Azure CLI
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-          
-      - name: Change deployment file image tags
-        run: sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/FrontendDeploy.yaml
-
-      - name: Change deployment file registry name
-        run: sed -i "s+{REGISTRY_NAME}+${{ env.REGISTRY }}+g" Deployment/FrontendDeploy.yaml
-
-      - name: Change deployment file username
-        run: sed -i "s+{REGISTRY_USERNAME}+${{ github.actor }}+g" Deployment/FrontendDeploy.yaml
-
-      - name: Change deployment file password
-        run: sed -i "s+{REGISTRY_PASSWORD}+${{ secrets.GITHUB_TOKEN }}+g" Deployment/FrontendDeploy.yaml
-
-      - name: Change deployment file virtual network id
-        run: sed -i "s+{VIRTUAL_NETWORK_ID}+${{ secrets.VIRTUAL_NETWORK_ID }}+g" Deployment/FrontendDeploy.yaml
-
-      - name: Deploy Container Instances
-        run: az container create --resource-group ${{ secrets.RESOURCE_GROUP }} --file Deployment/FrontendDeploy.yaml
+        run: kubectl apply -f Deployment/Kubernetes/DatabaseRegistry.yaml
