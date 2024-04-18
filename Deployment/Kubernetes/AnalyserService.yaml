@@ -10,18 +10,18 @@ spec:
       protocol: TCP
       targetPort: 8080
   selector:
-    app: video-analyser
+    app: video-analyser-pod
   type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: video-analyser
+  name: video-analyser-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: video-analyser
+      app: video-analyser-pod
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -30,7 +30,7 @@ spec:
   template:
     metadata:
       labels:
-        app: video-analyser
+        app: video-analyser-pod
     spec:
       containers:
         - 
