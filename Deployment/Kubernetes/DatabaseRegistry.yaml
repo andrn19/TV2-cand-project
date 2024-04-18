@@ -125,5 +125,5 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 500M<i
+      storage: 500Mi
   volumeMode: Filesystem
