@@ -254,10 +254,4 @@ jobs:
           sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/RabbitMQ.yaml
 
       - name: Deploy Container Instances
-        run: kubectl apply \ 
-          -f Deployment/Kubernetes/AnalyserService.yaml \
-          -f Deployment/Kubernetes/DatabaseRegistry.yaml \
-          -f Deployment/Kubernetes/Frontend.yaml \
-          -f Deployment/Kubernetes/Gateway.yaml \
-          -f Deployment/Kubernetes/MetadataHadoopStore.yaml \
-          -f Deployment/Kubernetes/RabbitMQ.yaml \
+        run: kubectl apply -f Deployment/Kubernetes/
