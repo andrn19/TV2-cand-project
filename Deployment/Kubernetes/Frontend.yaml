@@ -8,9 +8,9 @@ spec:
   rules:
     http:
       paths:
-        path: /
+      - path: /
         pathType: Prefix
-      - backend:
+        backend:
           service:
             name: frontend
             port:
