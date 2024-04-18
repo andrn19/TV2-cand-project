@@ -6,7 +6,7 @@ spec:
   ports:
     -
       name: http
-      port: 51011
+      port: 8080
       protocol: TCP
       targetPort: 8080
   selector:
