@@ -37,6 +37,10 @@ jobs:
         run: |
           az aks install-cli
           az aks get-credentials --resource-group ${{ secrets.RESOURCE_GROUP }} --name ${{ env.AKS_CLUSTER }}
+          kubectl create secret docker-registry regcred \
+            --docker-server=${{ env.REGISTRY }} \
+            --docker-username=${{ github.actor }} \
+            --docker-password=${{ secrets.GITHUB_TOKEN }}
           
       - name: Change deployment file image tags
         run: |
