@@ -3,11 +3,18 @@ kind: Ingress
 metadata:
   name: frontend-ingress
 spec:
-  defaultBackend:
-    service:
-      name: frontend
-      port:
-        number: 5173
+  ingressClassName: webapprouting.kubernetes.azure.com
+  rules:
+  - host: frontend
+    http:
+      paths:
+      - backend:
+          service:
+            name: aks-helloworld
+            port:
+              number: 5173
+        path: /
+        pathType: Prefix
 ---
 apiVersion: v1
 kind: Service
