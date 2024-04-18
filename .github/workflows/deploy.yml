@@ -1,0 +1,44 @@
+name: Deploy
+on:
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  REGISTRY_NAME: andrn19/tv2-cand-project
+  SERVICE_CONTAINER_GROUP: video-analyser-service
+  AKS_CLUSTER: tv2-video-analyser-cluster
+  
+
+jobs:
+  deploy-kubernetes:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log into Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Get AKS Credentials
+        run: |
+          az aks install-cli
+          az aks get-credentials --resource-group ${{ secrets.RESOURCE_GROUP }} --name ${{ env.AKS_CLUSTER }}
+          
+      - name: Change deployment file image tags
+        run: |
+          sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/AnalyserService.yaml
+          sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/DatabaseRegistry.yaml
+          sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/Frontend.yaml
+          sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/Gateway.yaml
+          sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/MetadataHadoopStore.yaml
+          sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/RabbitMQ.yaml
+
+      - name: Deploy Container Instances
+        run: kubectl apply -f Deployment/Kubernetes/
