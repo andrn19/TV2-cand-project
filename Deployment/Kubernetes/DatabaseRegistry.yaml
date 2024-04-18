@@ -6,9 +6,9 @@ spec:
   ports:
     -
       name: http
-      port: 80
+      port: 8080
       protocol: TCP
-      targetPort: 80
+      targetPort: 8080
   selector:
     app: database-registry-pod
   type: ClusterIP
@@ -39,7 +39,7 @@ spec:
           name: database-registry
           ports:
             -
-              containerPort: 80
+              containerPort: 8080
           resources:
             limits:
               cpu: 200m
