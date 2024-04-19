@@ -1,0 +1,74 @@
+name: Build and deploy ACR
+on:
+  workflow_dispatch:
+
+env:
+  AZURE_CONTAINER_REGISTRY: MetadataAnalyser
+  AZURE_CONTAINER_REGISTRY_SMALL: metadataanalyser
+  REGISTRY_NAME: andrn19/tv2-cand-project
+  SERVICE_CONTAINER_GROUP: video-analyser-service
+  AKS_CLUSTER: tv2-video-analyser-cluster
+  
+
+jobs:
+  deploy-kubernetes:
+    runs-on: ubuntu-latest
+    needs: [build-database-registry-store,build-database-registry,build-metadata-hadoop-store,build-gateway,build-video-analyser,build-frontend]
+
+    permissions:
+      actions: read
+      contents: read
+      id-token: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log into Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Set up kubelogin for non-interactive login
+        uses: azure/use-kubelogin@v1
+        with:
+          kubelogin-version: 'v0.0.25'
+
+      - name: Get K8s context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
+          cluster-name: ${{ env.AKS_CLUSTER }}
+          admin: 'false'
+          use-kubelogin: 'true'
+  
+      - name: Change deployment file for Analyser Service
+        run: |
+          sed -i "s+{REGISTRY}+${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io+g" Deployment/Kubernetes/AnalyserService.yaml
+          sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/AnalyserService.yaml
+
+      - name: Change deployment file for Database Registry
+        run: |
+          sed -i "s+{REGISTRY}+${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io+g" Deployment/Kubernetes/DatabaseRegistry.yaml
+          sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/DatabaseRegistry.yaml
+
+      - name: Change deployment file for Frontend
+        run: |
+          sed -i "s+{REGISTRY}+${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io+g" Deployment/Kubernetes/Frontend.yaml
+          sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/Frontend.yaml
+
+      - name: Change deployment file for Gateway
+        run: |
+          sed -i "s+{REGISTRY}+${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io+g" Deployment/Kubernetes/Gateway.yaml
+          sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/Gateway.yaml
+
+      - name: Change deployment file for Metadata Hadoop Store
+        run: |
+          sed -i "s+{REGISTRY}+${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io+g" Deployment/Kubernetes/MetadataHadoopStore.yaml
+          sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/MetadataHadoopStore.yaml
+
+      - name: Deploy application
+        uses: Azure/k8s-deploy@v4
+        with:
+          action: deploy
+          manifests: Deployment/Kubernetes/
