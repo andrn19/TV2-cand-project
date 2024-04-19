@@ -248,14 +248,30 @@ jobs:
             --docker-username=${{ github.actor }} \
             --docker-password=${{ secrets.GITHUB_TOKEN }}
           
-      - name: Change deployment file image tags
+      - name: Change deployment file for Analyser Service
         run: |
+          sed -i "s+{REGISTRY}+${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io+g" Deployment/Kubernetes/AnalyserService.yaml
           sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/AnalyserService.yaml
+
+      - name: Change deployment file for Database Registry
+        run: |
+          sed -i "s+{REGISTRY}+${{ env.REGISTRY }}/${{ env.REGISTRY_NAME }}+g" Deployment/Kubernetes/DatabaseRegistry.yaml
           sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/DatabaseRegistry.yaml
+
+      - name: Change deployment file for Frontend
+        run: |
+          sed -i "s+{REGISTRY}+${{ env.REGISTRY }}/${{ env.REGISTRY_NAME }}+g" Deployment/Kubernetes/Frontend.yaml
           sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/Frontend.yaml
+
+      - name: Change deployment file for Gateway
+        run: |
+          sed -i "s+{REGISTRY}+${{ env.REGISTRY }}/${{ env.REGISTRY_NAME }}+g" Deployment/Kubernetes/Gateway.yaml
           sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/Gateway.yaml
+
+      - name: Change deployment file for Metadata Hadoop Store
+        run: |
+          sed -i "s+{REGISTRY}+${{ env.REGISTRY }}/${{ env.REGISTRY_NAME }}+g" Deployment/Kubernetes/MetadataHadoopStore.yaml
           sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/MetadataHadoopStore.yaml
-          sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/RabbitMQ.yaml
 
       - name: Deploy Container Instances
         run: kubectl apply -f Deployment/Kubernetes/
