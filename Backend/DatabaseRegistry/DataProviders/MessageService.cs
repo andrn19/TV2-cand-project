@@ -17,8 +17,8 @@ public class MessageService : IMessageService
     {
         Console.WriteLine("Connecting to rabbit");
         _factory = new ConnectionFactory() { HostName = "rabbitmq", Port = 5672 };
-        _factory.UserName = "guest";
-        _factory.Password = "guest";
+        _factory.UserName = "username";
+        _factory.Password = "password";
         _conn = _factory.CreateConnection();
         _channel = _conn.CreateModel();
         _channel.QueueDeclare(queue: "Metadata",
