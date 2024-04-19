@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
         - 
-          image: {REGISTRY}/andrn19/tv2-cand-project/metadata-hadoop-store:{IMG_TAG}
+          image: {REGISTRY}/metadata-hadoop-store:{IMG_TAG}
           imagePullPolicy: Always
           name: metadata-hadoop-store
           ports:
