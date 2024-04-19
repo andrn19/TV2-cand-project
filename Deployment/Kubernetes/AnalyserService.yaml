@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
         - 
-          image: {REGISTRY}/andrn19/tv2-cand-project/video-analyser:{IMG_TAG}
+          image: {REGISTRY}/video-analyser:{IMG_TAG}
           imagePullPolicy: Always
           name: video-analyser
           ports:
