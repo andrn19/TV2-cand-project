@@ -6,7 +6,7 @@ on:
 #      - main
 
 env:
-  REGISTRY: ghcr.io
+  AZURE_CONTAINER_REGISTRY: MetadataAnalyser
   REGISTRY_NAME: andrn19/tv2-cand-project
   SERVICE_CONTAINER_GROUP: video-analyser-service
   AKS_CLUSTER: tv2-video-analyser-cluster
