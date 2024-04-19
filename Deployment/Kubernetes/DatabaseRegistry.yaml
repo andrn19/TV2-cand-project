@@ -53,9 +53,6 @@ spec:
               port: 80
             initialDelaySeconds: 10
             periodSeconds: 3
-      imagePullSecrets:
-        -
-          name: regcred
 ---
 apiVersion: v1
 kind: Service
@@ -105,9 +102,6 @@ spec:
             -
               mountPath: /var/lib/mysql
               name: database-registry-persistent-storage
-      imagePullSecrets:
-        -
-          name: regcred
       volumes:
         -
           name: database-registry-persistent-storage
