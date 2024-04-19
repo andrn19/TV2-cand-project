@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
         - 
-          image: ghcr.io/andrn19/tv2-cand-project/frontend:{IMG_TAG}
+          image: {REGISTRY}/andrn19/tv2-cand-project/frontend:{IMG_TAG}
           imagePullPolicy: Always
           name: frontend
           ports:
