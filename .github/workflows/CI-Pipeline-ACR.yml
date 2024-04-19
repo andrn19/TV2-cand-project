@@ -34,7 +34,7 @@ jobs:
 
       - name: Build and push image to ACR
         run: |
-          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.RESOURCE_GROUP }} ${{ env.CONTEXT }}
+          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ secrets.RESOURCE_GROUP }} ${{ env.CONTEXT }}
 
 
   build-database-registry:
@@ -58,7 +58,7 @@ jobs:
 
       - name: Build and push image to ACR
         run: |
-          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} --file ${{ env.DOCKERFILE }} -g ${{ env.RESOURCE_GROUP }} ${{ env.CONTEXT }}
+          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} --file ${{ env.DOCKERFILE }} -g ${{ secrets.RESOURCE_GROUP }} ${{ env.CONTEXT }}
 
 
 
@@ -84,7 +84,7 @@ jobs:
 
       - name: Build and push image to ACR
         run: |
-          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} --file ${{ env.DOCKERFILE }} -g ${{ env.RESOURCE_GROUP }} ${{ env.CONTEXT }}
+          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} --file ${{ env.DOCKERFILE }} -g ${{ secrets.RESOURCE_GROUP }} ${{ env.CONTEXT }}
 
 
 
@@ -110,7 +110,7 @@ jobs:
 
       - name: Build and push image to ACR
         run: |
-          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} --file ${{ env.DOCKERFILE }} -g ${{ env.RESOURCE_GROUP }} ${{ env.CONTEXT }}
+          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} --file ${{ env.DOCKERFILE }} -g ${{ secrets.RESOURCE_GROUP }} ${{ env.CONTEXT }}
 
 
 
@@ -136,7 +136,7 @@ jobs:
 
       - name: Build and push image to ACR
         run: |
-          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} --file ${{ env.DOCKERFILE }} -g ${{ env.RESOURCE_GROUP }} ${{ env.CONTEXT }}
+          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} --file ${{ env.DOCKERFILE }} -g ${{ secrets.RESOURCE_GROUP }} ${{ env.CONTEXT }}
 
 
 
@@ -162,7 +162,7 @@ jobs:
 
       - name: Build and push image to ACR
         run: |
-          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} --file ${{ env.DOCKERFILE }} -g ${{ env.RESOURCE_GROUP }} ${{ env.CONTEXT }}
+          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} --file ${{ env.DOCKERFILE }} -g ${{ secrets.RESOURCE_GROUP }} ${{ env.CONTEXT }}
 
 
 
