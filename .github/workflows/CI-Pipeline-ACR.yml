@@ -7,6 +7,7 @@ on:
 
 env:
   AZURE_CONTAINER_REGISTRY: MetadataAnalyser
+  AZURE_CONTAINER_REGISTRY_SMALL: metadataanalyser
   REGISTRY_NAME: andrn19/tv2-cand-project
   SERVICE_CONTAINER_GROUP: video-analyser-service
   AKS_CLUSTER: tv2-video-analyser-cluster
@@ -34,7 +35,7 @@ jobs:
 
       - name: Build and push image to ACR
         run: |
-          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ secrets.RESOURCE_GROUP }} ${{ env.CONTEXT }}
+          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ secrets.RESOURCE_GROUP }} ${{ env.CONTEXT }}
 
 
   build-database-registry:
@@ -58,7 +59,7 @@ jobs:
 
       - name: Build and push image to ACR
         run: |
-          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} --file ${{ env.DOCKERFILE }} -g ${{ secrets.RESOURCE_GROUP }} ${{ env.CONTEXT }}
+          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} --file ${{ env.DOCKERFILE }} -g ${{ secrets.RESOURCE_GROUP }} ${{ env.CONTEXT }}
 
 
 
@@ -84,7 +85,7 @@ jobs:
 
       - name: Build and push image to ACR
         run: |
-          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} --file ${{ env.DOCKERFILE }} -g ${{ secrets.RESOURCE_GROUP }} ${{ env.CONTEXT }}
+          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} --file ${{ env.DOCKERFILE }} -g ${{ secrets.RESOURCE_GROUP }} ${{ env.CONTEXT }}
 
 
 
@@ -110,7 +111,7 @@ jobs:
 
       - name: Build and push image to ACR
         run: |
-          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} --file ${{ env.DOCKERFILE }} -g ${{ secrets.RESOURCE_GROUP }} ${{ env.CONTEXT }}
+          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} --file ${{ env.DOCKERFILE }} -g ${{ secrets.RESOURCE_GROUP }} ${{ env.CONTEXT }}
 
 
 
@@ -136,7 +137,7 @@ jobs:
 
       - name: Build and push image to ACR
         run: |
-          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} --file ${{ env.DOCKERFILE }} -g ${{ secrets.RESOURCE_GROUP }} ${{ env.CONTEXT }}
+          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} --file ${{ env.DOCKERFILE }} -g ${{ secrets.RESOURCE_GROUP }} ${{ env.CONTEXT }}
 
 
 
@@ -162,7 +163,7 @@ jobs:
 
       - name: Build and push image to ACR
         run: |
-          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} --file ${{ env.DOCKERFILE }} -g ${{ secrets.RESOURCE_GROUP }} ${{ env.CONTEXT }}
+          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} --file ${{ env.DOCKERFILE }} -g ${{ secrets.RESOURCE_GROUP }} ${{ env.CONTEXT }}
 
 
 
@@ -199,27 +200,27 @@ jobs:
   
       - name: Change deployment file for Analyser Service
         run: |
-          sed -i "s+{REGISTRY}+${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io+g" Deployment/Kubernetes/AnalyserService.yaml
+          sed -i "s+{REGISTRY}+${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io+g" Deployment/Kubernetes/AnalyserService.yaml
           sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/AnalyserService.yaml
 
       - name: Change deployment file for Database Registry
         run: |
-          sed -i "s+{REGISTRY}+${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io+g" Deployment/Kubernetes/DatabaseRegistry.yaml
+          sed -i "s+{REGISTRY}+${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io+g" Deployment/Kubernetes/DatabaseRegistry.yaml
           sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/DatabaseRegistry.yaml
 
       - name: Change deployment file for Frontend
         run: |
-          sed -i "s+{REGISTRY}+${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io+g" Deployment/Kubernetes/Frontend.yaml
+          sed -i "s+{REGISTRY}+${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io+g" Deployment/Kubernetes/Frontend.yaml
           sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/Frontend.yaml
 
       - name: Change deployment file for Gateway
         run: |
-          sed -i "s+{REGISTRY}+${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io+g" Deployment/Kubernetes/Gateway.yaml
+          sed -i "s+{REGISTRY}+${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io+g" Deployment/Kubernetes/Gateway.yaml
           sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/Gateway.yaml
 
       - name: Change deployment file for Metadata Hadoop Store
         run: |
-          sed -i "s+{REGISTRY}+${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io+g" Deployment/Kubernetes/MetadataHadoopStore.yaml
+          sed -i "s+{REGISTRY}+${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io+g" Deployment/Kubernetes/MetadataHadoopStore.yaml
           sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/MetadataHadoopStore.yaml
 
       - name: Deploy application
