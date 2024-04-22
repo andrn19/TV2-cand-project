@@ -1,5 +1,5 @@
 using TV2.Backend.ClassLibrary.Models;
-using TV2.Backend.Services.HadoopConsumer.Controllers;
+using TV2.Backend.Services.MongoMetadataStorage.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -10,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
+builder.Services.Configure<MongoSettings>(configuration.GetSection("MongoDB"));
 builder.Services.AddHostedService<MessageService>();
 
 var app = builder.Build();

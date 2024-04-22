@@ -15,7 +15,6 @@ public class MessageService : IMessageService
     
     public MessageService()
     {
-        Console.WriteLine("Connecting to rabbit");
         _factory = new ConnectionFactory() { HostName = "rabbitmq", Port = 5672 };
         _factory.UserName = "username";
         _factory.Password = "password";
@@ -35,7 +34,6 @@ public class MessageService : IMessageService
             routingKey: route,
             basicProperties: null,
             body: body);
-        Console.WriteLine(" [x] Published {0} to RabbitMQ", JsonSerializer.Serialize(video));
         return true;
     }
 }
