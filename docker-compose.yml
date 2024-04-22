@@ -4,7 +4,6 @@ services:
 
   react.app:
     container_name: react-app
-    hostname: react.app
     build:
       context: ./Frontend
     ports:
@@ -26,23 +25,23 @@ services:
       - data-service
     restart: on-failure
 
-  consumer.hadoop:
-    container_name: consumer-hadoop
+  storage.mongodb:
+    container_name: mongo-metadata-storage
     build:
       context: ./Backend
-      dockerfile: HadoopConsumer/Dockerfile
+      dockerfile: MongoMetadataStorage/Dockerfile
     networks:
       - data-service
     depends_on:
       - rabbitmq
     restart: on-failure
 
-  producer.metadata:
-    container_name: producer-data
+  service.registry:
+    container_name: registry-service
     hostname: database-registry
     build:
       context: ./Backend
-      dockerfile: DatabaseRegistry/Dockerfile
+      dockerfile: RegistryService/Dockerfile
     ports:
       - "51001:8080"
     networks:
@@ -51,12 +50,19 @@ services:
       - rabbitmq
     restart: on-failure
 
+  service.registry.database:
+    build:
+      context: ./Backend/RegistryService/Database
+    command: --default-authentication-plugin=mysql_native_password
+    networks:
+      - data-service
+
   service.analyser:
-    container_name: service-analyser
+    container_name: video-analyser-service
     hostname: video-analyser
     build:
       context: ./Backend
-      dockerfile: VideoAnalyser/Dockerfile
+      dockerfile: VideoAnalyserService/Dockerfile
     environment:
       AZURE_TENANT_ID: dd81e623-e7fa-4d4b-a473-eca4731cb830
       AZURE_CLIENT_ID: 67c127f5-6693-481f-ba19-8ecdfc1e78f7
@@ -66,13 +72,6 @@ services:
     networks:
       - data-service
     restart: on-failure
-
-  producer.metadata.database:
-    build:
-      context: ./Backend/DatabaseRegistry/Database
-    command: --default-authentication-plugin=mysql_native_password
-    networks:
-      - data-service
 
   rabbitmq: # login username:password
     image: rabbitmq:3-management

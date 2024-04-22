@@ -14,7 +14,15 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Classes\" />
+      <Compile Remove="Classes\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Classes\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Classes\**" />
     </ItemGroup>
 
 </Project>

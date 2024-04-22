@@ -60,7 +60,7 @@ public class MessageService : IHostedService
         //await ProcessMessage(scope, message);
         try
         {
-            var metadata = JsonSerializer.Deserialize<Metadata>(message);
+            var metadata = JsonSerializer.Deserialize<Video>(message);
             Console.WriteLine(message);
         }
         catch (Exception e)

@@ -1,3 +1,4 @@
+using System.Net;
 using Ocelot.Administration;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
@@ -18,7 +19,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: corsPolicy,
         policy  =>
         {
-            policy.WithOrigins("https://www.google.com");
+            policy.WithOrigins("https://www.google.com",
+                                "http://localhost:53001");
         });
 });
 

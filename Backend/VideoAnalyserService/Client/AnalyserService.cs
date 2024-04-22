@@ -52,13 +52,7 @@ public class AnalyserService : IAnalyserService
 
             // Get the video ID from the upload result
             var videoId = JsonSerializer.Deserialize<Index>(uploadResult).Id;
-
-            if (waitForIndex)
-            {
-                _logger.LogInformation("Waiting for Index Operation to Complete");
-                await WaitForIndexAsync(videoId, account, accountAccessToken);
-            }
-
+            
             return videoId;
         }
         catch (Exception ex)
@@ -69,7 +63,7 @@ public class AnalyserService : IAnalyserService
     }
 
     
-    public async Task<Index> WaitForIndexAsync(string videoId, Account account, string accountAccessToken)
+    public async Task<Index> WaitForIndexAsync(string videoId, Account account, string accountAccessToken, string schema)
     {
         while (true)
         {

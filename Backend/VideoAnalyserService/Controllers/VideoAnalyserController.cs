@@ -39,13 +39,13 @@ public class VideoAnalyserController : ControllerBase, IVideoAnalyserService
     }
 
     [HttpGet("GetMetadata/{footageId}")]
-    public async Task<Metadata> GetMetadata(string footageId)
+    public async Task<Video> GetMetadata(string footageId, [FromBody] string schema)
     {
         var armToken = await _authService.AuthenticateArmAsync();
         var token = await _authService.AuthenticateAsync(armToken);
         var account = await _authService.GetAccountAsync(Consts.ViAccountName, armToken);
-        var index = await _analyserService.WaitForIndexAsync(footageId, account, token);
-        return index.Videos[0].Metadata;
+        var index = await _analyserService.WaitForIndexAsync(footageId, account, token, schema);
+        return index.Videos[0];
 
     }
 }
