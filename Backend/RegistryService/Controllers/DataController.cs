@@ -28,9 +28,9 @@ public class DataController : ControllerBase, IDatabaseRegistryService, IMetadat
     }
 
     [HttpPost("AddMetadata/{endpoint}")]
-    public bool AddMetadata(Guid endpoint, [FromBody] Metadata metadata)
+    public bool AddMetadata(Guid endpoint, [FromBody] Video video)
     {
-        return _messageService.Enqueue(_consumerRegistry.Resolve(endpoint).Name,metadata);
+        return _messageService.Enqueue(_consumerRegistry.Resolve(endpoint).Name,video);
     }
 
     [HttpPut("CreateEndpoint")]

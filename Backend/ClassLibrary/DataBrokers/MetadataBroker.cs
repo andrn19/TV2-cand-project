@@ -10,7 +10,7 @@ public class MetadataBroker : BaseBroker, IMetadataService
         throw new NotImplementedException();
     }
 
-    public bool AddMetadata(Guid id, Metadata metadata)
+    public bool AddMetadata(Guid id, Video video)
     {
         throw new NotImplementedException();
     }
