@@ -39,6 +39,7 @@ services:
 
   producer.metadata:
     container_name: producer-data
+    hostname: database-registry
     build:
       context: ./Backend
       dockerfile: DatabaseRegistry/Dockerfile
@@ -52,9 +53,14 @@ services:
 
   service.analyser:
     container_name: service-analyser
+    hostname: video-analyser
     build:
       context: ./Backend
       dockerfile: VideoAnalyser/Dockerfile
+    environment:
+      AZURE_TENANT_ID: dd81e623-e7fa-4d4b-a473-eca4731cb830
+      AZURE_CLIENT_ID: 67c127f5-6693-481f-ba19-8ecdfc1e78f7
+      AZURE_CLIENT_SECRET: g1uvH1Khposo0PDuX2PrV+vZbQ+benAd08dGGsvWnhk=
     ports:
       - "51011:8080"
     networks:
@@ -68,11 +74,14 @@ services:
     networks:
       - data-service
 
-  rabbitmq: # login guest:guest 
+  rabbitmq: # login username:password
     image: rabbitmq:3-management
     hostname: rabbitmq
     labels:
       NAME: "rabbitmq"
+    environment:
+      RABBITMQ_DEFAULT_USER: username
+      RABBITMQ_DEFAULT_PASS: password
     ports:
     - "4369:4369"
     - "5671:5671"
