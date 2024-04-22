@@ -5,7 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <RootNamespace>TV2.Backend.Services.HadoopConsumer</RootNamespace>
+        <RootNamespace>TV2.Backend.Services.MongoMetadataStorage</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

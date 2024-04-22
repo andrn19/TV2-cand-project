@@ -14,4 +14,7 @@ public class Index
 
     [JsonPropertyName("videos")]
     public List<Video>? Videos { get; set; }
+    
+    [JsonPropertyName("name")]
+    public string? Name { get; set; }
 }

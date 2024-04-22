@@ -30,6 +30,8 @@ services:
     build:
       context: ./Backend
       dockerfile: MongoMetadataStorage/Dockerfile
+    environment:
+      MONGODB_URI: mongodb+srv://videoanalyser:jegelskermetadata@metadatastorage.d4vspbc.mongodb.net/?retryWrites=true&w=majority&appName=MetadataStorage
     networks:
       - data-service
     depends_on:

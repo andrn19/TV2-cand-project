@@ -65,7 +65,7 @@
     },
     {
       "UpstreamPathTemplate": "/gateway/get-metadata/{footageId}",
-      "UpstreamHttpMethod": ["Get"],
+      "UpstreamHttpMethod": ["Post"],
       "DownstreamPathTemplate": "/VideoAnalyser/GetMetadata/{footageId}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{

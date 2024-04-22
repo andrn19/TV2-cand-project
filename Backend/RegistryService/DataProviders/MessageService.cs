@@ -15,7 +15,6 @@ public class MessageService : IMessageService
     
     public MessageService()
     {
-        Console.WriteLine("Connecting to rabbit");
         _factory = new ConnectionFactory() { HostName = "rabbitmq", Port = 5672 };
         _factory.UserName = "username";
         _factory.Password = "password";
@@ -28,14 +27,13 @@ public class MessageService : IMessageService
             arguments: null);
     }
 
-    public bool Enqueue(string route, Metadata message)
+    public bool Enqueue(string route, Video video)
     {
-        var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(message));
+        var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(video));
         _channel.BasicPublish(exchange: "",
             routingKey: route,
             basicProperties: null,
             body: body);
-        Console.WriteLine(" [x] Published {0} to RabbitMQ", JsonSerializer.Serialize(message));
         return true;
     }
 }
