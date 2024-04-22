@@ -5,5 +5,5 @@ using Models.Metadata;
 public interface IVideoAnalyserService
 {
     Task<string> UploadFootage(string footageUrl, string footageName);
-    Task<Metadata> GetMetadata(string footageId);
+    Task<Video> GetMetadata(string footageId, string schema);
 }
