@@ -6,7 +6,7 @@ interface EndpointCreatorProps {
     isDupInConnectors: (newConnector: EndpointFormData) => boolean;
 }
 
-const CREATE_ENDPOINT_API_URL = 'http://10.244.1.74:8080/gateway/create-endpoint';
+const CREATE_ENDPOINT_API_URL = 'http://localhost:8080/gateway/create-endpoint';
 
 const DatabaseEndpointCreator: React.FC<EndpointCreatorProps> = ({ fetchEndpointList, isDupInConnectors }) => {
     const [formData, setFormData] = useState<EndpointFormData>({
@@ -18,7 +18,6 @@ const DatabaseEndpointCreator: React.FC<EndpointCreatorProps> = ({ fetchEndpoint
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
         if (isDupInConnectors(formData)) {
             return
         }

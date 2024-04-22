@@ -153,24 +153,25 @@ export type Face = {
     instances: FaceInstance[];
 }
 
+export type Metadata = {
+    topics: Topic[] | undefined;
+    labels: Label[] | undefined;
+    keywords: Keyword[] | undefined;
+    namedLocations: NamedLocation[] | undefined;
+    namedPeople: NamedPeople[] |undefined;
+    emotions: Emotion[] | undefined;
+    transcript: Transcript[] | undefined;
+    faces: Face[] |undefined;
+}
+
 export class VideoMetadateClass {
-    topics: Topic[];
-    labels: Label[];
-    keywords: Keyword[];
-    namedLocations: NamedLocation[];
-    namedPeople: NamedPeople[];
-    emotions: Emotion[];
-    transcript: Transcript[];
-    faces: Face[];
+    videoId: string;
+    publishedUrl: string;
+    metadata: Metadata;
 
     constructor(data: any) {
-        this.topics = data['videos'][0]['insights']['topics'];
-        this.labels = data['videos'][0]['insights']['labels'];
-        this.keywords = data['videos'][0]['insights']['keywords'];
-        this.namedLocations = data['videos'][0]['insights']['namedLocations'];
-        this.namedPeople = data['videos'][0]['insights']['namedPeople'];
-        this.emotions = data['videos'][0]['insights']['emotions'];
-        this.transcript = data['videos'][0]['insights']['transcript'];
-        this.faces = data['videos'][0]['insights']['faces'];
+        this.videoId = data['videos'][0]['id']
+        this.publishedUrl = data['videos'][0]['publishedUrl']
+        this.metadata = data['videos'][0]['insights']
     }
 }

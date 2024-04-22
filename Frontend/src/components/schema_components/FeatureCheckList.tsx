@@ -18,7 +18,7 @@ const featureOptions = {
 const FeatureChecklist: React.FC<FeatureChecklistProps> = ({ handleInputChange }) => {
 
     return (
-        <>
+        <div>
             <label className="text-lg font-bold mb-2">Insight List</label>
             <div className="flex flex-col items-center">
                 {Object.values(featureOptions).map(feature => (
@@ -34,7 +34,7 @@ const FeatureChecklist: React.FC<FeatureChecklistProps> = ({ handleInputChange }
                     </div>
                 ))}
             </div>
-        </>
+        </div>
     );
 };
 
