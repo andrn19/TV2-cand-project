@@ -1,11 +1,17 @@
+import { useState } from 'react'
+import { VideoMetadateClass } from '../../classes/videoMetadataClass';
 
-const ANALYSE_API_ENDPOINT = "http://10.244.1.74:8080/gateway/get-metadata/"
+const ANALYSE_API_ENDPOINT = "http://localhost:8080/gateway/get-metadata/"
 
-const AnalyseVideoButton = () => {
+interface AnalyseVideoButtonProps {
+  addNewReceivedVideoData: (newData: VideoMetadateClass) => void;
+}
 
+const AnalyseVideoButton: React.FC<AnalyseVideoButtonProps> = ({ addNewReceivedVideoData }) => {
+  const [videoId, setVideoId] = useState('')
 
-  const handleAnalyseClick = async () => {
-    const videoId = ''
+  const handleAnalyseClick = async (event: React.FormEvent) => {
+    event.preventDefault()
 
     const requestOptions = {
       method: 'PUT',
@@ -15,24 +21,33 @@ const AnalyseVideoButton = () => {
     };
 
     try {
-      const response = await fetch(`${ANALYSE_API_ENDPOINT}${videoId}`, requestOptions);
-      console.log(response)
+      const response = await fetch(`${ANALYSE_API_ENDPOINT}${videoId}`, requestOptions)
+      if (response.ok) {
+        const videoMetadata = await response.json()
+        addNewReceivedVideoData(videoMetadata)
+      } else {
+        console.error('Failed to fetch metadata:', response.statusText)
+      }
     }
     catch (e) {
       console.log(e)
     }
   }
 
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setVideoId(event.target.value)
+  };
+
   return (
     <div>
-      <form>
+      <form onSubmit={handleAnalyseClick}>
         <input
           id='videoId'
-          onSubmit={handleAnalyseClick}
-          style={{ color: 'black', width: '100%' }}
-          className='light pl-1 pr-1 block overflow-hidden resize-none'
+          value={videoId}
+          onChange={handleInputChange}
+          className="appearance-none bg-gray-700 rounded-md p-.5 text-white w-full"
         />
-        <button type="submit" onClick={handleAnalyseClick}>Analyse Video</button>
+        <button type="submit">Analyse Video</button>
       </form>
     </div>
   )

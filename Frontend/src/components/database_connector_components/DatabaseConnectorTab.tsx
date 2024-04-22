@@ -4,7 +4,7 @@ import { DataInterface, EndpointFormData } from '../../interfaces';
 import DatabaseConnector from './DatabaseConnector'
 import DatabaseEndpointCreator from './DatabaseEndpointCreator'
 
-const ENDPOINT_LIST_API_URL = 'http://10.244.1.74:8080/gateway/list-endpoints';
+const ENDPOINT_LIST_API_URL = 'http://localhost:8080/gateway/list-endpoints';
 
 const DatabaseConnectorTab = () => {
   const [databaseConnectors, setDatabaseConnectors] = useState<DataInterface[]>([{key:'hhhh', value: 'wwerwe'}]);
