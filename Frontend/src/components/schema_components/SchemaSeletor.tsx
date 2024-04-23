@@ -41,7 +41,7 @@ const SchemaSeletor: React.FC<Schemas> = ({ schemas }) => {
                     ))}
                 </select>
             </div>
-            <div className='mb-3'>
+            <div className="rounded-lg bg-gray-700 flex flex-col mb-5">
                 <h4 className="text-lg font-bold">Metadata to be generated:</h4>
                 {selectedSchema?.insights.map((insight) => (
                     <p>{insight}</p>

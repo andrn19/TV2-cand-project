@@ -1,18 +1,17 @@
 import { useState } from 'react'
 import { DataInterface, EndpointFormData } from '../../interfaces';
+import { IP_ADDRESS } from '../../globalVars';
 
 interface EndpointCreatorProps {
     fetchEndpointList: () => void;
     isDupInConnectors: (newConnector: EndpointFormData) => boolean;
 }
 
-const CREATE_ENDPOINT_API_URL = 'http://localhost:8080/gateway/create-endpoint';
+const CREATE_ENDPOINT_API_URL = `${IP_ADDRESS}/create-endpoint`;
 
 const DatabaseEndpointCreator: React.FC<EndpointCreatorProps> = ({ fetchEndpointList, isDupInConnectors }) => {
     const [formData, setFormData] = useState<EndpointFormData>({
-        name: 'Name',
-        url: 'Endpoint URL',
-        port: 0,
+        name: 'Name'
     });
 
 
@@ -25,10 +24,10 @@ const DatabaseEndpointCreator: React.FC<EndpointCreatorProps> = ({ fetchEndpoint
         const requestOptions = {
             method: 'PUT',
             headers: {
-                Accept: 'text/plain',
+                'Accept': 'text/plain',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(formData),
+            body: JSON.stringify(formData.name),
         };
 
         try {

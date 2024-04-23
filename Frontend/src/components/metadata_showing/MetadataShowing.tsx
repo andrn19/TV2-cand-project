@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react'
-import { VideoMetadateClass } from '../../classes/videoMetadataClass';
-import { FileWithPath } from 'react-dropzone';
-import { Emotion, Topic, Label, Keyword, NamedLocation, NamedPeople, Transcript, Face } from '../../classes/videoMetadataClass';
+import { Emotion, Topic, Label, Keyword, NamedLocation, NamedPeople, Transcript, Face, VideoMetadateClass, Metadata } from '../../classes/videoMetadataClass';
 
-interface CustomFileWithPath extends FileWithPath {
-    preview?: string;
-}
+import MetadataVideoPreview from './MetadataVideoPreview';
+import SaveMetadataButton from './SaveMetadataButton';
 
 type MetadataShowingProps = {
-    file: CustomFileWithPath | undefined;
+    file: VideoMetadateClass | undefined;
     data: VideoMetadateClass;
 };
 
@@ -42,6 +39,7 @@ const MetadataShowing: React.FC<MetadataShowingProps> = ({ file, data }) => {
     }
 
     const getMetadataValueByKey = (key: string, metadata: Emotion | Topic | Label | Keyword | NamedLocation | NamedPeople | Transcript | Face): string => {
+        console.log(metadata)
         switch (key) {
             case 'emotions':
                 return `${(metadata as Emotion)[MetadataKey[key]]}`;
@@ -67,7 +65,7 @@ const MetadataShowing: React.FC<MetadataShowingProps> = ({ file, data }) => {
     const handleContentEdit = (key: string, index: number, content: string) => {
         const newDataState = { ...dataState };
         const metadataKey = MetadataKey[key as keyof typeof MetadataKey];
-        (newDataState[key as keyof typeof dataState][index] as any)[metadataKey] = content;
+        (newDataState.metadata[key as keyof Metadata]?.[index] as any)[metadataKey] = content;
         setDataState(newDataState);
     };
 
@@ -78,27 +76,14 @@ const MetadataShowing: React.FC<MetadataShowingProps> = ({ file, data }) => {
 
     return (
         <div>
-            <h1 className='pb-3'>Editing the metadata for <br /> "{file?.name}"</h1>
+            <h1 className='pb-3'>Editing the metadata for <br /> "{file?.videoName}"</h1>
             <div className='overflow-y-auto' style={{ maxHeight: '85vh' }}>
-                <div>
-                    <video
-                        controls
-                        className='object-contain rounded-md w-1/2 h-auto mx-auto'
-                        onLoad={() => {
-                            if (file?.preview) {
-                                URL.revokeObjectURL(file?.preview);
-                            }
-                        }}
-                    >
-                        <source src={file?.preview || ''} type={file?.type} />
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
+                <MetadataVideoPreview file={file}/>
                 <div className='mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3'>
-                    {Object.keys(dataState).map((key) => (
+                    {Object.keys(dataState.metadata).map((key) => (
                         <div key={key} className="light p-2 rounded shadow-md">
                             <h2>{key}</h2>
-                            {dataState[key as keyof typeof dataState].map((entry, index) => (
+                            {Array.isArray(dataState.metadata[key as keyof Metadata]) && dataState.metadata[key as keyof Metadata]?.map((entry, index) => (
                                 <div key={entry.id}>
                                     <textarea
                                         id={key === 'transcript' ? 'transcript-area' : undefined}
@@ -115,6 +100,7 @@ const MetadataShowing: React.FC<MetadataShowingProps> = ({ file, data }) => {
                         </div>
                     ))}
                 </div>
+                <SaveMetadataButton metadata={dataState}/>
             </div>
         </div>
     );
