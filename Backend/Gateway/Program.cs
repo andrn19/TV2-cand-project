@@ -1,3 +1,4 @@
+using System.Net;
 using Ocelot.Administration;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
@@ -11,6 +12,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var  corsPolicy = "_corsPolicy";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: corsPolicy,
+        policy  =>
+        {
+            policy.WithOrigins("https://www.google.com", "http://localhost:53001").WithMethods("PUT", "GET", "DELETE", "POST").AllowAnyHeader();
+        });
+});
+
 
 // https://code-maze.com/aspnetcore-api-gateway-with-ocelot/
 builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
@@ -31,7 +43,7 @@ if (app.Environment.IsDevelopment())
 // }
 //app.UseHttpsRedirection();
 
-
+app.UseCors(corsPolicy);
 
 app.UseOcelot().Wait();
 

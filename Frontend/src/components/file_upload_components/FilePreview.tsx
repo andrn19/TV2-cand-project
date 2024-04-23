@@ -9,10 +9,9 @@ interface CustomFileWithPath extends FileWithPath {
 interface FilePreviewProps {
   file: CustomFileWithPath;
   onRemove: () => void;
-  onEdit: () => void;
 }
 
-const FilePreview: React.FC<FilePreviewProps> = ({ file, onRemove, onEdit }) => {
+const FilePreview: React.FC<FilePreviewProps> = ({ file, onRemove }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -41,12 +40,6 @@ const FilePreview: React.FC<FilePreviewProps> = ({ file, onRemove, onEdit }) => 
               onClick={onRemove}
             >
               X
-            </button>
-            <button
-              className='preview-edit-btn'
-              onClick={onEdit}
-            >
-              <FaRegEdit className='icon-style' />
             </button>
           </>
         )}

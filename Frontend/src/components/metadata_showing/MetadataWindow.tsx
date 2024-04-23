@@ -8,7 +8,7 @@ import { VideoMetadateClass } from '../../classes/videoMetadataClass'
 
 
 interface MetadataWindowProps {
-    file: FileWithPath | undefined
+    file: VideoMetadateClass | undefined
     onClose: () => void;
 }
 

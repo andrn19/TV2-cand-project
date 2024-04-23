@@ -1,0 +1,230 @@
+name: Build and deploy ACR
+on:
+  workflow_dispatch:
+#  push:
+#    branches:
+#      - main
+
+env:
+  AZURE_CONTAINER_REGISTRY: MetadataAnalyser
+  AZURE_CONTAINER_REGISTRY_SMALL: metadataanalyser
+  REGISTRY_NAME: andrn19/tv2-cand-project
+  SERVICE_CONTAINER_GROUP: video-analyser-service
+  AKS_CLUSTER: tv2-video-analyser-cluster
+  
+
+jobs:
+  build-registry-service-store:
+
+    runs-on: ubuntu-latest
+    env:
+      SERVICE_NAME: database-registry-store
+      CONTEXT: ./Backend/RegistryService/Database/
+    permissions:
+      contents: read
+      id-token: write
+    
+    steps:  
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Azure login
+        uses: azure/login@v1.4.6
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build and push image to ACR
+        run: |
+          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ secrets.RESOURCE_GROUP }} ${{ env.CONTEXT }}
+
+
+  build-registry-service:
+    runs-on: ubuntu-latest
+    env:
+      SERVICE_NAME: database-registry
+      CONTEXT: ./Backend/
+      DOCKERFILE: ./Backend/RegistryService/Dockerfile
+    permissions:
+      contents: read
+      id-token: write
+    
+    steps:  
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Azure login
+        uses: azure/login@v1.4.6
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build and push image to ACR
+        run: |
+          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} --file ${{ env.DOCKERFILE }} -g ${{ secrets.RESOURCE_GROUP }} ${{ env.CONTEXT }}
+
+
+
+  build-mongo-metadata-store:
+
+    runs-on: ubuntu-latest
+    env:
+      SERVICE_NAME: mongo-metadata-store
+      CONTEXT: ./Backend/
+      DOCKERFILE: ./Backend/MongoMetadataStorage/Dockerfile
+    permissions:
+      contents: read
+      id-token: write
+    
+    steps:  
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Azure login
+        uses: azure/login@v1.4.6
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build and push image to ACR
+        run: |
+          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} --file ${{ env.DOCKERFILE }} -g ${{ secrets.RESOURCE_GROUP }} ${{ env.CONTEXT }}
+
+
+
+  build-gateway:
+
+    runs-on: ubuntu-latest
+    env:
+      SERVICE_NAME: gateway
+      CONTEXT: ./Backend/
+      DOCKERFILE: ./Backend/Gateway/Dockerfile
+    permissions:
+      contents: read
+      id-token: write
+    
+    steps:  
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Azure login
+        uses: azure/login@v1.4.6
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build and push image to ACR
+        run: |
+          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} --file ${{ env.DOCKERFILE }} -g ${{ secrets.RESOURCE_GROUP }} ${{ env.CONTEXT }}
+
+
+
+  build-video-analyser-service:
+
+    runs-on: ubuntu-latest
+    env:
+      SERVICE_NAME: video-analyser
+      CONTEXT: ./Backend/
+      DOCKERFILE: ./Backend/VideoAnalyserService/Dockerfile
+    permissions:
+      contents: read
+      id-token: write
+    
+    steps:  
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Azure login
+        uses: azure/login@v1.4.6
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build and push image to ACR
+        run: |
+          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} --file ${{ env.DOCKERFILE }} -g ${{ secrets.RESOURCE_GROUP }} ${{ env.CONTEXT }}
+
+
+
+  build-frontend:
+  
+    runs-on: ubuntu-latest
+    env:
+      SERVICE_NAME: frontend
+      CONTEXT: ./Frontend/
+      DOCKERFILE: ./Frontend/Dockerfile
+    permissions:
+      contents: read
+      id-token: write
+    
+    steps:  
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Azure login
+        uses: azure/login@v1.4.6
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build and push image to ACR
+        run: |
+          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io/${{ env.SERVICE_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} --file ${{ env.DOCKERFILE }} -g ${{ secrets.RESOURCE_GROUP }} ${{ env.CONTEXT }}
+
+
+
+  deploy-kubernetes:
+    runs-on: ubuntu-latest
+    needs: [build-registry-service-store,build-registry-service,build-mongo-metadata-store,build-gateway,build-video-analyser-service,build-frontend]
+
+    permissions:
+      actions: read
+      contents: read
+      id-token: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log into Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Set up kubelogin for non-interactive login
+        uses: azure/use-kubelogin@v1
+        with:
+          kubelogin-version: 'v0.0.25'
+
+      - name: Get K8s context
+        uses: azure/aks-set-context@v3
+        with:
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
+          cluster-name: ${{ env.AKS_CLUSTER }}
+          admin: 'false'
+          use-kubelogin: 'true'
+  
+      - name: Change deployment file for Analyser Service
+        run: |
+          sed -i "s+{REGISTRY}+${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io+g" Deployment/Kubernetes/VideoAnalyserService.yaml
+          sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/VideoAnalyserService.yaml
+
+      - name: Change deployment file for Database Registry
+        run: |
+          sed -i "s+{REGISTRY}+${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io+g" Deployment/Kubernetes/RegistryService.yaml
+          sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/RegistryService.yaml
+
+      - name: Change deployment file for Frontend
+        run: |
+          sed -i "s+{REGISTRY}+${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io+g" Deployment/Kubernetes/Frontend.yaml
+          sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/Frontend.yaml
+
+      - name: Change deployment file for Gateway
+        run: |
+          sed -i "s+{REGISTRY}+${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io+g" Deployment/Kubernetes/Gateway.yaml
+          sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/Gateway.yaml
+
+      - name: Change deployment file for Metadata Hadoop Store
+        run: |
+          sed -i "s+{REGISTRY}+${{ env.AZURE_CONTAINER_REGISTRY_SMALL }}.azurecr.io+g" Deployment/Kubernetes/MongoMetadataStore.yaml.yaml
+          sed -i "s+{IMG_TAG}+${{ github.sha }}+g" Deployment/Kubernetes/MongoMetadataStore.yaml.yaml
+
+      - name: Deploy application
+        uses: Azure/k8s-deploy@v4
+        with:
+          action: deploy
+          manifests: Deployment/Kubernetes/

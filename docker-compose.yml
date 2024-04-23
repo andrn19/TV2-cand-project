@@ -4,7 +4,6 @@ services:
 
   react.app:
     container_name: react-app
-    hostname: react.app
     build:
       context: ./Frontend
     ports:
@@ -20,35 +19,70 @@ services:
       context: ./Backend
       dockerfile: Gateway/Dockerfile
     ports:
-      - "52001:80"
+      - "52001:8080"
     networks:
       - frontend
       - data-service
-  
-  consumer.dummy:
-    container_name: consumer-dummy
+    restart: on-failure
+
+  storage.mongodb:
+    container_name: mongo-metadata-storage
     build:
       context: ./Backend
-      dockerfile: DummyConsumer/Dockerfile
+      dockerfile: MongoMetadataStorage/Dockerfile
+    environment:
+      MONGODB_URI: mongodb+srv://videoanalyser:jegelskermetadata@metadatastorage.d4vspbc.mongodb.net/?retryWrites=true&w=majority&appName=MetadataStorage
+    networks:
+      - data-service
+    depends_on:
+      - rabbitmq
+    restart: on-failure
+
+  service.registry:
+    container_name: registry-service
+    hostname: database-registry
+    build:
+      context: ./Backend
+      dockerfile: RegistryService/Dockerfile
     ports:
-      - "51001:80"
+      - "51001:8080"
+    networks:
+      - data-service
+    depends_on: 
+      - rabbitmq
+    restart: on-failure
+
+  service.registry.database:
+    build:
+      context: ./Backend/RegistryService/Database
+    command: --default-authentication-plugin=mysql_native_password
     networks:
       - data-service
 
-  producer.data:
-    container_name: producer-data
+  service.analyser:
+    container_name: video-analyser-service
+    hostname: video-analyser
     build:
       context: ./Backend
-      dockerfile: MetadataProducer/Dockerfile
+      dockerfile: VideoAnalyserService/Dockerfile
+    environment:
+      AZURE_TENANT_ID: dd81e623-e7fa-4d4b-a473-eca4731cb830
+      AZURE_CLIENT_ID: 67c127f5-6693-481f-ba19-8ecdfc1e78f7
+      AZURE_CLIENT_SECRET: g1uvH1Khposo0PDuX2PrV+vZbQ+benAd08dGGsvWnhk=
     ports:
-      - "51002:80"
+      - "51011:8080"
     networks:
       - data-service
+    restart: on-failure
 
-  rabbitmq: # login guest:guest
+  rabbitmq: # login username:password
     image: rabbitmq:3-management
+    hostname: rabbitmq
     labels:
       NAME: "rabbitmq"
+    environment:
+      RABBITMQ_DEFAULT_USER: username
+      RABBITMQ_DEFAULT_PASS: password
     ports:
     - "4369:4369"
     - "5671:5671"
@@ -58,6 +92,7 @@ services:
     - "15672:15672"
     networks:
       - data-service
+    
 
 networks:
   frontend:

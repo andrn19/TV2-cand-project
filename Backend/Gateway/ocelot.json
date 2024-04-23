@@ -1,6 +1,6 @@
 {
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:80"
+    "BaseUrl": "http://localhost:8080"
   },
   "Routes": [
     {
@@ -9,8 +9,8 @@
       "DownstreamPathTemplate": "/Data/CreateEndpoint",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
-        "Host": "producer.metadata",
-        "Port": 80
+        "Host": "database-registry",
+        "Port": 8080
       }]
     },
     {
@@ -19,8 +19,8 @@
       "DownstreamPathTemplate": "/Data/UpdateEndpoint",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
-        "Host": "producer.metadata",
-        "Port": 80
+        "Host": "database-registry",
+        "Port": 8080
       }]
     },
     {
@@ -29,8 +29,8 @@
       "DownstreamPathTemplate": "/Data/DeleteEndpoint",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
-        "Host": "producer.metadata",
-        "Port": 80
+        "Host": "database-registry",
+        "Port": 8080
       }]
     },
     {
@@ -39,8 +39,8 @@
       "DownstreamPathTemplate": "/Data/ListEndpoints",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
-        "Host": "producer.metadata",
-        "Port": 80
+        "Host": "database-registry",
+        "Port": 8080
       }]
     },
     {
@@ -49,8 +49,28 @@
       "DownstreamPathTemplate": "/Data/AddMetadata/{endpoint}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [{
-        "Host": "producer.metadata",
-        "Port": 80
+        "Host": "database-registry",
+        "Port": 8080
+      }]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/upload-footage",
+      "UpstreamHttpMethod": ["Post"],
+      "DownstreamPathTemplate": "/VideoAnalyser/UploadFootage",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{
+        "Host": "video-analyser",
+        "Port": 8080
+      }]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/get-metadata/{footageId}",
+      "UpstreamHttpMethod": ["Post"],
+      "DownstreamPathTemplate": "/VideoAnalyser/GetMetadata/{footageId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{
+        "Host": "video-analyser",
+        "Port": 8080
       }]
     }
   ]

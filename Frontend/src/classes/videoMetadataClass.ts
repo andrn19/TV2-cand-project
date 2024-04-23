@@ -166,12 +166,14 @@ export type Metadata = {
 
 export class VideoMetadateClass {
     videoId: string;
+    videoName: string
     publishedUrl: string;
     metadata: Metadata;
 
     constructor(data: any) {
-        this.videoId = data['videos'][0]['id']
-        this.publishedUrl = data['videos'][0]['publishedUrl']
-        this.metadata = data['videos'][0]['insights']
+        this.videoId = data['id']
+        this.videoName = data['name']
+        this.publishedUrl = data['publishedUrl']
+        this.metadata = data['insights']
     }
 }
