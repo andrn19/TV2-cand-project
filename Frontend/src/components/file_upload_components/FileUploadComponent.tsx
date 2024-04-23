@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import { signal } from '@preact/signals-react';
-import { useSignals } from '@preact/signals-react/runtime';
 import { FileWithPath } from 'react-dropzone';
 import { VideoMetadateClass } from '../../classes/videoMetadataClass';
 
@@ -9,28 +7,13 @@ import FileDropzone from './FileDropzone';
 import FileList from './FileList';
 import AnalyseVideoButton from './AnalyseVideoButton';
 
+type FileUploadComponentProps = {
+    addNewReceivedVideoData: (newData: VideoMetadateClass) => void;
+}
 
-const receivedVideoData = signal<VideoMetadateClass[]>([])
 
-const FileUploadComponent = () => {
-
-    useSignals()
-
+const FileUploadComponent: React.FC<FileUploadComponentProps> = ({ addNewReceivedVideoData }) => {
     const [uploadedFiles, setUploadedFiles] = useState<FileWithPath[]>([]);
-
-    const addNewReceivedVideoData = (newData: VideoMetadateClass) => {
-        if (receivedVideoData.value === undefined) {
-            return
-        }
-        const dataExists = receivedVideoData.value.some(data => data.videoId === newData.videoId);
-
-        if (!dataExists) {
-            receivedVideoData.value = [...receivedVideoData.value, newData];
-        }
-        else {
-            alert('Scame with that name is already created')
-        }
-    };
 
     const handleFilesDrop = (acceptedFiles: FileWithPath[]) => {
 

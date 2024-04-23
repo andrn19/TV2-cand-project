@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react'
 import { DataInterface, EndpointFormData } from '../../interfaces';
+import { IP_ADDRESS } from '../../globalVars';
 
 import DatabaseConnector from './DatabaseConnector'
 import DatabaseEndpointCreator from './DatabaseEndpointCreator'
 
-const ENDPOINT_LIST_API_URL = 'http://localhost:8080/gateway/list-endpoints';
+const ENDPOINT_LIST_API_URL = `${IP_ADDRESS}/list-endpoints`;
 
 const DatabaseConnectorTab = () => {
-  const [databaseConnectors, setDatabaseConnectors] = useState<DataInterface[]>([{key:'hhhh', value: 'wwerwe'}]);
+  const [databaseConnectors, setDatabaseConnectors] = useState<DataInterface[]>([]);
 
 
   const fetchEndpointList = () => {
@@ -25,6 +26,10 @@ const DatabaseConnectorTab = () => {
   useEffect(() => {
     fetchEndpointList()
   }, [])
+
+  useEffect(() => {
+    console.log(databaseConnectors)
+  }, [databaseConnectors])
 
   const isDupInConnectors = (newConnector: EndpointFormData) => {
     const existingConnector = databaseConnectors.find(connector => connector.key === newConnector.name);
