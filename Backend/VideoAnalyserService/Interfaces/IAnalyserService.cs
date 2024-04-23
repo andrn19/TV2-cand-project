@@ -23,8 +23,9 @@ public interface IAnalyserService
     /// <param name="videoId"> The video id </param>
     /// <param name="account"> An account object </param>
     /// <param name="accountAccessToken"> An ARM access token </param>
+    /// <param name="schema"> A schema for the metadata </param>
     /// <returns> Returns video index when the index is complete, otherwise throws exception </returns>
-    Task<Index> WaitForIndexAsync(string videoId, Account account, string accountAccessToken);
+    Task<Index> WaitForIndexAsync(string videoId, Account account, string accountAccessToken, string schema);
     
     
     

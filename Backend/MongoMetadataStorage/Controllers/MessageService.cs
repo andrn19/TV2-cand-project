@@ -1,13 +1,13 @@
-using TV2.Backend.ClassLibrary.Models.Metadata;
+namespace TV2.Backend.Services.MongoMetadataStorage.Controllers;
 
-namespace TV2.Backend.Services.HadoopConsumer.Controllers;
-
+using ClassLibrary.Models.Metadata;
 using Microsoft.Extensions.Options;
 using System.Text;
 using System.Text.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using ClassLibrary.Models;
+using MongoDB.Driver;
 
 public class MessageService : IHostedService
 {
@@ -17,6 +17,8 @@ public class MessageService : IHostedService
     private IModel _channel;
     private IConnectionFactory _connectionFactory;
     private readonly RabbitMqSettings _rabbitMqSettings;
+    private readonly MongoClient _dbClient;
+    private static IMongoCollection<Video> _metadataCollection;
 
     public MessageService(ILogger<MessageService> logger, IOptions<RabbitMqSettings> rabbitMqSettings, IServiceProvider serviceProvider)
     {
@@ -36,6 +38,16 @@ public class MessageService : IHostedService
             exclusive: false,
             autoDelete: false,
             arguments: null);
+        
+        string mongoConnectionString = Environment.GetEnvironmentVariable("MONGODB_URI");
+        if (mongoConnectionString == null)
+        {
+            Console.WriteLine("You must set your 'MONGODB_URI' environment variable. To learn how to set it, see https://www.mongodb.com/docs/drivers/csharp/current/quick-start/#set-your-connection-string");
+            Environment.Exit(0);
+        }
+        _dbClient = new MongoClient(mongoConnectionString);
+        var metadataDatabase = _dbClient.GetDatabase("sample_restaurants");
+        _metadataCollection = metadataDatabase.GetCollection<Video>(_rabbitMqSettings.QueueName);
     }
     
     public Task StartAsync(CancellationToken cancellationToken)
@@ -60,8 +72,9 @@ public class MessageService : IHostedService
         //await ProcessMessage(scope, message);
         try
         {
-            var metadata = JsonSerializer.Deserialize<Metadata>(message);
-            Console.WriteLine(message);
+            var metadata = JsonSerializer.Deserialize<Video>(message);
+            await _metadataCollection.InsertOneAsync(metadata);
+            //Console.WriteLine(message);
         }
         catch (Exception e)
         {

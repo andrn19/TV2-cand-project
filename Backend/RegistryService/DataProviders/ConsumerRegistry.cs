@@ -6,7 +6,7 @@ using MySql.Data.MySqlClient;
 
 public class ConsumerRegistry : IConsumerRegistry
 {
-    private string cs = @"server=producer.metadata.database;userid=root;password=;database=db";
+    private string cs = @"server=service.registry.database;userid=root;password=;database=db";
     public void setConnectionString(string connectionString) => cs = connectionString;
     private readonly ILogger<ConsumerRegistry>? _logger;
     

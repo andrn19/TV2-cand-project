@@ -30,7 +30,7 @@ app.Run();
 /*
 using System.Text.Json;
 
-namespace TV2.Backend.Services.VideoAnalyser
+namespace TV2.Backend.Services.VideoAnalyserService
 {
     using Client;
     using Client.Model;
