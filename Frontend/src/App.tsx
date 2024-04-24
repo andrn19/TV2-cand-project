@@ -12,6 +12,8 @@ import ReceivedMetadataListing from './components/metadata_showing/ReceivedMetad
 
 import './App.css'
 
+import data from './classes/data.json'
+
 const LOCAL_STORAGE_KEY_SCHEMAS = "SCHEMAS"
 
 
@@ -26,7 +28,10 @@ effect(() => {
   localStorage.setItem(LOCAL_STORAGE_KEY_SCHEMAS, JSON.stringify(schemas.value))
 });
 
-const receivedVideoData = signal<VideoMetadateClass[]>([]);
+const testData = new VideoMetadateClass(data)
+
+
+const receivedVideoData = signal<VideoMetadateClass[]>([testData]);
 
 function App() {
 

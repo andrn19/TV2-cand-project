@@ -24,7 +24,6 @@ const AnalyseVideoButton: React.FC<AnalyseVideoButtonProps> = ({ addNewReceivedV
       const response = await fetch(`${ANALYSE_API_ENDPOINT}${videoId}`, requestOptions)
       if (response.ok) {
         const videoMetadata = await response.json()
-        console.log(videoMetadata)
         addNewReceivedVideoData(videoMetadata)
       } else {
         console.error('Failed to fetch metadata:', response.statusText)
@@ -48,10 +47,9 @@ const AnalyseVideoButton: React.FC<AnalyseVideoButtonProps> = ({ addNewReceivedV
     try {
       const response = await fetch(`${ANALYSE_API_ENDPOINT}${videoURL}`, requestOptions)
       if (response.ok) {
-        const videoMetadata = await response.json()
-        console.log(videoMetadata)
-        //NEEDS TO FETCH THE METADATA EFTER USING getMetadataFromVideoID
-        addNewReceivedVideoData(videoMetadata)
+        const videoID = await response.json()
+        console.log(videoID)
+        getMetadataFromVideoID(videoID)
       } else {
         console.error('Failed to fetch metadata:', response.statusText)
       }
