@@ -3,16 +3,17 @@ import { FaRegEdit } from "react-icons/fa";
 import { VideoMetadateClass } from '../../classes/videoMetadataClass';
 
 interface ReceivedVideoPreviewProps {
-  file: VideoMetadateClass;
+  metadateObject: VideoMetadateClass;
   onEdit: () => void;
 }
 
-const ReceivedVideoPreview: React.FC<ReceivedVideoPreviewProps> = ({ file, onEdit }) => {
+const ReceivedVideoPreview: React.FC<ReceivedVideoPreviewProps> = ({ metadateObject, onEdit }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <>
-      <li className='relative rounded-md mb-3 ml-3'
+      <li data-testid='video-preview'
+        className='relative rounded-md mb-3 ml-3'
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -20,13 +21,14 @@ const ReceivedVideoPreview: React.FC<ReceivedVideoPreviewProps> = ({ file, onEdi
           controls
           className='object-contain rounded-md'
         >
-          <source src={file.publishedUrl || ''} />
+          <source src={metadateObject.publishedUrl || ''} />
           Your browser does not support the video tag.
         </video>
 
         {isHovered && (
           <>
             <button
+              data-testid='edit-btn'
               className='preview-edit-btn'
               onClick={onEdit}
             >
@@ -35,7 +37,7 @@ const ReceivedVideoPreview: React.FC<ReceivedVideoPreviewProps> = ({ file, onEdi
           </>
         )}
         <p className='mt-2 text-neutral-500 text-[12px] font-medium'>
-          {file.videoName}
+          {metadateObject.videoName}
         </p>
       </li>
     </>

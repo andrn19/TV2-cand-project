@@ -8,7 +8,7 @@ import DatabaseEndpointCreator from './DatabaseEndpointCreator'
 const ENDPOINT_LIST_API_URL = `${IP_ADDRESS}/list-endpoints`;
 
 const DatabaseConnectorTab = () => {
-  const [databaseConnectors, setDatabaseConnectors] = useState<DataInterface[]>([]);
+  const [databaseConnectors, setDatabaseConnectors] = useState<DataInterface[]>([{key:'sdfds', value:'sgwww'}]);
 
 
   const fetchEndpointList = () => {
@@ -26,10 +26,6 @@ const DatabaseConnectorTab = () => {
   useEffect(() => {
     fetchEndpointList()
   }, [])
-
-  useEffect(() => {
-    console.log(databaseConnectors)
-  }, [databaseConnectors])
 
   const isDupInConnectors = (newConnector: EndpointFormData) => {
     const existingConnector = databaseConnectors.find(connector => connector.key === newConnector.name);

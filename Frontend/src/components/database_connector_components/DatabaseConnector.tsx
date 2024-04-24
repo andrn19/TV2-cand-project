@@ -31,20 +31,20 @@ const DatabaseConnector: React.FC<DatabaseConnectorProps> = ({ databaseConnector
     return (
         <div className="my-4">
             <label htmlFor="databaseSelector" className="text-white block font-bold mb-2">Select a database:</label>
-            <select className="appearance-none bg-gray-700 rounded-md p-.5 text-white" id="databaseSelector" onChange={handleSelectChange}>
+            <select data-testid="database-selector" className="appearance-none bg-gray-700 rounded-md p-.5 text-white" id="databaseSelector" onChange={handleSelectChange}>
                 {/* Placeholder option */}
                 <option value="" hidden>
                     Choose a database
                 </option>
                 {databaseConnectors.map((connector) => (
-                    <option key={connector.key} value={JSON.stringify(connector)}>{connector.value}</option>
+                    <option data-testid="connector-option" key={connector.key} value={JSON.stringify(connector)}>{connector.value}</option>
                 ))}
             </select>
             <div className="mt-4">
-                <button onClick={handleConnectClick} >
+                <button data-testid="database-connect-btn" onClick={handleConnectClick} >
                     Connect
                 </button>
-                <button onClick={handleRemoveClick} className='bg-red-500 hover:bg-red-600' >
+                <button data-testid="database-remove-btn" onClick={handleRemoveClick} className='bg-red-500 hover:bg-red-600' >
                     Remove
                 </button>
             </div>
@@ -52,4 +52,4 @@ const DatabaseConnector: React.FC<DatabaseConnectorProps> = ({ databaseConnector
     );
 }
 
-export default DatabaseConnector
+export default DatabaseConnector;
