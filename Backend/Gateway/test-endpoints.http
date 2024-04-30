@@ -1,6 +1,6 @@
 @hostname=localhost
 @port=52001
-@endpointId=3d8d1a62-5e09-47eb-9af3-6b29a807ef6e
+@endpointId=9801311b-4b40-4dfe-bde2-49e992b03625
 @footageId=04fe00b74f
 
 ###
@@ -21,7 +21,7 @@ Content-Type: application/json
 
 {
   "id": "{{endpointId}}",
-  "name": "Metadata"
+  "name": "MongoDB"
 }
 
 ###

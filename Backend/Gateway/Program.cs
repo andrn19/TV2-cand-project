@@ -19,8 +19,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: corsPolicy,
         policy  =>
         {
-            policy.WithOrigins("https://www.google.com",
-                                "http://localhost:53001");
+            policy
+                .WithOrigins("https://www.google.com",
+                                "http://localhost:*")
+                .WithMethods("PUT", "GET", "DELETE", "POST");
         });
 });
 

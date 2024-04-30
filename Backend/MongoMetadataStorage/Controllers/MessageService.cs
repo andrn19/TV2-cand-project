@@ -19,6 +19,7 @@ public class MessageService : IHostedService
     private readonly RabbitMqSettings _rabbitMqSettings;
     private readonly MongoClient _dbClient;
     private static IMongoCollection<Video> _metadataCollection;
+    private string _queueName;
 
     public MessageService(ILogger<MessageService> logger, IOptions<RabbitMqSettings> rabbitMqSettings, IServiceProvider serviceProvider)
     {
@@ -33,11 +34,10 @@ public class MessageService : IHostedService
         _channel?.Dispose();
         _channel = _connection.CreateModel();
         
-        _channel.QueueDeclare(queue: _rabbitMqSettings.QueueName,
-            durable: false,
-            exclusive: false,
-            autoDelete: false,
-            arguments: null);
+        _channel.ExchangeDeclare(exchange: "Metadata", type: ExchangeType.Direct);
+        
+        // declare a server-named queue
+        _queueName = _channel.QueueDeclare().QueueName;
         
         string mongoConnectionString = Environment.GetEnvironmentVariable("MONGODB_URI");
         if (mongoConnectionString == null)
@@ -47,15 +47,20 @@ public class MessageService : IHostedService
         }
         _dbClient = new MongoClient(mongoConnectionString);
         var metadataDatabase = _dbClient.GetDatabase("metadata_storage");
-        _metadataCollection = metadataDatabase.GetCollection<Video>(_rabbitMqSettings.QueueName);
+        _metadataCollection = metadataDatabase.GetCollection<Video>("Metadata");
     }
     
     public Task StartAsync(CancellationToken cancellationToken)
     {
+        _channel.QueueBind(queue: _queueName,
+            exchange: "Metadata",
+            routingKey: _rabbitMqSettings.RoutingKey);
+        
         var consumer = new EventingBasicConsumer(_channel);
         consumer.Received += OnMessageReceived;
-
-        _channel.BasicConsume(_rabbitMqSettings.QueueName, false, "", false, false, null, consumer);
+        
+        _channel.BasicConsume(queue:_queueName, autoAck: false, consumer: consumer);
+        
         return Task.CompletedTask;
     }
 
