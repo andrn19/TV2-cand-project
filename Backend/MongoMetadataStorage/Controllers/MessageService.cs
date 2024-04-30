@@ -46,7 +46,7 @@ public class MessageService : IHostedService
             Environment.Exit(0);
         }
         _dbClient = new MongoClient(mongoConnectionString);
-        var metadataDatabase = _dbClient.GetDatabase("sample_restaurants");
+        var metadataDatabase = _dbClient.GetDatabase("metadata_storage");
         _metadataCollection = metadataDatabase.GetCollection<Video>(_rabbitMqSettings.QueueName);
     }
     
