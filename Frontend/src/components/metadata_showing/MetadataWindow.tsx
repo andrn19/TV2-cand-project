@@ -8,11 +8,11 @@ import { VideoMetadateClass } from '../../classes/videoMetadataClass'
 
 
 interface MetadataWindowProps {
-    file: FileWithPath | undefined
+    metadateObject: VideoMetadateClass | undefined
     onClose: () => void;
 }
 
-const MetadataWindow: React.FC<MetadataWindowProps> = ({ file, onClose }) => {
+const MetadataWindow: React.FC<MetadataWindowProps> = ({ metadateObject, onClose }) => {
     const [metadataToShow, setMetadataToShow] = useState<VideoMetadateClass>()
 
     const windowRef = useRef<HTMLDivElement>(null);
@@ -31,14 +31,9 @@ const MetadataWindow: React.FC<MetadataWindowProps> = ({ file, onClose }) => {
         };
     }, [onClose]);
 
-    useEffect(() => {
-        const metadata = new VideoMetadateClass(data)
-        setMetadataToShow(metadata)
-    }, [])
-
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50">
-            <div ref={windowRef} className="relative dark p-2 rounded shadow-md" style={{ width: '90%' }}>
+            <div ref={windowRef} className="relative dark p-2 rounded shadow-md" style={{ width: '95%' }}>
                 <button
                     className='absolute -top-2 -right-2'
                     onClick={onClose}
@@ -46,10 +41,10 @@ const MetadataWindow: React.FC<MetadataWindowProps> = ({ file, onClose }) => {
                     X
                 </button>
                 {
-                    !metadataToShow ?
+                    !metadateObject ?
                         <></>
                         :
-                        <MetadataShowing file={file} data={metadataToShow} />
+                        <MetadataShowing metadateObject={metadateObject} />
                 }
             </div>
         </div>

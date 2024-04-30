@@ -153,25 +153,85 @@ export type Face = {
     instances: FaceInstance[];
 }
 
+type Tag = string[]
+
+type KeyframeInstance = {
+    thumbnailId: string;
+    adjustedStart: string;
+    adjustedEnd: string;
+    start: string;
+    end: string;
+}
+
+export type Keyframe = {
+    id: number;
+    instances: KeyframeInstance[];
+}
+
+type ShotInstance = {
+    adjustedStart: string;
+    adjustedEnd: string;
+    start: string;
+    end: string;
+}
+
+export type Shot = {
+    id: number;
+    tags: Tag | undefined;
+    keyFrames: Keyframe[];
+    instances: ShotInstance[];
+}
+
 export type Metadata = {
     topics: Topic[] | undefined;
     labels: Label[] | undefined;
     keywords: Keyword[] | undefined;
     namedLocations: NamedLocation[] | undefined;
-    namedPeople: NamedPeople[] |undefined;
+    namedPeople: NamedPeople[] | undefined;
     emotions: Emotion[] | undefined;
+    faces: Face[] | undefined;
     transcript: Transcript[] | undefined;
-    faces: Face[] |undefined;
+    shots: Shot[] | undefined;
 }
 
 export class VideoMetadateClass {
     videoId: string;
+    videoName: string
     publishedUrl: string;
-    metadata: Metadata;
+    topics: Topic[] | undefined;
+    labels: Label[] | undefined;
+    keywords: Keyword[] | undefined;
+    namedLocations: NamedLocation[] | undefined;
+    namedPeople: NamedPeople[] | undefined;
+    emotions: Emotion[] | undefined;
+    faces: Face[] | undefined;
+    transcript: Transcript[] | undefined;
+    shots: Shot[] | undefined;
 
     constructor(data: any) {
         this.videoId = data['videos'][0]['id']
+        this.videoName = data['name']
         this.publishedUrl = data['videos'][0]['publishedUrl']
-        this.metadata = data['videos'][0]['insights']
+        this.topics = data['videos'][0]['insights']['topics']
+        this.labels = data['videos'][0]['insights']['labels']
+        this.keywords = data['videos'][0]['insights']['keywords']
+        this.namedLocations = data['videos'][0]['insights']['namedLocations']
+        this.namedPeople = data['videos'][0]['insights']['namedPeople']
+        this.emotions = data['videos'][0]['insights']['emotions']
+        this.faces = data['videos'][0]['insights']['faces']
+        this.transcript = data['videos'][0]['insights']['transcript']
+        this.shots = data['videos'][0]['insights']['shots']
     }
+
+    // videoId: string;
+    // videoName: string
+    // publishedUrl: string;
+    // metadata: Metadata;
+
+    // constructor(data: any) {
+    //     this.videoId = data['id']
+    //     this.videoName = data['name']
+    //     this.publishedUrl = data['publishedUrl']
+    //     this.metadata = data['insights']
+    // }
 }

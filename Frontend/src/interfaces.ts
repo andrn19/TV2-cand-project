@@ -23,7 +23,5 @@ export interface DataInterface {
 }
 
 export interface EndpointFormData {
-    name: string,
-    url: string,
-    port: number
+    name: string
 }

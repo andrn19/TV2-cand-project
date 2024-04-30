@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react'
 import { DataInterface, EndpointFormData } from '../../interfaces';
+import { IP_ADDRESS } from '../../globalVars';
 
 import DatabaseConnector from './DatabaseConnector'
 import DatabaseEndpointCreator from './DatabaseEndpointCreator'
 
-const ENDPOINT_LIST_API_URL = 'http://localhost:8080/gateway/list-endpoints';
+const ENDPOINT_LIST_API_URL = `${IP_ADDRESS}/list-endpoints`;
 
 const DatabaseConnectorTab = () => {
-  const [databaseConnectors, setDatabaseConnectors] = useState<DataInterface[]>([{key:'hhhh', value: 'wwerwe'}]);
+  const [databaseConnectors, setDatabaseConnectors] = useState<DataInterface[]>([{key:'sdfds', value:'sgwww'}]);
 
 
   const fetchEndpointList = () => {
