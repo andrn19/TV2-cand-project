@@ -20,17 +20,13 @@ public class MessageService : IMessageService
         _factory.Password = "password";
         _conn = _factory.CreateConnection();
         _channel = _conn.CreateModel();
-        _channel.QueueDeclare(queue: "Metadata",
-            durable: false,
-            exclusive: false,
-            autoDelete: false,
-            arguments: null);
+        _channel.ExchangeDeclare(exchange: "Metadata", type: ExchangeType.Direct);
     }
 
     public bool Enqueue(string route, Video video)
     {
         var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(video));
-        _channel.BasicPublish(exchange: "",
+        _channel.BasicPublish(exchange: "Metadata",
             routingKey: route,
             basicProperties: null,
             body: body);
