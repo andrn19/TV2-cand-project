@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { VideoMetadateClass } from '../../classes/videoMetadataClass';
 import { IP_ADDRESS } from '../../globalVars';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ANALYSE_API_ENDPOINT = `${IP_ADDRESS}/get-metadata/`
 
@@ -11,6 +13,7 @@ interface AnalyseVideoButtonProps {
 const AnalyseVideoButton: React.FC<AnalyseVideoButtonProps> = ({ addNewReceivedVideoData }) => {
   const [videoURL, setVideoURL] = useState('')
 
+  const notify = () => toast('Video Uploaded', { autoClose: 3000, toastId: 1, theme: 'dark' })
 
   const getMetadataFromVideoID = async (videoId: string) => {
     const requestOptions = {
@@ -23,7 +26,8 @@ const AnalyseVideoButton: React.FC<AnalyseVideoButtonProps> = ({ addNewReceivedV
     try {
       const response = await fetch(`${ANALYSE_API_ENDPOINT}${videoId}`, requestOptions)
       if (response.ok) {
-        const videoMetadata = await response.json()
+        const responseJSON = await response.json()
+        const videoMetadata = new VideoMetadateClass(responseJSON)
         addNewReceivedVideoData(videoMetadata)
       } else {
         console.error('Failed to fetch metadata:', response.statusText)
@@ -36,6 +40,8 @@ const AnalyseVideoButton: React.FC<AnalyseVideoButtonProps> = ({ addNewReceivedV
 
   const handleAnalyseClick = async (event: React.FormEvent) => {
     event.preventDefault()
+
+    notify()
 
     const requestOptions = {
       method: 'GET',

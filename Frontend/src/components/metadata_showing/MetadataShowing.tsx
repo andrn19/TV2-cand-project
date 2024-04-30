@@ -64,7 +64,7 @@ const MetadataShowing: React.FC<MetadataShowingProps> = ({ metadateObject }) => 
     const handleContentEdit = (key: string, index: number, content: string) => {
         const newDataState = { ...dataState };
         const metadataKey = MetadataKey[key as keyof typeof MetadataKey];
-        (newDataState[key as keyof Metadata]?.[index] as any)[metadataKey] = content;
+        (newDataState.metadata[key as keyof Metadata]?.[index] as any)[metadataKey] = content;
         setDataState(newDataState);
     };
 
@@ -83,7 +83,7 @@ const MetadataShowing: React.FC<MetadataShowingProps> = ({ metadateObject }) => 
                         !(key === 'shots') ?
                             <div data-testid='metadata-div' key={key} className="light p-2 rounded shadow-md">
                                 <h2>{key}</h2>
-                                {Array.isArray(dataState[key as keyof Metadata]) && dataState[key as keyof Metadata]?.map((entry, index) => (
+                                {Array.isArray(dataState.metadata[key as keyof Metadata]) && dataState.metadata[key as keyof Metadata]?.map((entry, index) => (
                                     <div key={entry.id}>
                                         <textarea
                                             data-testid={key === 'transcript' ? 'transcript-textarea' : 'metadata-textarea'}
@@ -103,10 +103,10 @@ const MetadataShowing: React.FC<MetadataShowingProps> = ({ metadateObject }) => 
                             null
                     ))}
                 </div>
-                {dataState['shots'] &&
+                {dataState.metadata['shots'] &&
                     <div className='light mt-3 p-2 rounded shadow-md'>
                         <h2>Keyframes</h2>
-                        <KeyframeListing key='shots' keyframes={dataState['shots']} />
+                        <KeyframeListing key='shots' keyframes={dataState.metadata['shots']} />
                     </div>
                 }
                 <SaveMetadataButton metadata={dataState} />

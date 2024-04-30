@@ -2,6 +2,8 @@ import { effect, signal } from '@preact/signals-react';
 import { useSignals } from '@preact/signals-react/runtime';
 import { SchemaInfo } from './interfaces'
 import { VideoMetadateClass } from './classes/videoMetadataClass';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 //components
 import FileUploadComponent from './components/file_upload_components/FileUploadComponent';
@@ -37,11 +39,19 @@ function App() {
 
   useSignals();
 
+  const schemaNotify = (schemaName: string) => toast(`The ${schemaName} schema is created`, { autoClose: 3000, toastId: 2, theme: 'dark' });
+
   const addNewSchema = (newSchema: SchemaInfo) => {
+    if (newSchema.insights.length === 0) {
+      alert('Schame needs to have atleast 1 insight')
+      return
+    }
+
     const schemaExists = schemas.value.some(schema => schema.name === newSchema.name);
 
     if (!schemaExists) {
       schemas.value = [...schemas.value, newSchema];
+      schemaNotify(newSchema.name)
     }
     else {
       alert('Scame with that name is already created')
@@ -56,6 +66,7 @@ function App() {
 
     if (!dataExists) {
       receivedVideoData.value = [...receivedVideoData.value, newData];
+
     }
     else {
       alert('Scame with that name is already created')
@@ -69,6 +80,7 @@ function App() {
       <FileUploadComponent addNewReceivedVideoData={addNewReceivedVideoData} />
       <SchemaSeletor schemas={schemas.value} />
       <ReceivedMetadataListing receivedVideoData={receivedVideoData.value} />
+      <ToastContainer />
       <SchemaCreator addNewSchema={addNewSchema} />
     </div>
   );
