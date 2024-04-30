@@ -36,7 +36,7 @@ const ReceivedVideoPreview: React.FC<ReceivedVideoPreviewProps> = ({ metadateObj
             </button>
           </>
         )}
-        <p className='mt-2 text-neutral-500 text-[12px] font-medium'>
+        <p className='mt-2 text-white-500 text-[12px] font-medium'>
           {metadateObject.videoName}
         </p>
       </li>
