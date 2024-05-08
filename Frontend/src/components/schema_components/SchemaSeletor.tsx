@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Schemas, SchemaInfo } from '../../interfaces';
 
 const SCHEMA_LIST_API_URL = '';

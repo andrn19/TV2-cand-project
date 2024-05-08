@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { DataInterface, EndpointFormData } from '../../interfaces';
+import { EndpointFormData } from '../../interfaces';
 import { IP_ADDRESS } from '../../globalVars';
 
 interface EndpointCreatorProps {

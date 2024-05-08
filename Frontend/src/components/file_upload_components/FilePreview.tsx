@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { FileWithPath } from 'react-dropzone';
-import { FaRegEdit } from "react-icons/fa";
 
 interface CustomFileWithPath extends FileWithPath {
   preview?: string;

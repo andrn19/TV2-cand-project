@@ -1,9 +1,7 @@
-import { useEffect, useState, useRef } from 'react'
-import { FileWithPath } from 'react-dropzone';
+import { useEffect, useRef } from 'react'
 
 import MetadataShowing from './MetadataShowing'
 
-import data from '../../classes/data.json'
 import { VideoMetadateClass } from '../../classes/videoMetadataClass'
 
 
@@ -13,7 +11,6 @@ interface MetadataWindowProps {
 }
 
 const MetadataWindow: React.FC<MetadataWindowProps> = ({ metadateObject, onClose }) => {
-    const [metadataToShow, setMetadataToShow] = useState<VideoMetadateClass>()
 
     const windowRef = useRef<HTMLDivElement>(null);
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React from 'react';
 import { FileWithPath } from 'react-dropzone';
 
 //Components
