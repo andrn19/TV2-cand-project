@@ -32,7 +32,7 @@ const KeyframeListing: React.FC<KeyframeListingProps> = ({ keyframes }) => {
                         ))}
                     </div>
                 </div>
-            ))};
+            ))}
         </div>
     );
 };

@@ -19,8 +19,9 @@ describe("Mocking file and metadata object", () => {
                 namedLocations: [],
                 namedPeople: [],
                 emotions: [],
-                transcript: [{ id: 1, text: 'Initial transcript', instances: [{ adjustedStart: 0, adjustedEnd: 10 }] }],
                 faces: [],
+                transcript: [{ id: 1, text: 'Initial transcript', instances: [{ adjustedStart: 0, adjustedEnd: 10 }] }],
+                shots: [],
             }
         };
     });
@@ -30,14 +31,14 @@ describe("Mocking file and metadata object", () => {
     });
     describe('MetadataShowing component', () => {
         it('the correct amount of metadata divs are rendered', () => {
-            render(<MetadataShowing file={file} data={metadataObject} />);
+            render(<MetadataShowing metadateObject={metadataObject} />);
 
             expect(screen.getAllByTestId('metadata-div').length).toBe(8)
         });
 
         it('changes can be made in the metadata textareas', () => {
 
-            render(<MetadataShowing file={file} data={metadataObject} />);
+            render(<MetadataShowing metadateObject={metadataObject} />);
 
             const transcriptTextarea = screen.getByTestId('transcript-textarea');
 

@@ -21,7 +21,7 @@ const ReceivedVideoPreview: React.FC<ReceivedVideoPreviewProps> = ({ metadateObj
           controls
           className='object-contain rounded-md'
         >
-          <source src={metadateObject.publishedUrl || ''} />
+          <source src={metadateObject?.publishedUrl || ''} />
           Your browser does not support the video tag.
         </video>
 
@@ -37,7 +37,7 @@ const ReceivedVideoPreview: React.FC<ReceivedVideoPreviewProps> = ({ metadateObj
           </>
         )}
         <p className='mt-2 text-white-500 text-[12px] font-medium'>
-          {metadateObject.videoName}
+          {metadateObject?.videoName}
         </p>
       </li>
     </>

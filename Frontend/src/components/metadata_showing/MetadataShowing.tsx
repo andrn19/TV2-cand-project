@@ -34,7 +34,7 @@ const MetadataShowing: React.FC<MetadataShowingProps> = ({ metadateObject }) => 
 
     const getInstancesForMetadata = (metadata: Emotion | Topic | Label | Keyword | NamedLocation | NamedPeople | Transcript | Face | Shot): string => {
         return metadata['instances'].map((instance) => {
-            return `(${instance.adjustedStart} - ${instance.adjustedEnd})`
+            return `(${instance.start} - ${instance.end})`
         }).join(', ')
     }
 
@@ -79,7 +79,7 @@ const MetadataShowing: React.FC<MetadataShowingProps> = ({ metadateObject }) => 
             <div className='overflow-y-auto' style={{ maxHeight: '85vh' }}>
                 <MetadataVideoPreview metadateObject={metadateObject} />
                 <div className='mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3'>
-                    {Object.keys(dataState).map((key) => (
+                    {Object.keys(dataState.metadata).map((key) => (
                         !(key === 'shots') ?
                             <div data-testid='metadata-div' key={key} className="light p-2 rounded shadow-md">
                                 <h2>{key}</h2>
