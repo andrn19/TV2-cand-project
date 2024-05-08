@@ -75,6 +75,7 @@ const AnalyseVideoButton: React.FC<AnalyseVideoButtonProps> = ({ addNewReceivedV
         <input
           id='videoId'
           value={videoURL}
+          placeholder='Video URL'
           onChange={handleInputChange}
           className="appearance-none bg-gray-700 rounded-md p-.5 text-white w-full mt-2"
         />
