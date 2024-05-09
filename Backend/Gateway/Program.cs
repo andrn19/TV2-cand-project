@@ -19,12 +19,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: corsPolicy,
         policy  =>
         {
-            policy.WithOrigins("https://www.google.com", "http://localhost:53001").WithMethods("PUT", "GET", "DELETE", "POST").AllowAnyHeader();
+            policy.WithOrigins("http://localhost:53001").WithMethods("PUT", "GET", "DELETE", "POST").AllowAnyHeader();
         });
 });
 
-
-// https://code-maze.com/aspnetcore-api-gateway-with-ocelot/
 builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
 builder.Services.AddOcelot(builder.Configuration).AddAdministration("/administration", "secret");
 
