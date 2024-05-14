@@ -25,11 +25,19 @@ public class MessageService : IMessageService
 
     public bool Enqueue(string route, Video video)
     {
-        var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(video));
-        _channel.BasicPublish(exchange: "Metadata",
-            routingKey: route,
-            basicProperties: null,
-            body: body);
-        return true;
+        try
+        {
+            var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(video));
+            _channel.BasicPublish(exchange: "Metadata",
+                routingKey: route,
+                basicProperties: null,
+                body: body);
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return false;
+        }
     }
 }
