@@ -26,37 +26,4 @@ public interface IAnalyserService
     /// <param name="schema"> A schema for the metadata </param>
     /// <returns> Returns video index when the index is complete, otherwise throws exception </returns>
     Task<Index> WaitForIndexAsync(string videoId, Account account, string accountAccessToken, string schema);
-    
-    
-    
-    /// <summary>
-    /// Searches for the video in the account. Calls the searchVideo API
-    /// </summary>
-    /// <param name="videoId"> The video id </param>
-    /// <param name="account"> An account object </param>
-    /// <param name="accountAccessToken"> An ARM access token </param>
-    /// <returns> Returns the video metadata, otherwise throws excpetion</returns>
-    Task<string> GetVideoAsync(string videoId, Account account, string accountAccessToken);
-    
-    
-    
-    /// <summary>
-    /// Calls the getVideoInsightsWidget API
-    /// </summary>
-    /// <param name="videoId"> The video id </param>
-    /// <param name="account"> An account object </param>
-    /// <param name="accountAccessToken"> An ARM access token </param>
-    /// <returns> Returns the VideoInsightsWidget URL, otherwise throws exception</returns>
-    Task<Uri?> GetInsightsWidgetUrlAsync(string videoId, Account account, string accountAccessToken);
-    
-    
-    
-    /// <summary>
-    /// Calls the getVideoPlayerWidget API
-    /// </summary>
-    /// <param name="videoId"> The video id </param>
-    /// <param name="account"> An account object </param>
-    /// <param name="accountAccessToken"> An ARM access token </param>
-    /// <returns> Returns the VideoPlayerWidget URL, otherwise throws exception</returns>
-    Task<Uri?> GetPlayerWidgetUrlAsync(string videoId, Account account, string accountAccessToken);
 }
