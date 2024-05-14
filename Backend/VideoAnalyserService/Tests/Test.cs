@@ -14,11 +14,17 @@ public class Test
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
-
+        
     }
     
     [OneTimeTearDown]
     public void OneTimeTearDown()
+    {
+        
+    }
+
+    [Test]
+    public void AddExcludedAIsTest()
     {
         
     }
@@ -47,7 +53,6 @@ public class Test
         // Assert
         Assert.That(result, Is.Not.Null);
         Assert.That(result, Is.EqualTo("Id"));
-        // Add more assertions if needed
     }
     
     [Test]
@@ -73,7 +78,6 @@ public class Test
         // Assert
         Assert.That(result, Is.Not.Null);
         Assert.That(result, Is.InstanceOf<Video>());
-        // Add more assertions if needed
     }
     
 }
