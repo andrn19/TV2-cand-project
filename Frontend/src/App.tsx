@@ -30,9 +30,9 @@ effect(() => {
   localStorage.setItem(LOCAL_STORAGE_KEY_SCHEMAS, JSON.stringify(schemas.value))
 });
 
+export const selectedSchema = signal<SchemaInfo | undefined>(undefined)
+
 const testData = new VideoMetadateClass(data)
-
-
 const receivedVideoData = signal<VideoMetadateClass[]>([testData]);
 
 function App() {
@@ -73,12 +73,16 @@ function App() {
     }
   };
 
+  const changeSelectedSchema = (newSchema: SchemaInfo) => {
+    selectedSchema.value = newSchema;
+  };
+
   return (
     <div>
       <DatabaseConnectorTab />
       <h1 className='text-2xl font-bold mt-4 mb-7'>File Drop Zone</h1>
       <FileUploadComponent addNewReceivedVideoData={addNewReceivedVideoData} />
-      <SchemaSeletor schemas={schemas.value} />
+      <SchemaSeletor schemas={schemas.value} changeSelectedSchema={changeSelectedSchema} />
       <ReceivedMetadataListing receivedVideoData={receivedVideoData.value} />
       <ToastContainer />
       <SchemaCreator addNewSchema={addNewSchema} />

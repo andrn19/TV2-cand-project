@@ -16,6 +16,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({ file, onRemove }) => {
   return (
     <>
       <li className='relative rounded-md  mb-3 ml-3'
+        data-testid="uploadPreview"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -35,6 +36,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({ file, onRemove }) => {
         {isHovered && (
           <>
             <button
+              data-testid="removePreviewBtn"
               className='preview-delete-btn'
               onClick={onRemove}
             >
