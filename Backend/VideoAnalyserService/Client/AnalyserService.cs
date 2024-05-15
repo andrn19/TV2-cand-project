@@ -13,10 +13,11 @@ public class AnalyserService : IAnalyserService
     private readonly TimeSpan _pollingInterval = TimeSpan.FromSeconds(10);
     private string schema = "faces,topics,labels,keywords,namedLocations,namedPeople,shots,transcript";
 
-    public AnalyserService(ILogger<AnalyserService>? logger = null)
+    public AnalyserService(ILogger<AnalyserService>? logger = null, HttpClient? httpClient = null)
     {
         System.Net.ServicePointManager.SecurityProtocol |= System.Net.SecurityProtocolType.Tls12 | System.Net.SecurityProtocolType.Tls13;
-        _httpClient = HttpClientUtils.CreateHttpClient();
+        _httpClient = httpClient;
+        if (httpClient == null) _httpClient = HttpClientUtils.CreateHttpClient();
         _logger = logger;
     }
     
@@ -25,7 +26,6 @@ public class AnalyserService : IAnalyserService
     {
         try
         {
-            //Build Query Parameter Dictionary
             var queryDictionary = new Dictionary<string, string>
             {
                 {"name", videoName},
@@ -43,14 +43,12 @@ public class AnalyserService : IAnalyserService
             var queryParams = queryDictionary.CreateQueryString();
             if (!string.IsNullOrEmpty(exludedAIs))
                 queryParams += AddExcludedAIs(exludedAIs);
-
-            // Send POST request
+            
             var url = $"{ApiEndpoint}/{account.Location}/Accounts/{account.Properties.Id}/Videos?{queryParams}";
             var uploadRequestResult = await _httpClient.PostAsync(url, null);
             uploadRequestResult.VerifyStatus(System.Net.HttpStatusCode.OK);
             var uploadResult = await uploadRequestResult.Content.ReadAsStringAsync();
-
-            // Get the video ID from the upload result
+            
             var videoId = JsonSerializer.Deserialize<Index>(uploadResult).Id;
             
             return videoId;
@@ -80,19 +78,16 @@ public class AnalyserService : IAnalyserService
             videoGetIndexRequestResult.VerifyStatus(System.Net.HttpStatusCode.OK);
             var videoGetIndexResult = await videoGetIndexRequestResult.Content.ReadAsStringAsync();
             string processingState = JsonSerializer.Deserialize<Index>(videoGetIndexResult).State;
-
-            // If job is finished
+            
             if (processingState == ProcessingState.Processed.ToString())
             {
                 return JsonSerializer.Deserialize<Index>(videoGetIndexResult);
             }
             if (processingState == ProcessingState.Failed.ToString())
             {
-                //Console.WriteLine($"The video index failed for video ID {videoId}.");
                 throw new Exception(videoGetIndexResult);
             }
-
-            // Job hasn't finished
+            
             Console.WriteLine($"The video index state is {processingState}");
             await Task.Delay(_pollingInterval);
         }

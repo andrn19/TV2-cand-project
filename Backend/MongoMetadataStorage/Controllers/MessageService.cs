@@ -74,12 +74,10 @@ public class MessageService : IHostedService
     {
         var message = Encoding.UTF8.GetString(ea.Body.ToArray());
         using var scope = _serviceProvider.CreateScope();
-        //await ProcessMessage(scope, message);
         try
         {
             var metadata = JsonSerializer.Deserialize<Video>(message);
             await _metadataCollection.InsertOneAsync(metadata);
-            //Console.WriteLine(message);
         }
         catch (Exception e)
         {
