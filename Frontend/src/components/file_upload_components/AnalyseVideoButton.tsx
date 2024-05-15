@@ -3,8 +3,10 @@ import { VideoMetadateClass } from '../../classes/videoMetadataClass';
 import { IP_ADDRESS } from '../../globalVars';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { selectedSchema } from '../../App';
 
-const ANALYSE_API_ENDPOINT = `${IP_ADDRESS}/get-metadata/`
+const ANALYSE_API_ENDPOINT = `${IP_ADDRESS}/upload-footage/`
+const GET_METADATA_API_ENDPOINT = `${IP_ADDRESS}/get-metadata/`
 
 interface AnalyseVideoButtonProps {
   addNewReceivedVideoData: (newData: VideoMetadateClass) => void;
@@ -12,19 +14,21 @@ interface AnalyseVideoButtonProps {
 
 const AnalyseVideoButton: React.FC<AnalyseVideoButtonProps> = ({ addNewReceivedVideoData }) => {
   const [videoURL, setVideoURL] = useState('')
+  const [videoName, setVideoName] = useState('')
 
   const notify = () => toast('Video Uploaded', { autoClose: 3000, toastId: 1, theme: 'dark' })
 
+  // DER SKAL TILFØJES SCHEMA
   const getMetadataFromVideoID = async (videoId: string) => {
     const requestOptions = {
-      method: 'GET',
+      method: 'POST',
       headers: {
         Accept: 'text/plain',
       },
     };
 
     try {
-      const response = await fetch(`${ANALYSE_API_ENDPOINT}${videoId}`, requestOptions)
+      const response = await fetch(`${GET_METADATA_API_ENDPOINT}${videoId}`, requestOptions)
       if (response.ok) {
         const responseJSON = await response.json()
         const videoMetadata = new VideoMetadateClass(responseJSON)
@@ -40,18 +44,17 @@ const AnalyseVideoButton: React.FC<AnalyseVideoButtonProps> = ({ addNewReceivedV
 
   const handleAnalyseClick = async (event: React.FormEvent) => {
     event.preventDefault()
-
     notify()
 
     const requestOptions = {
-      method: 'GET',
+      method: 'POST',
       headers: {
         Accept: 'text/plain',
       },
     };
 
     try {
-      const response = await fetch(`${ANALYSE_API_ENDPOINT}${videoURL}`, requestOptions)
+      const response = await fetch(`${ANALYSE_API_ENDPOINT}?footageUrl=${videoURL}?footageName=${videoName}`, requestOptions)
       if (response.ok) {
         const videoID = await response.json()
         console.log(videoID)
@@ -65,18 +68,28 @@ const AnalyseVideoButton: React.FC<AnalyseVideoButtonProps> = ({ addNewReceivedV
     }
   }
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleIDInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setVideoURL(event.target.value)
+  };
+  const handleNameInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setVideoName(event.target.value)
   };
 
   return (
     <div>
       <form onSubmit={handleAnalyseClick}>
         <input
-          id='videoId'
+          id='videoURL'
           value={videoURL}
           placeholder='Video URL'
-          onChange={handleInputChange}
+          onChange={handleIDInputChange}
+          className="appearance-none bg-gray-700 rounded-md p-.5 text-white w-full mt-2"
+        />
+        <input
+          id='videoName'
+          value={videoURL}
+          placeholder='Video Name'
+          onChange={handleNameInputChange}
           className="appearance-none bg-gray-700 rounded-md p-.5 text-white w-full mt-2"
         />
         <button type="submit">Analyse Video</button>

@@ -1,12 +1,15 @@
 import { useState } from 'react'
-import { Schemas, SchemaInfo } from '../../interfaces';
+import { SchemaInfo } from '../../interfaces';
+import { selectedSchema } from '../../App';
 
 const SCHEMA_LIST_API_URL = '';
 
+interface SchemaSeletorProps {
+    changeSelectedSchema: (newSchema: SchemaInfo) => void;
+    schemas: SchemaInfo[];
+}
 
-
-const SchemaSeletor: React.FC<Schemas> = ({ schemas }) => {
-    const [selectedSchema, setSelectedConnector] = useState<SchemaInfo>();
+const SchemaSeletor: React.FC<SchemaSeletorProps> = ({ changeSelectedSchema, schemas }) => {
 
     // useEffect(() => {
     //     fetch(SCHEMA_LIST_API_URL, {
@@ -21,8 +24,8 @@ const SchemaSeletor: React.FC<Schemas> = ({ schemas }) => {
     // }, [])
 
     const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const valueObject = JSON.parse(event.target.value)
-        setSelectedConnector(valueObject);
+        const newSchema = JSON.parse(event.target.value)
+        changeSelectedSchema(newSchema);
     };
 
 
@@ -43,7 +46,7 @@ const SchemaSeletor: React.FC<Schemas> = ({ schemas }) => {
             </div>
             <div className="rounded-lg bg-gray-700 flex flex-col mb-5">
                 <h4 className="text-lg font-bold">Metadata to be generated:</h4>
-                {selectedSchema?.insights.map((insight) => (
+                {selectedSchema.value?.insights.map((insight) => (
                     <p>{insight}</p>
                 ))}
             </div>
