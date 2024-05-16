@@ -30,7 +30,8 @@ public class DataController : ControllerBase, IDatabaseRegistryService, IMetadat
     [HttpPost("AddMetadata/{endpoint}")]
     public bool AddMetadata(Guid endpoint, [FromBody] Video video)
     {
-        return _messageService.Enqueue(_consumerRegistry.Resolve(endpoint).Name,video);
+        var route = _consumerRegistry.Resolve(endpoint);
+        return route != null && _messageService.Enqueue(route.Name,video);
     }
 
     [HttpPut("CreateEndpoint")]
