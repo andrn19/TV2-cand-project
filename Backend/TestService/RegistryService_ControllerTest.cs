@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Moq;
 using MySql.Data.MySqlClient;
 using NUnit.Framework;
@@ -11,7 +12,7 @@ using TV2.Backend.Services.DatabaseRegistry.Interfaces;
 namespace TV2.Backend.Services.DatabaseRegistry.Tests;
 
 [TestFixture]
-public class Test
+public class RegistryService_ControllerTest
 {
     private ThrowawayDatabase database;
     
@@ -20,7 +21,7 @@ public class Test
     {
         database = ThrowawayDatabase.Create(
             "root",
-            "password",
+            "",
             "localhost"
         );
 
@@ -165,11 +166,12 @@ public class Test
         // Assert
         Assert.That(result, Is.True);
         
-        Assert.That(endpoints, Has.Count.EqualTo(2));
+        //Assert.That(endpoints, Has.Count.EqualTo(2));
+        Assert.That(endpoints.Count(), Is.EqualTo(2));
         Assert.That(endpoint1, Is.Not.Null);
         Assert.That(endpoint2, Is.Not.Null);
         
-        Assert.That(endpointsAfterDeletion, Has.Count.EqualTo(1));
+        Assert.That(endpointsAfterDeletion.Count(), Is.EqualTo(1));
         Assert.That(endpoint1AfterDeletion, Is.Not.Null);
         Assert.That(endpoint2AfterDeletion, Is.Null);
     }
@@ -208,11 +210,11 @@ public class Test
         // Assert
         Assert.That(result, Is.False);
         
-        Assert.That(endpoints, Has.Count.EqualTo(2));
+        Assert.That(endpoints.Count(), Is.EqualTo(2));
         Assert.That(endpoint1, Is.Not.Null);
         Assert.That(endpoint2, Is.Not.Null);
         
-        Assert.That(endpointsAfterDeletion, Has.Count.EqualTo(2));
+        Assert.That(endpointsAfterDeletion.Count(), Is.EqualTo(2));
         Assert.That(endpoint1AfterDeletion, Is.Not.Null);
         Assert.That(endpoint2AfterDeletion, Is.Not.Null);
     }

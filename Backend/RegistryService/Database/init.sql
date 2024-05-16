@@ -1,5 +1,3 @@
--- noinspection SqlDialectInspectionForFile
-
 CREATE DATABASE db;
 USE db;
 

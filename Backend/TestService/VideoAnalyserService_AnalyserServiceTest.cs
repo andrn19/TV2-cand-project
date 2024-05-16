@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using MockHttpClient;
 using Moq;
 using NUnit.Framework;
@@ -7,7 +8,7 @@ using TV2.Backend.Services.VideoAnalyser.Client.Model;
 namespace TV2.Backend.Services.VideoAnalyser.Tests;
 
 [TestFixture]
-public class AnalyserServiceTest
+public class VideoAnalyserService_AnalyserServiceTest
 {
     [Test]
     public async Task UploadUrlAsync_ValidUrl_ReturnsId()

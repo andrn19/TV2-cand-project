@@ -8,8 +8,7 @@ public static class Consts
     public static readonly string ResourceGroup = "TV2-Video-Analyser";
     public static readonly string ViAccountName = "Metadata-Generator";
     public static readonly string ApiEndpoint = Environment.GetEnvironmentVariable("API_ENDPOINT") ?? "https://api.videoindexer.ai";
-
-    //public static bool Valid() => true;
+    
     public static bool Valid() => !string.IsNullOrWhiteSpace(SubscriptionId) && 
                                   !string.IsNullOrWhiteSpace(ResourceGroup) &&
                                   !string.IsNullOrWhiteSpace(ViAccountName);

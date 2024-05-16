@@ -1,9 +1,4 @@
-using System.Net;
-using Ocelot.Administration;
-using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
-using TV2.Backend.ClassLibrary.DataBrokers;
-using TV2.Backend.ClassLibrary.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +19,6 @@ builder.Services.AddCors(options =>
 });
 
 builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
-builder.Services.AddOcelot(builder.Configuration).AddAdministration("/administration", "secret");
 
 var app = builder.Build();
 var logger = app.Services.GetService<ILogger<Program>>();

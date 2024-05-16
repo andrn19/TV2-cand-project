@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using TV2.Backend.ClassLibrary.Models.Metadata;
@@ -9,7 +10,7 @@ using Index = TV2.Backend.Services.VideoAnalyser.Client.Model.Index;
 namespace TV2.Backend.Services.VideoAnalyser.Tests;
 
 [TestFixture]
-public class ControllerTest
+public class VideoAnalyserService_ControllerTest
 {
     private Mock<IAuthService> _authService;
     private Mock<IAnalyserService> _analyserService;

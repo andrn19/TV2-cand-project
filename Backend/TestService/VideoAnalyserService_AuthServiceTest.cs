@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using MockHttpClient;
 using Moq;
 using NUnit.Framework;
@@ -6,7 +7,7 @@ using TV2.Backend.Services.VideoAnalyser.Client;
 namespace TV2.Backend.Services.VideoAnalyser.Tests;
 
 [TestFixture]
-public class AuthServiceTest
+public class VideoAnalyserService_AuthServiceTest
 {
     private MockHttpClient.MockHttpClient _httpClient;
     private Mock<ILogger<AuthService>> _logger;
