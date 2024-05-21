@@ -8,6 +8,7 @@ const SAVE_METADATA_ENDPOINT = 'http://gateway:8080/gateway/AddMetadata';
 global.fetch = vi.fn();
 
 describe('SaveMetadataButton', () => {
+
     it('renders the button', () => {
         render(<SaveMetadataButton metadata={{ key: 'value' }} />);
         expect(screen.getByText('SaveMetadataButton')).toBeInTheDocument();
@@ -26,7 +27,7 @@ describe('SaveMetadataButton', () => {
 
         expect(global.fetch).toHaveBeenCalledTimes(1);
         expect(global.fetch).toHaveBeenCalledWith(SAVE_METADATA_ENDPOINT, {
-            method: 'PUT',
+            method: 'POST',
             headers: {
                 Accept: 'text/plain',
                 'Content-Type': 'application/json',
