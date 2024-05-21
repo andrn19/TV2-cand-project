@@ -8,10 +8,6 @@ const SAVE_METADATA_ENDPOINT = 'http://gateway:8080/gateway/AddMetadata';
 global.fetch = vi.fn();
 
 describe('SaveMetadataButton', () => {
-    afterEach(() => {
-        vi.clearAllMocks();
-    });
-
     it('renders the button', () => {
         render(<SaveMetadataButton metadata={{ key: 'value' }} />);
         expect(screen.getByText('SaveMetadataButton')).toBeInTheDocument();
