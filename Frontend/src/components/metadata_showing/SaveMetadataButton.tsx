@@ -6,7 +6,7 @@ type SaveMetadataButtonProps = {
     metadata: VideoMetadateClass
 }
 
-const SAVE_METADATA_ENDPOINT = `${IP_ADDRESS}/AddMetadata/`
+const SAVE_METADATA_ENDPOINT = `${IP_ADDRESS}/AddMetadata`
 
 const SaveMetadataButton: React.FC<SaveMetadataButtonProps> = ({ metadata }) => {
 
@@ -38,7 +38,5 @@ const SaveMetadataButton: React.FC<SaveMetadataButtonProps> = ({ metadata }) => 
         <button onClick={handleSaveClick}>SaveMetadataButton</button>
     )
 }
-
-SaveMetadataButton.propTypes = {}
 
 export default SaveMetadataButton
