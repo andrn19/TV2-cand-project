@@ -13,7 +13,7 @@ const SaveMetadataButton: React.FC<SaveMetadataButtonProps> = ({ metadata }) => 
     const handleSaveClick = async () => {
 
         const requestOptions = {
-            method: 'PUT',
+            method: 'POST',
             headers: {
                 Accept: 'text/plain',
                 'Content-Type': 'application/json',
