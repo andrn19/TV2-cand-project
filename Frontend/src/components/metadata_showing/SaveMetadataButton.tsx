@@ -6,7 +6,7 @@ type SaveMetadataButtonProps = {
     metadata: VideoMetadateClass
 }
 
-const SAVE_METADATA_ENDPOINT = `${IP_ADDRESS}/AddMetadata`
+const SAVE_METADATA_ENDPOINT = `${IP_ADDRESS}/add-metadata`
 
 const SaveMetadataButton: React.FC<SaveMetadataButtonProps> = ({ metadata }) => {
 

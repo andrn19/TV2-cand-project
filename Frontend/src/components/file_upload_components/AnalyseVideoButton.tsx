@@ -5,8 +5,8 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { selectedSchema } from '../../App';
 
-const ANALYSE_API_ENDPOINT = `${IP_ADDRESS}/upload-footage/`
-const GET_METADATA_API_ENDPOINT = `${IP_ADDRESS}/get-metadata/`
+const ANALYSE_API_ENDPOINT = `${IP_ADDRESS}/upload-footage`
+const GET_METADATA_API_ENDPOINT = `${IP_ADDRESS}/get-metadata`
 
 interface AnalyseVideoButtonProps {
   addNewReceivedVideoData: (newData: VideoMetadateClass) => void;
@@ -31,6 +31,7 @@ const AnalyseVideoButton: React.FC<AnalyseVideoButtonProps> = ({ addNewReceivedV
       const response = await fetch(`${GET_METADATA_API_ENDPOINT}${videoId}`, requestOptions)
       if (response.ok) {
         const responseJSON = await response.json()
+        console.log(responseJSON)
         const videoMetadata = new VideoMetadateClass(responseJSON)
         addNewReceivedVideoData(videoMetadata)
       } else {
@@ -54,7 +55,7 @@ const AnalyseVideoButton: React.FC<AnalyseVideoButtonProps> = ({ addNewReceivedV
     };
 
     try {
-      const response = await fetch(`${ANALYSE_API_ENDPOINT}?footageUrl=${videoURL}?footageName=${videoName}`, requestOptions)
+      const response = await fetch(`${ANALYSE_API_ENDPOINT}?footageUrl=${videoURL}&footageName=${videoName}`, requestOptions)
       if (response.ok) {
         const videoID = await response.json()
         console.log(videoID)
@@ -87,7 +88,7 @@ const AnalyseVideoButton: React.FC<AnalyseVideoButtonProps> = ({ addNewReceivedV
         />
         <input
           id='videoName'
-          value={videoURL}
+          value={videoName}
           placeholder='Video Name'
           onChange={handleNameInputChange}
           className="appearance-none bg-gray-700 rounded-md p-.5 text-white w-full mt-2"
