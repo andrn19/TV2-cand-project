@@ -1,4 +1,4 @@
-name: Build and deploy ACR
+name: Unit tests and Build and deploy to ACR
 on:
   workflow_dispatch:
 #  push:
@@ -14,9 +14,26 @@ env:
   
 
 jobs:
+
+  unit_tests_frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18.x
+          
+      - name: unit testing
+        working-directory: ./Frontend
+        run: |
+          npm ci
+          npm test
+
   build-registry-service-store:
 
     runs-on: ubuntu-latest
+    needs: [unit_tests_frontend]
     env:
       SERVICE_NAME: database-registry-store
       CONTEXT: ./Backend/RegistryService/Database/
@@ -40,6 +57,7 @@ jobs:
 
   build-registry-service:
     runs-on: ubuntu-latest
+    needs: [unit_tests_frontend]
     env:
       SERVICE_NAME: database-registry
       CONTEXT: ./Backend/
@@ -64,8 +82,8 @@ jobs:
 
 
   build-mongo-metadata-store:
-
     runs-on: ubuntu-latest
+    needs: [unit_tests_frontend]
     env:
       SERVICE_NAME: mongo-metadata-store
       CONTEXT: ./Backend/
@@ -90,8 +108,8 @@ jobs:
 
 
   build-gateway:
-
     runs-on: ubuntu-latest
+    needs: [unit_tests_frontend]
     env:
       SERVICE_NAME: gateway
       CONTEXT: ./Backend/
@@ -116,8 +134,8 @@ jobs:
 
 
   build-video-analyser-service:
-
     runs-on: ubuntu-latest
+    needs: [unit_tests_frontend]
     env:
       SERVICE_NAME: video-analyser
       CONTEXT: ./Backend/
@@ -142,8 +160,8 @@ jobs:
 
 
   build-frontend:
-  
     runs-on: ubuntu-latest
+    needs: [unit_tests_frontend]
     env:
       SERVICE_NAME: frontend
       CONTEXT: ./Frontend/
