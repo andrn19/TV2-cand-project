@@ -33,6 +33,34 @@ public class VideoAnalyserService_AuthServiceTest
     }
     
     [Test]
+    public async Task AuthenticateAsync_ReturnsAccountAccessToken()
+    {
+        // Arrange
+        const string validToken = """
+                               {
+                                   "accessToken": "Valid_Account_Access_Token"
+                               }
+                               """;
+        
+        var url = $"{Consts.AzureResourceManager}/subscriptions/{Consts.SubscriptionId}/resourcegroups/{Consts.ResourceGroup}/providers/Microsoft.VideoIndexer/accounts/{Consts.ViAccountName}/generateAccessToken?api-version={Consts.ApiVersion}";
+        
+        _httpClient.When(url).Then(res => new HttpResponseMessage()
+            .WithHeader("ok", "200")
+            .WithStringContent(validToken)
+        );
+        
+        
+        // Act
+        var result = await _authService.AuthenticateAsync("Arm_Access_Token");
+        
+        // Assert
+        Assert.That(result, Is.Not.Null);
+        Assert.That(result, Is.EqualTo("Valid_Account_Access_Token"));
+    }
+    
+    
+    
+    [Test]
     public async Task GetAccountAsync_ValidAccountName_ReturnsAccount()
     {
         // Arrange

@@ -4,7 +4,6 @@ namespace TV2.Backend.Services.VideoAnalyser.Client.Auth
     using Azure.Core;
     using System.Net.Http.Headers;
     using System.Text.Json;
-    using Utils;
     
     public static class AccountTokenProvider
     {
@@ -16,7 +15,7 @@ namespace TV2.Backend.Services.VideoAnalyser.Client.Auth
             return tokenRequestResult.Token;
         }
 
-        public static async Task<string> GetAccountAccessTokenAsync(string armAccessToken, ArmAccessTokenPermission permission = ArmAccessTokenPermission.Contributor, ArmAccessTokenScope scope = ArmAccessTokenScope.Account, CancellationToken ct = default)
+        public static async Task<string> GetAccountAccessTokenAsync(string armAccessToken, HttpClient client, ArmAccessTokenPermission permission = ArmAccessTokenPermission.Contributor, ArmAccessTokenScope scope = ArmAccessTokenScope.Account, CancellationToken ct = default)
         {
             var accessTokenRequest = new AccessTokenRequest
             {
@@ -31,7 +30,6 @@ namespace TV2.Backend.Services.VideoAnalyser.Client.Auth
 
                 // Set request uri
                 var requestUri = $"{Consts.AzureResourceManager}/subscriptions/{Consts.SubscriptionId}/resourcegroups/{Consts.ResourceGroup}/providers/Microsoft.VideoIndexer/accounts/{Consts.ViAccountName}/generateAccessToken?api-version={Consts.ApiVersion}";
-                var client = HttpClientUtils.CreateHttpClient();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", armAccessToken);
 
                 var result = await client.PostAsync(requestUri, httpContent, ct);

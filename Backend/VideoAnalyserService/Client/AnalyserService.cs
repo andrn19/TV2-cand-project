@@ -92,6 +92,58 @@ public class AnalyserService : IAnalyserService
             await Task.Delay(_pollingInterval);
         }
     }
+    
+    
+    
+    public async Task<bool> WaitForProgressAsync(string[] videoIds, Account account, string accountAccessToken)
+    {
+        var interval = TimeSpan.FromSeconds(2);
+        Dictionary<string, bool> My_dict1 = new Dictionary<string, bool>();
+        My_dict1.Add(videoIds[0], false);
+        My_dict1.Add(videoIds[1], false);
+        while (true)
+        {
+            foreach (string videoId in videoIds)
+            {
+                if (My_dict1[videoId] == false)
+                {
+                    var queryParams = new Dictionary<string, string>()
+                    {
+                        {"language", "English"},
+                        {"includeSummarizedInsights", "false"},
+                        {"accessToken", accountAccessToken}
+                    }.CreateQueryString();
+
+                    var requestUrl = $"{ApiEndpoint}/{account.Location}/Accounts/{account.Properties.Id}/Videos/{videoId}/Index?{queryParams}";
+                    var videoGetIndexRequestResult = await _httpClient.GetAsync(requestUrl);
+                    videoGetIndexRequestResult.VerifyStatus(System.Net.HttpStatusCode.OK);
+                    var videoGetIndexResult = await videoGetIndexRequestResult.Content.ReadAsStringAsync();
+                    string processingState = JsonSerializer.Deserialize<Index>(videoGetIndexResult).State;
+                    string progressState = JsonSerializer.Deserialize<Index>(videoGetIndexResult).Videos[0].Progress;
+                    
+                    if (processingState == ProcessingState.Processed.ToString())
+                    {
+                        My_dict1[videoId] = true;
+                        Console.WriteLine($"Video {videoId} index {processingState} at {progressState}");
+                    }
+                    
+                    if (processingState == ProcessingState.Failed.ToString())
+                    {
+                        throw new Exception(videoGetIndexResult);
+                    }
+                    
+                    Console.WriteLine($"Video {videoId} index {processingState} at {progressState}");
+                }
+            }
+            await Task.Delay(interval);
+            if (My_dict1.Values.All(value => value))
+            {
+                return true;
+            }
+        }
+    }
+    
+    
         
     private string AddExcludedAIs(string ExcludedAI)
     {

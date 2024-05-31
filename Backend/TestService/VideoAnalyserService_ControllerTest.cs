@@ -33,6 +33,18 @@ public class VideoAnalyserService_ControllerTest
     }
     
     [Test]
+    public void GetTest()
+    {
+        // Arrange
+        
+        // Act
+        var result = _controller.Get();
+        
+        // Assert
+        Assert.That(result, Is.True);
+    }
+    
+    [Test]
     public void UploadFootageTest()
     {
         // Arrange

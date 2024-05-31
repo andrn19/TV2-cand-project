@@ -15,4 +15,7 @@ public class Video
     
     [JsonPropertyName("insights")]
     public Metadata? Metadata { get; set; }
+    
+    [JsonPropertyName("processingProgress")]
+    public string? Progress { get; set; }
 }

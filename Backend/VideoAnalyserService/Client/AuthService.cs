@@ -44,7 +44,7 @@ public class AuthService : IAuthService
     {
         try
         {
-            var accountAccessToken = await AccountTokenProvider.GetAccountAccessTokenAsync(armAccessToken);
+            var accountAccessToken = await AccountTokenProvider.GetAccountAccessTokenAsync(armAccessToken, _httpClient);
             return accountAccessToken;
         }
         catch (Exception ex)

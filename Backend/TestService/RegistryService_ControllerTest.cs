@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Logging;
 using Moq;
 using MySql.Data.MySqlClient;
-using NUnit.Framework;
 using ThrowawayDb.MySql;
 using TV2.Backend.ClassLibrary.Models;
 using TV2.Backend.ClassLibrary.Models.Metadata;
@@ -55,7 +54,23 @@ public class RegistryService_ControllerTest
     }
     
     
-    
+    // ===== Get ===== //
+    [Test]
+    public void GetTest()
+    {
+        var logger = new Mock<ILogger<DataController>>();
+        var consumerRegistry = new ConsumerRegistry();
+        var messageService = new Mock<IMessageService>();
+        consumerRegistry.setConnectionString(database.ConnectionString);
+        var service = new DataController(logger.Object, consumerRegistry, messageService.Object);
+        // Arrange
+        
+        // Act
+        var result = service.Get();
+        
+        // Assert
+        Assert.That(result, Is.True);
+    }
     
     // ===== CreateEndpoint ===== //
     [Test]
@@ -64,8 +79,8 @@ public class RegistryService_ControllerTest
         // Arrange
         var logger = new Mock<ILogger<DataController>>();
         var consumerRegistry = new ConsumerRegistry();
-        consumerRegistry.setConnectionString(database.ConnectionString);
         var messageService = new Mock<IMessageService>();
+        consumerRegistry.setConnectionString(database.ConnectionString);
         var service = new DataController(logger.Object, consumerRegistry, messageService.Object);
         
         // Act

@@ -50,4 +50,20 @@ public class VideoAnalyserController : ControllerBase, IVideoAnalyserService
         return video;
 
     }
+    
+    [HttpPost("GetProgress")]
+    public async Task<bool> GetProgress([FromBody] string[] footageUrl)
+    {
+        var armToken = await _authService.AuthenticateArmAsync();
+        var token = await _authService.AuthenticateAsync(armToken);
+        var account = await _authService.GetAccountAsync(Consts.ViAccountName, armToken);
+        var footageId1 = await _analyserService.UploadUrlAsync(footageUrl[0], "footage 7", account, token);
+        var footageId2 = await _analyserService.UploadUrlAsync(footageUrl[1], "footage 8", account, token);
+        
+        string[] footage = {footageId1, footageId2};
+        
+        var result = await _analyserService.WaitForProgressAsync(footage, account, token);
+        //var result2 = await _analyserService.WaitForProgressAsync(footageId2, account, token);
+        return result;
+    }
 }
