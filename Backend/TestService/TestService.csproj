@@ -9,7 +9,7 @@
         <IsTestProject>true</IsTestProject>
         <CollectCoverage>true</CollectCoverage>
         <CoverletOutputFormat>lcov</CoverletOutputFormat>
-        <CoverletOutput>./lcov.info</CoverletOutput>
+        <CoverletOutput>./lcov.xml</CoverletOutput>
     </PropertyGroup>
 
     <ItemGroup>
