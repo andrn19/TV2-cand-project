@@ -66,4 +66,25 @@ public class VideoAnalyserController : ControllerBase, IVideoAnalyserService
         //var result2 = await _analyserService.WaitForProgressAsync(footageId2, account, token);
         return result;
     }
+    
+    
+    [HttpPost("ConcurrencyTest")]
+    public async Task ConcurrencyTest([FromBody] string[] footageUrl, [FromQuery] int concurrency)
+    {
+        var videoCount = footageUrl.Length;
+        for (int i = 0; i < (videoCount / concurrency); i++)
+        {
+            var armToken = await _authService.AuthenticateArmAsync();
+            var token = await _authService.AuthenticateAsync(armToken);
+            var account = await _authService.GetAccountAsync(Consts.ViAccountName, armToken);
+            
+            string[] footage = [];
+            for (int j = 0; j < concurrency; j++)
+            {
+                var footageId = await _analyserService.UploadUrlAsync(footageUrl[0], $"footage round {i} - video {j}", account, token);
+                footage.Append(footageId);
+            }
+            await _analyserService.WaitForProgressAsync(footage, account, token);
+        }
+    }
 }
