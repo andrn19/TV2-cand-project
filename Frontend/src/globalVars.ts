@@ -1,3 +1,5 @@
-const HOST = 'gateway'
+const HOST = 'localhost'
+const PORT = '52001'
 
-export const IP_ADDRESS = `http://${HOST}:8080/gateway`
+
+export const IP_ADDRESS = `http://${HOST}:${PORT}/gateway`

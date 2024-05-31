@@ -46,7 +46,8 @@ const AnalyseVideoButton: React.FC<AnalyseVideoButtonProps> = ({ addNewReceivedV
   const handleAnalyseClick = async (event: React.FormEvent) => {
     event.preventDefault()
     notify()
-
+    const urlUri = encodeURIComponent(videoURL)
+    const nameUri = encodeURIComponent(videoName)
     const requestOptions = {
       method: 'POST',
       headers: {
@@ -55,7 +56,7 @@ const AnalyseVideoButton: React.FC<AnalyseVideoButtonProps> = ({ addNewReceivedV
     };
 
     try {
-      const response = await fetch(`${ANALYSE_API_ENDPOINT}?footageUrl=${videoURL}&footageName=${videoName}`, requestOptions)
+      const response = await fetch(`${ANALYSE_API_ENDPOINT}?footageUrl=${urlUri}&footageName=${nameUri}`, requestOptions)
       if (response.ok) {
         const videoID = await response.json()
         console.log(videoID)
