@@ -95,7 +95,7 @@ public class AnalyserService : IAnalyserService
     
     
     
-    public async Task<bool> WaitForProgressAsync(string[] videoIds, Account account, string accountAccessToken)
+    public async Task<bool> WaitForProgressAsync(List<string> videoIds, Account account, string accountAccessToken)
     {
         var interval = TimeSpan.FromSeconds(2);
         Dictionary<string, bool> My_dict = new Dictionary<string, bool>();
@@ -103,11 +103,12 @@ public class AnalyserService : IAnalyserService
         foreach (var videoId in videoIds)
         {
             My_dict.Add(videoId, false);
+            Console.WriteLine($"{videoId} Added");
         }
         
         while (true)
         {
-            foreach (string videoId in videoIds)
+            foreach (var videoId in videoIds)
             {
                 if (My_dict[videoId] == false)
                 {
@@ -128,7 +129,6 @@ public class AnalyserService : IAnalyserService
                     if (processingState == ProcessingState.Processed.ToString())
                     {
                         My_dict[videoId] = true;
-                        Console.WriteLine($"Video {videoId} index {processingState} at {progressState}");
                     }
                     
                     if (processingState == ProcessingState.Failed.ToString())
@@ -137,9 +137,10 @@ public class AnalyserService : IAnalyserService
                     }
                     
                     Console.WriteLine($"Video {videoId} index {processingState} at {progressState}");
+                    
+                    await Task.Delay(interval);
                 }
             }
-            await Task.Delay(interval);
             if (My_dict.Values.All(value => value))
             {
                 return true;

@@ -20,7 +20,7 @@ public class RegistryService_ControllerTest
     {
         database = ThrowawayDatabase.Create(
             "root",
-            "",
+            "root",
             "localhost"
         );
 

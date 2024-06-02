@@ -26,5 +26,5 @@ public interface IAnalyserService
     /// <param name="schema"> A schema for the metadata </param>
     /// <returns> Returns video index when the index is complete, otherwise throws exception </returns>
     Task<Index> WaitForIndexAsync(string videoId, Account account, string accountAccessToken, string schema);
-    Task<bool> WaitForProgressAsync(string[] videoIds, Account account, string accountAccessToken);
+    Task<bool> WaitForProgressAsync(List<string> videoIds, Account account, string accountAccessToken);
 }

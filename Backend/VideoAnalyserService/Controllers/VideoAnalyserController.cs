@@ -57,13 +57,16 @@ public class VideoAnalyserController : ControllerBase, IVideoAnalyserService
         var armToken = await _authService.AuthenticateArmAsync();
         var token = await _authService.AuthenticateAsync(armToken);
         var account = await _authService.GetAccountAsync(Consts.ViAccountName, armToken);
+        
+        var footage = new List<string>();
+        
         var footageId1 = await _analyserService.UploadUrlAsync(footageUrl[0], "footage 7", account, token);
         var footageId2 = await _analyserService.UploadUrlAsync(footageUrl[1], "footage 8", account, token);
         
-        string[] footage = {footageId1, footageId2};
+        footage.Add(footageId1);
+        footage.Add(footageId2);
         
         var result = await _analyserService.WaitForProgressAsync(footage, account, token);
-        //var result2 = await _analyserService.WaitForProgressAsync(footageId2, account, token);
         return result;
     }
     
@@ -71,20 +74,30 @@ public class VideoAnalyserController : ControllerBase, IVideoAnalyserService
     [HttpPost("ConcurrencyTest")]
     public async Task ConcurrencyTest([FromBody] string[] footageUrl, [FromQuery] int concurrency)
     {
+        var interval = TimeSpan.FromMilliseconds(500);
+        var testId = Guid.NewGuid();
         var videoCount = footageUrl.Length;
+        var footageUrlCount = 0;
         for (int i = 0; i < (videoCount / concurrency); i++)
         {
             var armToken = await _authService.AuthenticateArmAsync();
             var token = await _authService.AuthenticateAsync(armToken);
             var account = await _authService.GetAccountAsync(Consts.ViAccountName, armToken);
             
-            string[] footage = [];
+            var footage = new List<string>();
             for (int j = 0; j < concurrency; j++)
             {
-                var footageId = await _analyserService.UploadUrlAsync(footageUrl[0], $"footage round {i} - video {j}", account, token);
-                footage.Append(footageId);
+                var name = $"test-round-{i + 1}-video-{j + 1}-{testId}";
+                Console.WriteLine($"Indexing {name}");
+                var footageId = await _analyserService.UploadUrlAsync(footageUrl[footageUrlCount], name, account, token);
+                Console.WriteLine($"{footageId}");
+                footage.Add(footageId);
+                footageUrlCount++;
+                await Task.Delay(interval);
             }
+            Console.WriteLine("Awaiting index");
             await _analyserService.WaitForProgressAsync(footage, account, token);
+            Console.WriteLine($"Round {i+1} finished Indexing");
         }
     }
 }
