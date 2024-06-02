@@ -10,4 +10,4 @@ Authors:
 
 1. Install docker desktop
 2. 
-3. Run '''docker compose up --build'''
+3. Run ```docker compose up --build```
