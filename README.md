@@ -7,7 +7,9 @@ Authors:
  -  Andreas Erhardt Nielsen ([andrn19\@student.sdu.dk](mailto:andrn19@student.sdu.dk?subject=Thesis))
 
 ## Running the project locally
+The VideoAnalyserService requires a set of environment variables for generateing the Azure Video Indexer access token.
+These environment variables can be found in the appendices of the thesis.
 
-1. Install docker desktop
-2. 
-3. Run ```docker compose up --build```
+1. Install Docker.
+2. Insert the ```.env``` found in the appendices to the root folder of the repository.
+3. Run ```docker compose up --build```.
