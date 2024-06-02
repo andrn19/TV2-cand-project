@@ -1,12 +1,12 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-
+import { IP_ADDRESS } from '../../../src/globalVars';
 import AnalyseVideoButton from '../../../src/components/file_upload_components/AnalyseVideoButton'
 
 global.fetch = vi.fn();
 
-const ANALYSE_API_ENDPOINT = `http://gateway:8080/gateway/upload-footage`;
-const GET_METADATA_API_ENDPOINT = `http://gateway:8080/gateway/get-metadata`;
+const ANALYSE_API_ENDPOINT = `${IP_ADDRESS}/upload-footage`;
+const GET_METADATA_API_ENDPOINT = `${IP_ADDRESS}/get-metadata`;
 
 class MockVideoMetadataClass {
     constructor(metadata) {
@@ -46,9 +46,12 @@ describe('AnalyseVideoButton', () => {
         fireEvent.submit(screen.getByText('Analyse Video'));
 
         await waitFor(() => {
-            //console.log(global.fetch.mock.calls);
+            
+            const urlUri = encodeURIComponent('http://example.com/video.mp4')
+            const nameUri = encodeURIComponent('Example Video')
+
             expect(global.fetch).toHaveBeenCalledTimes(2);
-            expect(global.fetch).toHaveBeenCalledWith(`${ANALYSE_API_ENDPOINT}?footageUrl=http://example.com/video.mp4&footageName=Example Video`, {
+            expect(global.fetch).toHaveBeenCalledWith(`${ANALYSE_API_ENDPOINT}?footageUrl=${urlUri}&footageName=${nameUri}`, {
                 method: 'POST',
                 headers: { Accept: 'text/plain' },
             });
