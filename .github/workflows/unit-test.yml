@@ -42,11 +42,11 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./Backend
-        run: dotnet restore
+        run: dotnet restore --verbosity quiet
 
       - name: Build
         working-directory: ./Backend
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build --configuration Release --no-restore --verbosity quiet
 
       - name: Test
         working-directory: ./Backend
