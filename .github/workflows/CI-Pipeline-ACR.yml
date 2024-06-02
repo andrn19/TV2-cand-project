@@ -15,7 +15,7 @@ env:
 
 jobs:
 
-  unit_tests_frontend:
+  unit-test-frontend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -30,10 +30,34 @@ jobs:
           npm ci
           npm test
 
+  unit-test-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up MySQL
+        run: |
+          sudo /etc/init.d/mysql start
+          mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+
+      - name: Checkout code base
+        uses: actions/checkout@v2
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Install dependencies
+        working-directory: ./Backend
+        run: dotnet restore --verbosity quiet
+
+      - name: Build
+        working-directory: ./Backend
+        run: dotnet build --configuration Release --no-restore --verbosity quiet
+
   build-registry-service-store:
 
     runs-on: ubuntu-latest
-    needs: [unit_tests_frontend]
+    needs: [unit-test-frontend,unit-test-backend]
     env:
       SERVICE_NAME: database-registry-store
       CONTEXT: ./Backend/RegistryService/Database/
@@ -57,7 +81,7 @@ jobs:
 
   build-registry-service:
     runs-on: ubuntu-latest
-    needs: [unit_tests_frontend]
+    needs: [unit-test-frontend,unit-test-backend]
     env:
       SERVICE_NAME: database-registry
       CONTEXT: ./Backend/
@@ -83,7 +107,7 @@ jobs:
 
   build-mongo-metadata-store:
     runs-on: ubuntu-latest
-    needs: [unit_tests_frontend]
+    needs: [unit-test-frontend,unit-test-backend]
     env:
       SERVICE_NAME: mongo-metadata-store
       CONTEXT: ./Backend/
@@ -109,7 +133,7 @@ jobs:
 
   build-gateway:
     runs-on: ubuntu-latest
-    needs: [unit_tests_frontend]
+    needs: [unit-test-frontend,unit-test-backend]
     env:
       SERVICE_NAME: gateway
       CONTEXT: ./Backend/
@@ -135,7 +159,7 @@ jobs:
 
   build-video-analyser-service:
     runs-on: ubuntu-latest
-    needs: [unit_tests_frontend]
+    needs: [unit-test-frontend,unit-test-backend]
     env:
       SERVICE_NAME: video-analyser
       CONTEXT: ./Backend/
@@ -161,7 +185,7 @@ jobs:
 
   build-frontend:
     runs-on: ubuntu-latest
-    needs: [unit_tests_frontend]
+    needs: [unit-test-frontend,unit-test-backend]
     env:
       SERVICE_NAME: frontend
       CONTEXT: ./Frontend/
