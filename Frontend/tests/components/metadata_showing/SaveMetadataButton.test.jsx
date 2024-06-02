@@ -1,8 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { IP_ADDRESS } from '../../../src/globalVars';
 import SaveMetadataButton from '../../../src/components/metadata_showing/SaveMetadataButton'
 
-const SAVE_METADATA_ENDPOINT = 'http://gateway:8080/gateway/add-metadata';
+const SAVE_METADATA_ENDPOINT = `${IP_ADDRESS}/add-metadata`;
 
 // Mock the fetch function
 global.fetch = vi.fn();
