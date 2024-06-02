@@ -1,0 +1,50 @@
+name: Build and Test Solution
+
+on:
+  workflow_dispatch:
+
+env:
+  DB_DATABASE: db
+  DB_USER: root
+  DB_PASSWORD: root
+
+jobs:
+  unit-test-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18.x
+          
+      - name: unit testing
+        working-directory: ./Frontend
+        run: |
+          npm ci
+          npm test
+
+  unit-test-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up MySQL
+        run: |
+          sudo /etc/init.d/mysql start
+          mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+
+      - name: Checkout code base
+        uses: actions/checkout@v2
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test --nologo --no-restore --verbosity quiet
