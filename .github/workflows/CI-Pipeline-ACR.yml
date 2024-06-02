@@ -6,6 +6,9 @@ on:
 #      - main
 
 env:
+  DB_DATABASE: db
+  DB_USER: root
+  DB_PASSWORD: root
   AZURE_CONTAINER_REGISTRY: MetadataAnalyser
   AZURE_CONTAINER_REGISTRY_SMALL: metadataanalyser
   REGISTRY_NAME: andrn19/tv2-cand-project
