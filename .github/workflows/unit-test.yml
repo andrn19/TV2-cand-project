@@ -45,7 +45,9 @@ jobs:
         run: dotnet restore
 
       - name: Build
+        working-directory: ./Backend
         run: dotnet build --configuration Release --no-restore
 
       - name: Test
+        working-directory: ./Backend
         run: dotnet test --nologo --no-restore --verbosity quiet
