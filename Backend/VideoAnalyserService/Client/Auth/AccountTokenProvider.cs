@@ -35,6 +35,7 @@ namespace TV2.Backend.Services.VideoAnalyser.Client.Auth
                 var result = await client.PostAsync(requestUri, httpContent, ct);
                 result.EnsureSuccessStatusCode();
                 var jsonResponseBody = await result.Content.ReadAsStringAsync(ct);
+                Console.WriteLine(jsonResponseBody);
                 return JsonSerializer.Deserialize<GenerateAccessTokenResponse>(jsonResponseBody)?.AccessToken!;
             }
             catch (Exception ex)

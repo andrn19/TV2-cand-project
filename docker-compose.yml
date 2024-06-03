@@ -56,6 +56,8 @@ services:
     build:
       context: ./Backend/RegistryService/Database
     command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3306:3306"
     networks:
       - data-service
 
@@ -66,9 +68,9 @@ services:
       context: ./Backend
       dockerfile: VideoAnalyserService/Dockerfile
     environment:
-      AZURE_TENANT_ID: dd81e623-e7fa-4d4b-a473-eca4731cb830
-      AZURE_CLIENT_ID: 67c127f5-6693-481f-ba19-8ecdfc1e78f7
-      AZURE_CLIENT_SECRET: g1uvH1Khposo0PDuX2PrV+vZbQ+benAd08dGGsvWnhk=
+      - AZURE_TENANT_ID=${AZURE_TENANT_ID}
+      - AZURE_CLIENT_ID=${AZURE_CLIENT_ID}
+      - AZURE_CLIENT_SECRET=${AZURE_CLIENT_SECRET}
     ports:
       - "51011:8080"
     networks:

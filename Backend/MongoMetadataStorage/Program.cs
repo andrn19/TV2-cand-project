@@ -11,7 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
 builder.Services.Configure<MongoSettings>(configuration.GetSection("MongoDB"));
-builder.Services.AddHostedService<MessageService>();
+builder.Services.AddHostedService<MessageServiceController>();
 
 var app = builder.Build();
 

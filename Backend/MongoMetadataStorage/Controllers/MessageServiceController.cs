@@ -9,7 +9,7 @@ using RabbitMQ.Client.Events;
 using ClassLibrary.Models;
 using MongoDB.Driver;
 
-public class MessageService : IHostedService
+public class MessageServiceController : IHostedService
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger _logger;
@@ -21,7 +21,7 @@ public class MessageService : IHostedService
     private static IMongoCollection<Video> _metadataCollection;
     private string _queueName;
 
-    public MessageService(ILogger<MessageService> logger, IOptions<RabbitMqSettings> rabbitMqSettings, IServiceProvider serviceProvider)
+    public MessageServiceController(ILogger<MessageServiceController> logger, IOptions<RabbitMqSettings> rabbitMqSettings, IServiceProvider serviceProvider)
     {
         // Create HostedService
         _serviceProvider = serviceProvider;
