@@ -22,7 +22,9 @@ const FileDropzone: React.FC<DropzoneProps> = ({ onFilesDrop }) => {
   return (
     <div data-testid="drop-zone" {...getRootProps()} className='border-dashed border-2 border-gray-400 p-4 mb-10 transition duration-300 hover:bg-gray-800 cursor-pointer' >
       <input data-testid="file-input" {...getInputProps()} />
-      <p className='text-gray-600'>Drag & drop files here, or click to select files</p>
+      <p className='text-gray-600'>
+        Drag & drop files here, or click to select files
+      </p>
     </div>
   );
 };
